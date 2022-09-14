@@ -1,6 +1,8 @@
 # Introduction to Data Analytics in Business
 
-This repo provides exercises, solutions and tutorial materials for the course *Introduction to Data Analytics in Business* at Frankfurt School of Finance and Management.
+This repo provides exercises, solutions and tutorial materials for the
+course *Introduction to Data Analytics in Business* at Frankfurt School
+of Finance and Management.
 
 ## Setup
 
@@ -123,18 +125,6 @@ local folder from the remote folder using `git pull` if you do not have
 any local changes:
 
     git pull
-
-The second exercise in `exercise_1.pdf` gives you the opportunity to
-create a local git repository and push your changes to GitLab.
-
-### Further Reading
-
-[Git Basics - Pro
-Git](https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository)  
-[Visualizing Git Concepts with
-D3](https://onlywei.github.io/explain-git-with-d3/)  
-[Git from the Bottom
-Up](https://jwiegley.github.io/git-from-the-bottom-up/)
 
 ## Virtual Environments
 
