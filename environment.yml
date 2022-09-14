@@ -1,0 +1,14 @@
+name: intro-data-analytics
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - altair
+  - numpy
+  - pandas
+  - jupyterlab
+  - scipy
+  - scikit-learn
+  - seaborn
+  - pip:
+      - watermark
