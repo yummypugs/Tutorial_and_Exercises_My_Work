@@ -153,5 +153,7 @@ dmypy.json
 cython_debug/
 
 # Miscellaneous
-src
+src/exercise*
+src/solution*
+src/tutorial*
 .DS_Store
