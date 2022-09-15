@@ -188,10 +188,11 @@ You can also leave the environment by deactivating:
 mamba deactivate
 ```
 
-For this course, I have prepared a `environment.yml` file that contains all packages required, you can create an environment called `` and install all required packages using one command:
+For this course, I have prepared a `environment.yml` file that contains all packages required, you can create an environment defiend by `environment.yml` called `intro-data-analytics` and install all required packages using one command:
 
 ```
 mamba env create -f environment.yml
+mamba activate intro-data-analytics
 ```
 
 ### Install Python and Packages
@@ -232,7 +233,7 @@ Printing out your environment information ahead of doing any coding can be very 
 
 # Nouns and Verbs in Python, and Pandas
 
-In an over-simplified fashion, all commands in Python can be understood as a noun or a verb. A verb usually refers to some function to do something, with lower case letters and underscores. Lots of these nouns and verbs are created by other people, so you have to import them:
+In an over-simplified fashion, all commands in Python can be understood as a noun or a verb. A noun is a variable. A verb usually refers to some function to do something. Lots of these nouns and verbs are created by other people, so you have to import them:
 
 ```{python}
 import someones_sick_project

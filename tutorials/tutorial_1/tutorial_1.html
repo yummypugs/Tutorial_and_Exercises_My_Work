@@ -247,8 +247,9 @@ mamba --help</code></pre>
 <p>Now you can install packages and run code in this specific environment, without worrying about conflicts with your other projects.</p>
 <p>You can also leave the environment by deactivating:</p>
 <pre><code>mamba deactivate</code></pre>
-<p>For this course, I have prepared a <code>environment.yml</code> file that contains all packages required, you can create an environment called `` and install all required packages using one command:</p>
-<pre><code>mamba env create -f environment.yml</code></pre>
+<p>For this course, I have prepared a <code>environment.yml</code> file that contains all packages required, you can create an environment defiend by <code>environment.yml</code> called <code>intro-data-analytics</code> and install all required packages using one command:</p>
+<pre><code>mamba env create -f environment.yml
+mamba activate intro-data-analytics</code></pre>
 </section>
 <section id="install-python-and-packages" class="level3">
 <h3 class="anchored" data-anchor-id="install-python-and-packages">Install Python and Packages</h3>
@@ -276,7 +277,7 @@ mamba --help</code></pre>
 </section>
 <section id="nouns-and-verbs-in-python-and-pandas" class="level1">
 <h1>Nouns and Verbs in Python, and Pandas</h1>
-<p>In an over-simplified fashion, all commands in Python can be understood as a noun or a verb. A verb usually refers to some function to do something, with lower case letters and underscores. Lots of these nouns and verbs are created by other people, so you have to import them:</p>
+<p>In an over-simplified fashion, all commands in Python can be understood as a noun or a verb. A noun is a variable. A verb usually refers to some function to do something. Lots of these nouns and verbs are created by other people, so you have to import them:</p>
 <div class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> someones_sick_project</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -291,8 +292,8 @@ mamba --help</code></pre>
 <div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>my_bbq <span class="op">=</span> someones_sick_project.BbqGrill(brand<span class="op">=</span><span class="st">"Weber"</span>, model<span class="op">=</span><span class="st">"E-330"</span>)</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>my_bbq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="118">
-<pre><code>&lt;someones_sick_project.BbqGrill at 0x1269bec80&gt;</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="95">
+<pre><code>&lt;someones_sick_project.BbqGrill at 0x127ee77f0&gt;</code></pre>
 </div>
 </div>
 <p>When there are enough user of a package, a convention is born because we are too lazy to type <code>someones_sick_project</code> every time. You can abbreviate <code>someones_sick_project</code> with the following command and do the same things:</p>
@@ -308,20 +309,20 @@ mamba --help</code></pre>
 <div class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>my_bbq <span class="op">=</span> ssp.BbqGrill(brand<span class="op">=</span><span class="st">"Weber"</span>, model<span class="op">=</span><span class="st">"E-330"</span>)</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>my_bbq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="121">
-<pre><code>&lt;someones_sick_project.BbqGrill at 0x1269bca90&gt;</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="98">
+<pre><code>&lt;someones_sick_project.BbqGrill at 0x108166fb0&gt;</code></pre>
 </div>
 </div>
 <p>This specific barbecue grill, <code>my_bbq</code>, has some properties, notice that these nouns comes without parenthesis:</p>
 <div class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>my_bbq.brand</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="122">
+<div class="cell-output cell-output-display" data-execution_count="99">
 <pre><code>'Weber'</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>my_bbq.model</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="123">
+<div class="cell-output cell-output-display" data-execution_count="100">
 <pre><code>'E-330'</code></pre>
 </div>
 </div>
@@ -340,7 +341,7 @@ mamba --help</code></pre>
 <div class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>a_series <span class="op">=</span> pd.Series([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>])</span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>a_series</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="126">
+<div class="cell-output cell-output-display" data-execution_count="103">
 <pre><code>0    1
 1    2
 2    3
@@ -350,7 +351,7 @@ dtype: int64</code></pre>
 <div class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>a_dataframe <span class="op">=</span> pd.DataFrame({<span class="st">"col_1"</span>: [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>], <span class="st">"col_2"</span>: [<span class="fl">4.1</span>, <span class="fl">5.4</span>, <span class="fl">6.1</span>]})</span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>a_dataframe</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="127">
+<div class="cell-output cell-output-display" data-execution_count="104">
 
 <div>
 
@@ -386,19 +387,19 @@ dtype: int64</code></pre>
 <p>We can then inspect their properties:</p>
 <div class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>a_series.dtypes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="128">
+<div class="cell-output cell-output-display" data-execution_count="105">
 <pre><code>dtype('int64')</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>a_series.index</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="129">
+<div class="cell-output cell-output-display" data-execution_count="106">
 <pre><code>RangeIndex(start=0, stop=3, step=1)</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>a_dataframe.dtypes</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="130">
+<div class="cell-output cell-output-display" data-execution_count="107">
 <pre><code>col_1      int64
 col_2    float64
 dtype: object</code></pre>
@@ -406,7 +407,7 @@ dtype: object</code></pre>
 </div>
 <div class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>a_dataframe.index</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="131">
+<div class="cell-output cell-output-display" data-execution_count="108">
 <pre><code>RangeIndex(start=0, stop=3, step=1)</code></pre>
 </div>
 </div>
@@ -426,7 +427,7 @@ memory usage: 152.0 bytes</code></pre>
 </div>
 <div class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>a_series.describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="133">
+<div class="cell-output cell-output-display" data-execution_count="110">
 <pre><code>count    3.0
 mean     2.0
 std      1.0
@@ -454,7 +455,7 @@ memory usage: 176.0 bytes</code></pre>
 </div>
 <div class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>a_dataframe.describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="135">
+<div class="cell-output cell-output-display" data-execution_count="112">
 
 <div>
 
@@ -514,7 +515,7 @@ memory usage: 176.0 bytes</code></pre>
 </div>
 <div class="cell" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>a_dataframe.head(<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="136">
+<div class="cell-output cell-output-display" data-execution_count="113">
 
 <div>
 
@@ -548,7 +549,7 @@ memory usage: 176.0 bytes</code></pre>
 <div class="cell" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>countries <span class="op">=</span> pd.read_csv(<span class="st">"https://raw.githubusercontent.com/cs109/2014_data/master/countries.csv"</span>)</span>
 <span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>countries.head(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="137">
+<div class="cell-output cell-output-display" data-execution_count="114">
 
 <div>
 

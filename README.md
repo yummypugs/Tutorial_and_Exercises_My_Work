@@ -193,11 +193,14 @@ You can also leave the environment by deactivating:
 
     mamba deactivate
 
-For this course, I have prepared a `environment.yml` file that contains
-all packages required, you can create an environment called \`\` and
-install all required packages using one command:
+For this course, I have prepared a `environment.yml` file that contains all
+packages required, you can create an environment defiend by `environment.yml`
+called `intro-data-analytics` and install all required packages using one command:
 
-    mamba env create -f environment.yml
+```
+mamba env create -f environment.yml
+mamba activate intro-data-analytics
+```
 
 ### Install Python and Packages
 
