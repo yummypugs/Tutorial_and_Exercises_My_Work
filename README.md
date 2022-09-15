@@ -6,7 +6,7 @@ of Finance and Management.
 
 ## Tutorials
 
-[Tutorial 1: Setup and Introduction to Python and Pandas](tutorials/tutorial_1/)
+[Tutorial 1: Setup and Introduction to Python and Pandas](https://iewaij.quarto.pub/tutorial-1-setup-and-introduction-to-python-and-pandas/)
 
 ## Setup
 
