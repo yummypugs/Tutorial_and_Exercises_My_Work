@@ -84,7 +84,7 @@ brew uninstall <APPLICATION-NAME>
 For this course, I recommend installing the following software:
 
 ```
-brew install --cask git mambaforge iterm2 visual-studio-code
+brew install git mambaforge iterm2 visual-studio-code
 ```
 
 Verify that you have successfully installed git and mambaforge with the following command:
