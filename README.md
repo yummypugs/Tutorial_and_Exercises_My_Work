@@ -4,6 +4,10 @@ This repo provides exercises, solutions and tutorial materials for the
 course *Introduction to Data Analytics in Business* at Frankfurt School
 of Finance and Management.
 
+## Tutorials
+
+[Tutorial 1: Setup and Introduction to Python and Pandas](tutorials/tutorial_1/)
+
 ## Setup
 
 ### Package Managers

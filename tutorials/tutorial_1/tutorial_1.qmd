@@ -2,6 +2,8 @@
 title: "Tutorial 1: Setup and Introduction to Python and Pandas"
 author: "Jiawei Li"
 jupyter: python3
+execute:
+  warning: false
 ---
 
 # Introduction
