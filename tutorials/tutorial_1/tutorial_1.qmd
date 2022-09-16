@@ -87,6 +87,12 @@ For this course, I recommend installing the following software:
 brew install git mambaforge iterm2 visual-studio-code
 ```
 
+Please run the following to setup your shell for mambaforge:
+
+```
+conda init "$(basename "${SHELL}")"
+```
+
 Verify that you have successfully installed git and mambaforge with the following command:
 
 ```
@@ -209,7 +215,7 @@ There are always cases when you have to use `pip` because the packages you want 
 pip install watermark
 ```
 
-Now, with everything installed, you are good to go. To verify the installation is working, let's first launch `jupyer lab`:
+Now, with everything installed, you are good to go. To verify the installation is working, let's first launch `jupyter lab`:
 
 ```
 jupyter lab
@@ -226,7 +232,7 @@ Printing out your environment information ahead of doing any coding can be very 
 
 ### Further Reading
 
-[Tutorial of Jupyer Lab](https://calmcode.io/jupyter-lab/time-magic.html)  
+[Tutorial of Jupyter Lab](https://calmcode.io/jupyter-lab/time-magic.html)  
 [A Short Video Tutorial of `watermark`](https://calmcode.io/shorts/watermark.py.html)  
 [Conda: Myths and Misconceptions](https://jakevdp.github.io/blog/2016/08/25/conda-myths-and-misconceptions/)  
 [Understanding Conda and Pip](https://www.anaconda.com/blog/understanding-conda-and-pip)  

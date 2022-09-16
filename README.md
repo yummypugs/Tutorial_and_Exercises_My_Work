@@ -73,6 +73,11 @@ For this course, I recommend installing the following software:
 
     brew install --cask git mambaforge iterm2 visual-studio-code
 
+
+Please run the following to setup your shell for mambaforge:
+
+    conda init "$(basename "${SHELL}")"
+
 Verify that you have successfully installed git and mambaforge with the
 following command:
 
