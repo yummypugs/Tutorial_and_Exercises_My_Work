@@ -176,21 +176,21 @@ And do the projections.
 ```{python}
 # We can then use sorted eigenvectors to transform the orginal data
 # For example, 2D -> 1D
-mushroom["prjection"] = (v.T[:1] @ D).reshape(-1)
+mushroom["projection"] = (v.T[:1] @ D).reshape(-1)
 mushroom.head(5)
 ```
 
-The process of covariance matrix and eigenvalue decomposition can be reduced to only using SVD decomposition on centred data. This gives better numerical stability because we don't have to calculate D @ D.T which could cause errors with floating numbers.
+The process of covariance matrix and eigenvalue decomposition can be reduced to only using SVD decomposition on centred data. This gives better numerical stability because we don't have to calculate `D @ D.T` which could cause errors with floating numbers.
 
 ```{python}
 u, s, vh = np.linalg.svd(D)
 # There is even no need to sort
 # 2D -> 1D
-mushroom["prjection_svd"] = (u.T[:1] @ D).reshape(-1)
+mushroom["projection_svd"] = (u.T[:1] @ D).reshape(-1)
 mushroom.head(5)
 ```
 
-I demonstrated a simple way to project 2D -> 1D. In practice, you normally do PCA on much higher dimensions. For example, here we can see that the cap diameter is correlated with stem sizes. You can try to find a projection that transform 3D -> 1D.
+I demonstrated a simple way to project $\mathbf{R}_2 \to \mathbf{R}_1$. In practice, you normally do PCA on much higher dimensions. For example, here we can see that the cap diameter is correlated with stem sizes. You can try to find a projection that transform $\mathbf{R}_3 \to \mathbf{R}_2$ or $\mathbf{R}_3 \to \mathbf{R}_1$.
 
 ```{python}
 mushroom = pd.read_csv("https://mushroom.mathematik.uni-marburg.de/files/PrimaryData/primary_data_edited.csv", sep=";")

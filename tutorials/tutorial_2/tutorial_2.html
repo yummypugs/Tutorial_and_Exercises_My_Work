@@ -151,12 +151,12 @@ Ax = b
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"x:</span><span class="ch">\n</span><span class="sc">{</span>x<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>x:
-[1 1 1 0 0 1 1 0 0 0 1 0 1 1 1 0 1 1 0 0 1 1 1 1 0 1 0 0 0 0 0 0 0 0 1 0 1
- 1 0 1 1 1 1 1 1 1 1 1 0 1 0 1 1 0 1 0 0 1 1 0 0 0 0 0 0 1 1 1 0 0 0 1 1 1
- 1 0 1 1 1 0 1 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 1 1 0 1 1 0 0 0 1 0 1 1 0 0 0
- 0 1 1 1 0 1 0 1 1 1 1 0 0 0 0 0 0 1 1 1 0 1 0 0 0 0 0 0 1 0 0 1 1 0 1 0 1
- 1 0 1 0 1 1 0 0 0 0 0 0 1 1 1 1 0 0 1 1 0 1 1 0 1 1 0 1 0 1 1 0 1 0 0 1 0
- 1 0 0 1 0 1 1 1 0 0 0 1 1 0 1]</code></pre>
+[0 0 0 1 0 1 1 1 0 1 0 1 1 0 0 1 0 1 0 0 1 1 1 1 1 0 1 1 0 0 0 1 0 1 1 0 1
+ 1 0 1 0 0 0 0 1 1 1 1 0 0 1 1 0 1 0 0 0 0 1 1 1 0 1 0 0 0 0 1 1 1 1 0 0 1
+ 1 1 1 0 1 1 1 0 1 0 1 1 1 1 1 0 1 0 1 0 1 0 0 0 0 1 0 1 1 0 1 1 0 1 1 0 0
+ 0 1 0 0 0 0 0 0 1 0 1 1 0 1 0 1 0 0 1 1 0 1 0 1 0 0 0 1 1 1 0 0 1 1 1 1 0
+ 0 0 0 1 1 1 1 0 0 0 0 1 0 1 0 1 1 0 0 1 0 0 0 1 0 1 0 0 1 0 0 0 0 1 1 0 0
+ 1 1 0 1 1 1 1 1 1 0 0 1 0 1 0]</code></pre>
 </div>
 </div>
 <p>And a random matrix of Normal Distribution with mean of 0 and standard deviation of 1.</p>
@@ -165,19 +165,19 @@ Ax = b
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"A:</span><span class="ch">\n</span><span class="sc">{</span>A<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>A:
-[[ 1.77984033 -0.61880461  1.55862133 ... -2.2358326  -1.26742694
-  -1.27960599]
- [ 0.08184575 -1.83463988 -1.28196167 ... -1.52962317  0.09176275
-   2.23121785]
- [-0.72139717  1.21749642 -0.89327902 ...  1.79702253 -0.17162558
-   1.3175939 ]
+[[-0.4338739   0.16778797 -0.77650828 ... -0.2611598   0.54938545
+   0.13073801]
+ [-0.62012853  0.31803311  0.01426082 ...  0.86905409  0.94270248
+  -0.4466787 ]
+ [-1.08577471  1.01848537 -0.81928477 ... -0.09984873 -0.44547787
+   0.58567308]
  ...
- [ 1.13889467  0.61423055  1.2082079  ...  0.55526302 -1.89387062
-   0.81956415]
- [-0.77832404 -0.49924211 -0.10189391 ... -0.60177147  1.01540343
-  -0.69824281]
- [ 0.54799089 -0.80959363  0.03229693 ... -0.41361062  0.7582071
-  -0.74431856]]</code></pre>
+ [-0.21739523 -1.09790272  0.06267676 ...  1.28088294 -1.22531968
+  -0.34551294]
+ [-0.05516685 -0.5208229   0.25997537 ... -1.1691447   0.61563863
+   1.54281693]
+ [-0.11933095  1.06897678  1.23725665 ... -0.06311763 -0.4828256
+  -0.30652177]]</code></pre>
 </div>
 </div>
 <p>Multiply and done.</p>
@@ -186,8 +186,8 @@ Ax = b
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"b:</span><span class="ch">\n</span><span class="sc">{</span>b<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>b:
-[ -4.12289318  19.20944867 -17.20042728 -11.10074844   3.89199887
-   0.62167427   0.87154565   4.21107148  -8.07113942 -14.14035989]</code></pre>
+[ -1.70833319  -2.67536014   0.43184999   1.0837684   -0.13252549
+  -4.07825974  -3.33200621   5.55005857 -20.32806325  -8.17523353]</code></pre>
 </div>
 </div>
 <p>On the exercise, you are asked to create a random matrix with specific probabilities. You can refer to <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.choice.html"><code>numpy.random.choice()</code></a>.</p>
@@ -287,13 +287,13 @@ Ax = b
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="93">
 
-<div id="altair-viz-e84aa96cc57e4ff6920bed29b3d96a4c"></div>
+<div id="altair-viz-a6afea37237743fb9597eb122371c3d9"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-e84aa96cc57e4ff6920bed29b3d96a4c") {
-      outputDiv = document.getElementById("altair-viz-e84aa96cc57e4ff6920bed29b3d96a4c");
+    if (outputDiv.id !== "altair-viz-a6afea37237743fb9597eb122371c3d9") {
+      outputDiv = document.getElementById("altair-viz-a6afea37237743fb9597eb122371c3d9");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -357,13 +357,13 @@ Ax = b
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>mushroom_chart</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="94">
 
-<div id="altair-viz-8eed7bdc171f441c9981706d463c01d5"></div>
+<div id="altair-viz-14401a6b480249d7b08ad7b3c6e4753a"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-8eed7bdc171f441c9981706d463c01d5") {
-      outputDiv = document.getElementById("altair-viz-8eed7bdc171f441c9981706d463c01d5");
+    if (outputDiv.id !== "altair-viz-14401a6b480249d7b08ad7b3c6e4753a") {
+      outputDiv = document.getElementById("altair-viz-14401a6b480249d7b08ad7b3c6e4753a");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -479,13 +479,13 @@ v:
 <span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>eigenvector_chart <span class="op">+</span> mushroom_chart</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="99">
 
-<div id="altair-viz-4b67b0731a3145488fa2493d09c9f66a"></div>
+<div id="altair-viz-07c21733010040399c21dbfe0c9ac13d"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-4b67b0731a3145488fa2493d09c9f66a") {
-      outputDiv = document.getElementById("altair-viz-4b67b0731a3145488fa2493d09c9f66a");
+    if (outputDiv.id !== "altair-viz-07c21733010040399c21dbfe0c9ac13d") {
+      outputDiv = document.getElementById("altair-viz-07c21733010040399c21dbfe0c9ac13d");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -539,7 +539,7 @@ v:
 <div class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We can then use sorted eigenvectors to transform the orginal data</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># For example, 2D -&gt; 1D</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>mushroom[<span class="st">"prjection"</span>] <span class="op">=</span> (v.T[:<span class="dv">1</span>] <span class="op">@</span> D).reshape(<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>mushroom[<span class="st">"projection"</span>] <span class="op">=</span> (v.T[:<span class="dv">1</span>] <span class="op">@</span> D).reshape(<span class="op">-</span><span class="dv">1</span>)</span>
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>mushroom.head(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="100">
 
@@ -551,7 +551,7 @@ v:
       <th></th>
       <th>stem-height</th>
       <th>stem-width</th>
-      <th>prjection</th>
+      <th>projection</th>
     </tr>
   </thead>
   <tbody>
@@ -590,12 +590,12 @@ v:
 </div>
 </div>
 </div>
-<p>The process of covariance matrix and eigenvalue decomposition can be reduced to only using SVD decomposition on centred data. This gives better numerical stability because we don’t have to calculate D @ D.T which could cause errors with floating numbers.</p>
+<p>The process of covariance matrix and eigenvalue decomposition can be reduced to only using SVD decomposition on centred data. This gives better numerical stability because we don’t have to calculate <code>D @ D.T</code> which could cause errors with floating numbers.</p>
 <div class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>u, s, vh <span class="op">=</span> np.linalg.svd(D)</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co"># There is even no need to sort</span></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 2D -&gt; 1D</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>mushroom[<span class="st">"prjection_svd"</span>] <span class="op">=</span> (u.T[:<span class="dv">1</span>] <span class="op">@</span> D).reshape(<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>mushroom[<span class="st">"projection_svd"</span>] <span class="op">=</span> (u.T[:<span class="dv">1</span>] <span class="op">@</span> D).reshape(<span class="op">-</span><span class="dv">1</span>)</span>
 <span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>mushroom.head(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="101">
 
@@ -607,8 +607,8 @@ v:
       <th></th>
       <th>stem-height</th>
       <th>stem-width</th>
-      <th>prjection</th>
-      <th>prjection_svd</th>
+      <th>projection</th>
+      <th>projection_svd</th>
     </tr>
   </thead>
   <tbody>
@@ -652,7 +652,7 @@ v:
 </div>
 </div>
 </div>
-<p>I demonstrated a simple way to project 2D -&gt; 1D. In practice, you normally do PCA on much higher dimensions. For example, here we can see that the cap diameter is correlated with stem sizes. You can try to find a projection that transform 3D -&gt; 1D.</p>
+<p>I demonstrated a simple way to project <span class="math inline">\(\mathbf{R}_2 \to \mathbf{R}_1\)</span>. In practice, you normally do PCA on much higher dimensions. For example, here we can see that the cap diameter is correlated with stem sizes. You can try to find a projection that transform <span class="math inline">\(\mathbf{R}_3 \to \mathbf{R}_2\)</span> or <span class="math inline">\(\mathbf{R}_3 \to \mathbf{R}_1\)</span>.</p>
 <div class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>mushroom <span class="op">=</span> pd.read_csv(<span class="st">"https://mushroom.mathematik.uni-marburg.de/files/PrimaryData/primary_data_edited.csv"</span>, sep<span class="op">=</span><span class="st">";"</span>)</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>mushroom[<span class="st">"cap-diameter"</span>] <span class="op">=</span> mushroom[<span class="st">"cap-diameter"</span>].<span class="bu">apply</span>(calculate_mean)</span>
@@ -666,13 +666,13 @@ v:
 <span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="102">
 
-<div id="altair-viz-4fc3053529554a958c0cd98061ddd715"></div>
+<div id="altair-viz-1fe2fe642ddc4d6a925e5142bf5cf56c"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-4fc3053529554a958c0cd98061ddd715") {
-      outputDiv = document.getElementById("altair-viz-4fc3053529554a958c0cd98061ddd715");
+    if (outputDiv.id !== "altair-viz-1fe2fe642ddc4d6a925e5142bf5cf56c") {
+      outputDiv = document.getElementById("altair-viz-1fe2fe642ddc4d6a925e5142bf5cf56c");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
