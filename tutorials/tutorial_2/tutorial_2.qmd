@@ -55,6 +55,7 @@ On the exercise, you are asked to create a random matrix with specific probabili
 
 [Python Data Science Handbook](https://jakevdp.github.io/PythonDataScienceHandbook/)  
 [Nearest Neighbors in Python with Annoy](https://calmcode.io/annoy/intro.html)  
+[Database-friendly random projections: Johnson-Lindenstrauss with binary coins](https://www.sciencedirect.com/science/article/pii/S0022000003000254)  
 [CS168 Lecture 4: Dimensionality Reduction](https://web.stanford.edu/class/cs168/l/l4.pdf)
 
 # Mushroom Hunting
@@ -185,7 +186,7 @@ The process of covariance matrix and eigenvalue decomposition can be reduced to 
 u, s, vh = np.linalg.svd(D)
 # There is even no need to sort
 # 2D -> 1D
-mushroom["prjection_svd"] = (v.T[:1] @ D).reshape(-1)
+mushroom["prjection_svd"] = (u.T[:1] @ D).reshape(-1)
 mushroom.head(5)
 ```
 
@@ -208,5 +209,7 @@ alt.Chart(mushroom).mark_circle().encode(
 
 [Making sense of principal component analysis, eigenvectors & eigenvalues](https://stats.stackexchange.com/questions/2691/making-sense-of-principal-component-analysis-eigenvectors-eigenvalues)  
 [Eigenfaces, for Facial Recognition](https://jeremykun.com/2011/07/27/eigenfaces/)  
+[Manifold learning - Scikit-Learn](https://scikit-learn.org/stable/modules/manifold.html)  
+[Visualizing Data Using t-SNE](https://www.youtube.com/watch?v=RJVL80Gg3lA)  
 [CS168 Lecture 7: Understanding and Using Principal Component Analysis (PCA)](https://web.stanford.edu/class/cs168/l/l7.pdf)  
 [CS168 Lecture 8: How PCA Works](https://web.stanford.edu/class/cs168/l/l8.pdf)

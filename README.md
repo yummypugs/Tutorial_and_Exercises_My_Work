@@ -220,6 +220,6 @@ you want are not available on `conda-forge`:
     pip install watermark
 
 Now, with everything installed, you are good to go. To verify the
-installation is working, let’s first launch `jupyer lab`:
+installation is working, let’s first launch `jupyter lab`:
 
     jupyter lab

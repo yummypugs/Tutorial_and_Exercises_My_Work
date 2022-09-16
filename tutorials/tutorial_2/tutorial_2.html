@@ -151,12 +151,12 @@ Ax = b
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"x:</span><span class="ch">\n</span><span class="sc">{</span>x<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>x:
-[0 0 0 1 0 0 1 1 1 1 0 1 0 0 0 1 1 0 1 1 1 1 0 0 1 1 0 1 0 0 1 0 0 0 1 0 0
- 1 1 0 0 0 0 0 0 1 1 1 1 0 1 0 0 0 1 0 1 0 1 1 1 1 1 0 1 0 0 1 0 1 1 0 1 0
- 0 0 0 1 0 1 1 0 0 0 1 0 0 1 1 0 0 0 1 0 0 1 0 1 0 1 1 1 0 1 1 0 1 1 0 0 1
- 1 1 0 0 0 1 0 1 1 0 1 1 1 0 0 1 0 0 1 1 0 1 1 0 0 1 0 0 1 0 1 0 0 0 1 0 0
- 1 1 0 0 1 1 0 1 1 0 0 0 1 0 0 0 1 1 0 1 1 1 0 1 0 0 1 1 1 0 1 1 1 1 0 1 1
- 0 0 0 1 0 1 1 1 0 1 1 1 0 0 1]</code></pre>
+[1 1 1 0 0 1 1 0 0 0 1 0 1 1 1 0 1 1 0 0 1 1 1 1 0 1 0 0 0 0 0 0 0 0 1 0 1
+ 1 0 1 1 1 1 1 1 1 1 1 0 1 0 1 1 0 1 0 0 1 1 0 0 0 0 0 0 1 1 1 0 0 0 1 1 1
+ 1 0 1 1 1 0 1 0 1 0 0 1 0 0 1 1 1 1 0 0 1 0 1 1 0 1 1 0 0 0 1 0 1 1 0 0 0
+ 0 1 1 1 0 1 0 1 1 1 1 0 0 0 0 0 0 1 1 1 0 1 0 0 0 0 0 0 1 0 0 1 1 0 1 0 1
+ 1 0 1 0 1 1 0 0 0 0 0 0 1 1 1 1 0 0 1 1 0 1 1 0 1 1 0 1 0 1 1 0 1 0 0 1 0
+ 1 0 0 1 0 1 1 1 0 0 0 1 1 0 1]</code></pre>
 </div>
 </div>
 <p>And a random matrix of Normal Distribution with mean of 0 and standard deviation of 1.</p>
@@ -165,19 +165,19 @@ Ax = b
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"A:</span><span class="ch">\n</span><span class="sc">{</span>A<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>A:
-[[ 0.45794938 -0.43785334 -1.85681373 ...  2.30324757 -0.31587959
-   0.72905904]
- [ 1.36718751  1.14488938 -1.39564131 ... -0.69992569 -2.25919928
-   0.65789307]
- [ 0.43274643 -1.24354932 -0.19267528 ... -0.18523882 -0.62515225
-   0.17239719]
+[[ 1.77984033 -0.61880461  1.55862133 ... -2.2358326  -1.26742694
+  -1.27960599]
+ [ 0.08184575 -1.83463988 -1.28196167 ... -1.52962317  0.09176275
+   2.23121785]
+ [-0.72139717  1.21749642 -0.89327902 ...  1.79702253 -0.17162558
+   1.3175939 ]
  ...
- [-0.19744514 -0.61315419 -0.52135034 ... -0.97257868  1.92456327
-   0.05280352]
- [-1.72090053  0.43888465  0.24357756 ... -0.47558168 -0.73329834
-  -0.95110513]
- [-0.75041959 -1.54492783 -0.90336639 ... -2.44631267  0.1188186
-  -1.92404089]]</code></pre>
+ [ 1.13889467  0.61423055  1.2082079  ...  0.55526302 -1.89387062
+   0.81956415]
+ [-0.77832404 -0.49924211 -0.10189391 ... -0.60177147  1.01540343
+  -0.69824281]
+ [ 0.54799089 -0.80959363  0.03229693 ... -0.41361062  0.7582071
+  -0.74431856]]</code></pre>
 </div>
 </div>
 <p>Multiply and done.</p>
@@ -186,8 +186,8 @@ Ax = b
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"b:</span><span class="ch">\n</span><span class="sc">{</span>b<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>b:
-[  9.07769182  -4.94457457   7.54146814   7.65252092  16.98574995
-  24.53548065 -12.16608031   2.01343378   4.82270823  -8.46839719]</code></pre>
+[ -4.12289318  19.20944867 -17.20042728 -11.10074844   3.89199887
+   0.62167427   0.87154565   4.21107148  -8.07113942 -14.14035989]</code></pre>
 </div>
 </div>
 <p>On the exercise, you are asked to create a random matrix with specific probabilities. You can refer to <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.choice.html"><code>numpy.random.choice()</code></a>.</p>
@@ -195,6 +195,7 @@ Ax = b
 <h2 class="anchored" data-anchor-id="further-reading">Further Reading</h2>
 <p><a href="https://jakevdp.github.io/PythonDataScienceHandbook/">Python Data Science Handbook</a><br>
 <a href="https://calmcode.io/annoy/intro.html">Nearest Neighbors in Python with Annoy</a><br>
+<a href="https://www.sciencedirect.com/science/article/pii/S0022000003000254">Database-friendly random projections: Johnson-Lindenstrauss with binary coins</a><br>
 <a href="https://web.stanford.edu/class/cs168/l/l4.pdf">CS168 Lecture 4: Dimensionality Reduction</a></p>
 </section>
 </section>
@@ -286,13 +287,13 @@ Ax = b
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="93">
 
-<div id="altair-viz-e2cdce3cf0b6458d919159a879a61258"></div>
+<div id="altair-viz-e84aa96cc57e4ff6920bed29b3d96a4c"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-e2cdce3cf0b6458d919159a879a61258") {
-      outputDiv = document.getElementById("altair-viz-e2cdce3cf0b6458d919159a879a61258");
+    if (outputDiv.id !== "altair-viz-e84aa96cc57e4ff6920bed29b3d96a4c") {
+      outputDiv = document.getElementById("altair-viz-e84aa96cc57e4ff6920bed29b3d96a4c");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -356,13 +357,13 @@ Ax = b
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>mushroom_chart</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="94">
 
-<div id="altair-viz-867d5e606b9746938964a86a5845f915"></div>
+<div id="altair-viz-8eed7bdc171f441c9981706d463c01d5"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-867d5e606b9746938964a86a5845f915") {
-      outputDiv = document.getElementById("altair-viz-867d5e606b9746938964a86a5845f915");
+    if (outputDiv.id !== "altair-viz-8eed7bdc171f441c9981706d463c01d5") {
+      outputDiv = document.getElementById("altair-viz-8eed7bdc171f441c9981706d463c01d5");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -478,13 +479,13 @@ v:
 <span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>eigenvector_chart <span class="op">+</span> mushroom_chart</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="99">
 
-<div id="altair-viz-f84d5aafee5b4b618ed055cb39faca98"></div>
+<div id="altair-viz-4b67b0731a3145488fa2493d09c9f66a"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-f84d5aafee5b4b618ed055cb39faca98") {
-      outputDiv = document.getElementById("altair-viz-f84d5aafee5b4b618ed055cb39faca98");
+    if (outputDiv.id !== "altair-viz-4b67b0731a3145488fa2493d09c9f66a") {
+      outputDiv = document.getElementById("altair-viz-4b67b0731a3145488fa2493d09c9f66a");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -594,7 +595,7 @@ v:
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>u, s, vh <span class="op">=</span> np.linalg.svd(D)</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co"># There is even no need to sort</span></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 2D -&gt; 1D</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>mushroom[<span class="st">"prjection_svd"</span>] <span class="op">=</span> (v.T[:<span class="dv">1</span>] <span class="op">@</span> D).reshape(<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>mushroom[<span class="st">"prjection_svd"</span>] <span class="op">=</span> (u.T[:<span class="dv">1</span>] <span class="op">@</span> D).reshape(<span class="op">-</span><span class="dv">1</span>)</span>
 <span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>mushroom.head(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="101">
 
@@ -665,13 +666,13 @@ v:
 <span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="102">
 
-<div id="altair-viz-40e421cc6cca40b7bb4d85bad52b2576"></div>
+<div id="altair-viz-4fc3053529554a958c0cd98061ddd715"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-40e421cc6cca40b7bb4d85bad52b2576") {
-      outputDiv = document.getElementById("altair-viz-40e421cc6cca40b7bb4d85bad52b2576");
+    if (outputDiv.id !== "altair-viz-4fc3053529554a958c0cd98061ddd715") {
+      outputDiv = document.getElementById("altair-viz-4fc3053529554a958c0cd98061ddd715");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -725,6 +726,8 @@ v:
 <h2 class="anchored" data-anchor-id="further-reading-1">Further Reading</h2>
 <p><a href="https://stats.stackexchange.com/questions/2691/making-sense-of-principal-component-analysis-eigenvectors-eigenvalues">Making sense of principal component analysis, eigenvectors &amp; eigenvalues</a><br>
 <a href="https://jeremykun.com/2011/07/27/eigenfaces/">Eigenfaces, for Facial Recognition</a><br>
+<a href="https://scikit-learn.org/stable/modules/manifold.html">Manifold learning - Scikit-Learn</a><br>
+<a href="https://www.youtube.com/watch?v=RJVL80Gg3lA">Visualizing Data Using t-SNE</a><br>
 <a href="https://web.stanford.edu/class/cs168/l/l7.pdf">CS168 Lecture 7: Understanding and Using Principal Component Analysis (PCA)</a><br>
 <a href="https://web.stanford.edu/class/cs168/l/l8.pdf">CS168 Lecture 8: How PCA Works</a></p>
 </section>
