@@ -71,7 +71,7 @@ Terminal.
 
 For this course, I recommend installing the following software:
 
-    brew install --cask git mambaforge iterm2 visual-studio-code
+    brew install git mambaforge iterm2 visual-studio-code
 
 
 Please run the following to setup your shell for mambaforge:
