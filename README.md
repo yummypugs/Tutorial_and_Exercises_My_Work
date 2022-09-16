@@ -74,9 +74,10 @@ For this course, I recommend installing the following software:
     brew install git mambaforge iterm2 visual-studio-code
 
 
-Please run the following to setup your shell for mambaforge:
+Please run the following commands to setup your shell for mambaforge:
 
     conda init "$(basename "${SHELL}")"
+    mamba init
 
 Verify that you have successfully installed git and mambaforge with the
 following command:
@@ -203,10 +204,8 @@ For this course, I have prepared a `environment.yml` file that contains all
 packages required, you can create an environment defiend by `environment.yml`
 called `intro-data-analytics` and install all required packages using one command:
 
-```
-mamba env create -f environment.yml
-mamba activate intro-data-analytics
-```
+    mamba env create -f environment.yml
+    mamba activate intro-data-analytics
 
 ### Install Python and Packages
 
