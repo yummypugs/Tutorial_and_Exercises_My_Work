@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jiawei Li">
+
+<title>Tutorial 3: Loss and Optimization</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="tutorial_3_files/libs/clipboard/clipboard.min.js"></script>
+<script src="tutorial_3_files/libs/quarto-html/quarto.js"></script>
+<script src="tutorial_3_files/libs/quarto-html/popper.min.js"></script>
+<script src="tutorial_3_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="tutorial_3_files/libs/quarto-html/anchor.min.js"></script>
+<link href="tutorial_3_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="tutorial_3_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="tutorial_3_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="tutorial_3_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="tutorial_3_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Tutorial 3: Loss and Optimization</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jiawei Li </p>
+          </div>
+  </div>
+    
+    
+  </div>
+  
+
+</header>
+
+<section id="housing-prices" class="level1">
+<h1>Housing Prices</h1>
+<p>For this tutorial, let us use <a href="https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques/data">Ames Housing dataset</a> on Kaggle to explore the housing prices. One simpliest way to model housing prices is a “multiple” measure between between housing area and price:</p>
+<p><span class="math display">\[
+\text{price} = \beta \times \text{area}
+\]</span></p>
+<p>First, we read the data and plot it.</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> altair <span class="im">as</span> alt</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>housing <span class="op">=</span> pd.read_csv(<span class="st">"train.csv"</span>)[[<span class="st">"GrLivArea"</span>, <span class="st">"SalePrice"</span>]]</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>alt.Chart(housing).mark_circle().encode(</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="st">"GrLivArea"</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> <span class="st">"SalePrice"</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+
+<div id="altair-viz-e432342004d84bcba83b90660744261b"></div>
+<script type="text/javascript">
+  var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
+  (function(spec, embedOpt){
+    let outputDiv = document.currentScript.previousElementSibling;
+    if (outputDiv.id !== "altair-viz-e432342004d84bcba83b90660744261b") {
+      outputDiv = document.getElementById("altair-viz-e432342004d84bcba83b90660744261b");
+    }
+    const paths = {
+      "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
+      "vega-lib": "https://cdn.jsdelivr.net/npm//vega-lib?noext",
+      "vega-lite": "https://cdn.jsdelivr.net/npm//vega-lite@4.17.0?noext",
+      "vega-embed": "https://cdn.jsdelivr.net/npm//vega-embed@6?noext",
+    };
+
+    function maybeLoadScript(lib, version) {
+      var key = `${lib.replace("-", "")}_version`;
+      return (VEGA_DEBUG[key] == version) ?
+        Promise.resolve(paths[lib]) :
+        new Promise(function(resolve, reject) {
+          var s = document.createElement('script');
+          document.getElementsByTagName("head")[0].appendChild(s);
+          s.async = true;
+          s.onload = () => {
+            VEGA_DEBUG[key] = version;
+            return resolve(paths[lib]);
+          };
+          s.onerror = () => reject(`Error loading script: ${paths[lib]}`);
+          s.src = paths[lib];
+        });
+    }
+
+    function showError(err) {
+      outputDiv.innerHTML = `<div class="error" style="color:red;">${err}</div>`;
+      throw err;
+    }
+
+    function displayChart(vegaEmbed) {
+      vegaEmbed(outputDiv, spec, embedOpt)
+        .catch(err => showError(`Javascript Error: ${err.message}<br>This usually means there's a typo in your chart specification. See the javascript console for the full traceback.`));
+    }
+
+    if(typeof define === "function" && define.amd) {
+      requirejs.config({paths});
+      require(["vega-embed"], displayChart, err => showError(`Error loading script: ${err.message}`));
+    } else {
+      maybeLoadScript("vega", "5")
+        .then(() => maybeLoadScript("vega-lite", "4.17.0"))
+        .then(() => maybeLoadScript("vega-embed", "6"))
+        .catch(showError)
+        .then(() => displayChart(vegaEmbed));
+    }
+  })({"config": {"view": {"continuousWidth": 400, "continuousHeight": 300}}, "data": {"name": "data-ffa3c10fa6f34f1a81eb8bad903afe6b"}, "mark": "circle", "encoding": {"x": {"field": "GrLivArea", "type": "quantitative"}, "y": {"field": "SalePrice", "type": "quantitative"}}, "$schema": "https://vega.github.io/schema/vega-lite/v4.17.0.json", "datasets": {"data-ffa3c10fa6f34f1a81eb8bad903afe6b": [{"GrLivArea": 1710, "SalePrice": 208500}, {"GrLivArea": 1262, "SalePrice": 181500}, {"GrLivArea": 1786, "SalePrice": 223500}, {"GrLivArea": 1717, "SalePrice": 140000}, {"GrLivArea": 2198, "SalePrice": 250000}, {"GrLivArea": 1362, "SalePrice": 143000}, {"GrLivArea": 1694, "SalePrice": 307000}, {"GrLivArea": 2090, "SalePrice": 200000}, {"GrLivArea": 1774, "SalePrice": 129900}, {"GrLivArea": 1077, "SalePrice": 118000}, {"GrLivArea": 1040, "SalePrice": 129500}, {"GrLivArea": 2324, "SalePrice": 345000}, {"GrLivArea": 912, "SalePrice": 144000}, {"GrLivArea": 1494, "SalePrice": 279500}, {"GrLivArea": 1253, "SalePrice": 157000}, {"GrLivArea": 854, "SalePrice": 132000}, {"GrLivArea": 1004, "SalePrice": 149000}, {"GrLivArea": 1296, "SalePrice": 90000}, {"GrLivArea": 1114, "SalePrice": 159000}, {"GrLivArea": 1339, "SalePrice": 139000}, {"GrLivArea": 2376, "SalePrice": 325300}, {"GrLivArea": 1108, "SalePrice": 139400}, {"GrLivArea": 1795, "SalePrice": 230000}, {"GrLivArea": 1060, "SalePrice": 129900}, {"GrLivArea": 1060, "SalePrice": 154000}, {"GrLivArea": 1600, "SalePrice": 256300}, {"GrLivArea": 900, "SalePrice": 134800}, {"GrLivArea": 1704, "SalePrice": 306000}, {"GrLivArea": 1600, "SalePrice": 207500}, {"GrLivArea": 520, "SalePrice": 68500}, {"GrLivArea": 1317, "SalePrice": 40000}, {"GrLivArea": 1228, "SalePrice": 149350}, {"GrLivArea": 1234, "SalePrice": 179900}, {"GrLivArea": 1700, "SalePrice": 165500}, {"GrLivArea": 1561, "SalePrice": 277500}, {"GrLivArea": 2452, "SalePrice": 309000}, {"GrLivArea": 1097, "SalePrice": 145000}, {"GrLivArea": 1297, "SalePrice": 153000}, {"GrLivArea": 1057, "SalePrice": 109000}, {"GrLivArea": 1152, "SalePrice": 82000}, {"GrLivArea": 1324, "SalePrice": 160000}, {"GrLivArea": 1328, "SalePrice": 170000}, {"GrLivArea": 884, "SalePrice": 144000}, {"GrLivArea": 938, "SalePrice": 130250}, {"GrLivArea": 1150, "SalePrice": 141000}, {"GrLivArea": 1752, "SalePrice": 319900}, {"GrLivArea": 2149, "SalePrice": 239686}, {"GrLivArea": 1656, "SalePrice": 249700}, {"GrLivArea": 1452, "SalePrice": 113000}, {"GrLivArea": 955, "SalePrice": 127000}, {"GrLivArea": 1470, "SalePrice": 177000}, {"GrLivArea": 1176, "SalePrice": 114500}, {"GrLivArea": 816, "SalePrice": 110000}, {"GrLivArea": 1842, "SalePrice": 385000}, {"GrLivArea": 1360, "SalePrice": 130000}, {"GrLivArea": 1425, "SalePrice": 180500}, {"GrLivArea": 1739, "SalePrice": 172500}, {"GrLivArea": 1720, "SalePrice": 196500}, {"GrLivArea": 2945, "SalePrice": 438780}, {"GrLivArea": 780, "SalePrice": 124900}, {"GrLivArea": 1158, "SalePrice": 158000}, {"GrLivArea": 1111, "SalePrice": 101000}, {"GrLivArea": 1370, "SalePrice": 202500}, {"GrLivArea": 1710, "SalePrice": 140000}, {"GrLivArea": 2034, "SalePrice": 219500}, {"GrLivArea": 2473, "SalePrice": 317000}, {"GrLivArea": 2207, "SalePrice": 180000}, {"GrLivArea": 1479, "SalePrice": 226000}, {"GrLivArea": 747, "SalePrice": 80000}, {"GrLivArea": 2287, "SalePrice": 225000}, {"GrLivArea": 2223, "SalePrice": 244000}, {"GrLivArea": 845, "SalePrice": 129500}, {"GrLivArea": 1718, "SalePrice": 185000}, {"GrLivArea": 1086, "SalePrice": 144900}, {"GrLivArea": 1605, "SalePrice": 107400}, {"GrLivArea": 988, "SalePrice": 91000}, {"GrLivArea": 952, "SalePrice": 135750}, {"GrLivArea": 1285, "SalePrice": 127000}, {"GrLivArea": 1768, "SalePrice": 136500}, {"GrLivArea": 1230, "SalePrice": 110000}, {"GrLivArea": 2142, "SalePrice": 193500}, {"GrLivArea": 1337, "SalePrice": 153500}, {"GrLivArea": 1563, "SalePrice": 245000}, {"GrLivArea": 1065, "SalePrice": 126500}, {"GrLivArea": 1474, "SalePrice": 168500}, {"GrLivArea": 2417, "SalePrice": 260000}, {"GrLivArea": 1560, "SalePrice": 174000}, {"GrLivArea": 1224, "SalePrice": 164500}, {"GrLivArea": 1526, "SalePrice": 85000}, {"GrLivArea": 990, "SalePrice": 123600}, {"GrLivArea": 1040, "SalePrice": 109900}, {"GrLivArea": 1235, "SalePrice": 98600}, {"GrLivArea": 964, "SalePrice": 163500}, {"GrLivArea": 2291, "SalePrice": 133900}, {"GrLivArea": 1786, "SalePrice": 204750}, {"GrLivArea": 1470, "SalePrice": 185000}, {"GrLivArea": 1588, "SalePrice": 214000}, {"GrLivArea": 960, "SalePrice": 94750}, {"GrLivArea": 835, "SalePrice": 83000}, {"GrLivArea": 1225, "SalePrice": 128950}, {"GrLivArea": 1610, "SalePrice": 205000}, {"GrLivArea": 1732, "SalePrice": 178000}, {"GrLivArea": 1535, "SalePrice": 118964}, {"GrLivArea": 1226, "SalePrice": 198900}, {"GrLivArea": 1818, "SalePrice": 169500}, {"GrLivArea": 1992, "SalePrice": 250000}, {"GrLivArea": 1047, "SalePrice": 100000}, {"GrLivArea": 789, "SalePrice": 115000}, {"GrLivArea": 1517, "SalePrice": 115000}, {"GrLivArea": 1844, "SalePrice": 190000}, {"GrLivArea": 1855, "SalePrice": 136900}, {"GrLivArea": 1430, "SalePrice": 180000}, {"GrLivArea": 2696, "SalePrice": 383970}, {"GrLivArea": 2259, "SalePrice": 217000}, {"GrLivArea": 2320, "SalePrice": 259500}, {"GrLivArea": 1458, "SalePrice": 176000}, {"GrLivArea": 1092, "SalePrice": 139000}, {"GrLivArea": 1125, "SalePrice": 155000}, {"GrLivArea": 3222, "SalePrice": 320000}, {"GrLivArea": 1456, "SalePrice": 163990}, {"GrLivArea": 988, "SalePrice": 180000}, {"GrLivArea": 1123, "SalePrice": 100000}, {"GrLivArea": 1080, "SalePrice": 136000}, {"GrLivArea": 1199, "SalePrice": 153900}, {"GrLivArea": 1586, "SalePrice": 181000}, {"GrLivArea": 754, "SalePrice": 84500}, {"GrLivArea": 958, "SalePrice": 128000}, {"GrLivArea": 840, "SalePrice": 87000}, {"GrLivArea": 1348, "SalePrice": 155000}, {"GrLivArea": 1053, "SalePrice": 150000}, {"GrLivArea": 2157, "SalePrice": 226000}, {"GrLivArea": 2054, "SalePrice": 244000}, {"GrLivArea": 1327, "SalePrice": 150750}, {"GrLivArea": 1296, "SalePrice": 220000}, {"GrLivArea": 1721, "SalePrice": 180000}, {"GrLivArea": 1682, "SalePrice": 174000}, {"GrLivArea": 1214, "SalePrice": 143000}, {"GrLivArea": 1959, "SalePrice": 171000}, {"GrLivArea": 1852, "SalePrice": 230000}, {"GrLivArea": 1764, "SalePrice": 231500}, {"GrLivArea": 864, "SalePrice": 115000}, {"GrLivArea": 1734, "SalePrice": 260000}, {"GrLivArea": 1385, "SalePrice": 166000}, {"GrLivArea": 1501, "SalePrice": 204000}, {"GrLivArea": 1728, "SalePrice": 125000}, {"GrLivArea": 1709, "SalePrice": 130000}, {"GrLivArea": 875, "SalePrice": 105000}, {"GrLivArea": 2035, "SalePrice": 222500}, {"GrLivArea": 1080, "SalePrice": 141000}, {"GrLivArea": 1344, "SalePrice": 115000}, {"GrLivArea": 969, "SalePrice": 122000}, {"GrLivArea": 1710, "SalePrice": 372402}, {"GrLivArea": 1993, "SalePrice": 190000}, {"GrLivArea": 1252, "SalePrice": 235000}, {"GrLivArea": 1200, "SalePrice": 125000}, {"GrLivArea": 1096, "SalePrice": 79000}, {"GrLivArea": 1040, "SalePrice": 109500}, {"GrLivArea": 1968, "SalePrice": 269500}, {"GrLivArea": 1947, "SalePrice": 254900}, {"GrLivArea": 2462, "SalePrice": 320000}, {"GrLivArea": 1232, "SalePrice": 162500}, {"GrLivArea": 2668, "SalePrice": 412500}, {"GrLivArea": 1541, "SalePrice": 220000}, {"GrLivArea": 882, "SalePrice": 103200}, {"GrLivArea": 1616, "SalePrice": 152000}, {"GrLivArea": 1355, "SalePrice": 127500}, {"GrLivArea": 1867, "SalePrice": 190000}, {"GrLivArea": 2161, "SalePrice": 325624}, {"GrLivArea": 1720, "SalePrice": 183500}, {"GrLivArea": 1707, "SalePrice": 228000}, {"GrLivArea": 1382, "SalePrice": 128500}, {"GrLivArea": 1656, "SalePrice": 215000}, {"GrLivArea": 1767, "SalePrice": 239000}, {"GrLivArea": 1362, "SalePrice": 163000}, {"GrLivArea": 1651, "SalePrice": 184000}, {"GrLivArea": 2158, "SalePrice": 243000}, {"GrLivArea": 2060, "SalePrice": 211000}, {"GrLivArea": 1920, "SalePrice": 172500}, {"GrLivArea": 2234, "SalePrice": 501837}, {"GrLivArea": 968, "SalePrice": 100000}, {"GrLivArea": 1525, "SalePrice": 177000}, {"GrLivArea": 1802, "SalePrice": 200100}, {"GrLivArea": 1340, "SalePrice": 120000}, {"GrLivArea": 2082, "SalePrice": 200000}, {"GrLivArea": 1252, "SalePrice": 127000}, {"GrLivArea": 3608, "SalePrice": 475000}, {"GrLivArea": 1217, "SalePrice": 173000}, {"GrLivArea": 1656, "SalePrice": 135000}, {"GrLivArea": 1224, "SalePrice": 153337}, {"GrLivArea": 1593, "SalePrice": 286000}, {"GrLivArea": 2727, "SalePrice": 315000}, {"GrLivArea": 1479, "SalePrice": 184000}, {"GrLivArea": 1431, "SalePrice": 192000}, {"GrLivArea": 1709, "SalePrice": 130000}, {"GrLivArea": 864, "SalePrice": 127000}, {"GrLivArea": 1456, "SalePrice": 148500}, {"GrLivArea": 1726, "SalePrice": 311872}, {"GrLivArea": 3112, "SalePrice": 235000}, {"GrLivArea": 2229, "SalePrice": 104000}, {"GrLivArea": 1713, "SalePrice": 274900}, {"GrLivArea": 1121, "SalePrice": 140000}, {"GrLivArea": 1279, "SalePrice": 171500}, {"GrLivArea": 1310, "SalePrice": 112000}, {"GrLivArea": 848, "SalePrice": 149000}, {"GrLivArea": 1284, "SalePrice": 110000}, {"GrLivArea": 1442, "SalePrice": 180500}, {"GrLivArea": 1696, "SalePrice": 143900}, {"GrLivArea": 1100, "SalePrice": 141000}, {"GrLivArea": 2062, "SalePrice": 277000}, {"GrLivArea": 1092, "SalePrice": 145000}, {"GrLivArea": 864, "SalePrice": 98000}, {"GrLivArea": 1212, "SalePrice": 186000}, {"GrLivArea": 1852, "SalePrice": 252678}, {"GrLivArea": 990, "SalePrice": 156000}, {"GrLivArea": 1392, "SalePrice": 161750}, {"GrLivArea": 1236, "SalePrice": 134450}, {"GrLivArea": 1436, "SalePrice": 210000}, {"GrLivArea": 1328, "SalePrice": 107000}, {"GrLivArea": 1954, "SalePrice": 311500}, {"GrLivArea": 1248, "SalePrice": 167240}, {"GrLivArea": 1498, "SalePrice": 204900}, {"GrLivArea": 2267, "SalePrice": 200000}, {"GrLivArea": 1552, "SalePrice": 179900}, {"GrLivArea": 864, "SalePrice": 97000}, {"GrLivArea": 2392, "SalePrice": 386250}, {"GrLivArea": 1302, "SalePrice": 112000}, {"GrLivArea": 2520, "SalePrice": 290000}, {"GrLivArea": 987, "SalePrice": 106000}, {"GrLivArea": 912, "SalePrice": 125000}, {"GrLivArea": 1555, "SalePrice": 192500}, {"GrLivArea": 1194, "SalePrice": 148000}, {"GrLivArea": 2794, "SalePrice": 403000}, {"GrLivArea": 987, "SalePrice": 94500}, {"GrLivArea": 894, "SalePrice": 128200}, {"GrLivArea": 1960, "SalePrice": 216500}, {"GrLivArea": 987, "SalePrice": 89500}, {"GrLivArea": 1414, "SalePrice": 185500}, {"GrLivArea": 1744, "SalePrice": 194500}, {"GrLivArea": 1694, "SalePrice": 318000}, {"GrLivArea": 1487, "SalePrice": 113000}, {"GrLivArea": 1566, "SalePrice": 262500}, {"GrLivArea": 866, "SalePrice": 110500}, {"GrLivArea": 1440, "SalePrice": 79000}, {"GrLivArea": 1217, "SalePrice": 120000}, {"GrLivArea": 2110, "SalePrice": 205000}, {"GrLivArea": 1872, "SalePrice": 241500}, {"GrLivArea": 1928, "SalePrice": 137000}, {"GrLivArea": 1375, "SalePrice": 140000}, {"GrLivArea": 1668, "SalePrice": 180000}, {"GrLivArea": 2144, "SalePrice": 277000}, {"GrLivArea": 1306, "SalePrice": 76500}, {"GrLivArea": 1625, "SalePrice": 235000}, {"GrLivArea": 1640, "SalePrice": 173000}, {"GrLivArea": 1302, "SalePrice": 158000}, {"GrLivArea": 1314, "SalePrice": 145000}, {"GrLivArea": 2291, "SalePrice": 230000}, {"GrLivArea": 1728, "SalePrice": 207500}, {"GrLivArea": 1604, "SalePrice": 220000}, {"GrLivArea": 1792, "SalePrice": 231500}, {"GrLivArea": 882, "SalePrice": 97000}, {"GrLivArea": 1382, "SalePrice": 176000}, {"GrLivArea": 2574, "SalePrice": 276000}, {"GrLivArea": 1212, "SalePrice": 151000}, {"GrLivArea": 1316, "SalePrice": 130000}, {"GrLivArea": 764, "SalePrice": 73000}, {"GrLivArea": 1422, "SalePrice": 175500}, {"GrLivArea": 1511, "SalePrice": 185000}, {"GrLivArea": 2192, "SalePrice": 179500}, {"GrLivArea": 778, "SalePrice": 120500}, {"GrLivArea": 1113, "SalePrice": 148000}, {"GrLivArea": 1939, "SalePrice": 266000}, {"GrLivArea": 1363, "SalePrice": 241500}, {"GrLivArea": 2270, "SalePrice": 290000}, {"GrLivArea": 1632, "SalePrice": 139000}, {"GrLivArea": 816, "SalePrice": 124500}, {"GrLivArea": 1548, "SalePrice": 205000}, {"GrLivArea": 1560, "SalePrice": 201000}, {"GrLivArea": 864, "SalePrice": 141000}, {"GrLivArea": 2121, "SalePrice": 415298}, {"GrLivArea": 2022, "SalePrice": 192000}, {"GrLivArea": 1982, "SalePrice": 228500}, {"GrLivArea": 1262, "SalePrice": 185000}, {"GrLivArea": 1314, "SalePrice": 207500}, {"GrLivArea": 1468, "SalePrice": 244600}, {"GrLivArea": 1575, "SalePrice": 179200}, {"GrLivArea": 1250, "SalePrice": 164700}, {"GrLivArea": 1734, "SalePrice": 159000}, {"GrLivArea": 858, "SalePrice": 88000}, {"GrLivArea": 900, "SalePrice": 122000}, {"GrLivArea": 1396, "SalePrice": 153575}, {"GrLivArea": 1919, "SalePrice": 233230}, {"GrLivArea": 1716, "SalePrice": 135900}, {"GrLivArea": 1716, "SalePrice": 131000}, {"GrLivArea": 2263, "SalePrice": 235000}, {"GrLivArea": 1644, "SalePrice": 167000}, {"GrLivArea": 1003, "SalePrice": 142500}, {"GrLivArea": 1558, "SalePrice": 152000}, {"GrLivArea": 1950, "SalePrice": 239000}, {"GrLivArea": 1743, "SalePrice": 175000}, {"GrLivArea": 1152, "SalePrice": 158500}, {"GrLivArea": 1336, "SalePrice": 157000}, {"GrLivArea": 2452, "SalePrice": 267000}, {"GrLivArea": 1541, "SalePrice": 205000}, {"GrLivArea": 894, "SalePrice": 149900}, {"GrLivArea": 3493, "SalePrice": 295000}, {"GrLivArea": 2000, "SalePrice": 305900}, {"GrLivArea": 2243, "SalePrice": 225000}, {"GrLivArea": 1406, "SalePrice": 89500}, {"GrLivArea": 861, "SalePrice": 82500}, {"GrLivArea": 1944, "SalePrice": 360000}, {"GrLivArea": 1501, "SalePrice": 165600}, {"GrLivArea": 972, "SalePrice": 132000}, {"GrLivArea": 1118, "SalePrice": 119900}, {"GrLivArea": 2036, "SalePrice": 375000}, {"GrLivArea": 1641, "SalePrice": 178000}, {"GrLivArea": 1432, "SalePrice": 188500}, {"GrLivArea": 2353, "SalePrice": 260000}, {"GrLivArea": 1959, "SalePrice": 270000}, {"GrLivArea": 2646, "SalePrice": 260000}, {"GrLivArea": 1472, "SalePrice": 187500}, {"GrLivArea": 2596, "SalePrice": 342643}, {"GrLivArea": 2468, "SalePrice": 354000}, {"GrLivArea": 2730, "SalePrice": 301000}, {"GrLivArea": 1163, "SalePrice": 126175}, {"GrLivArea": 2978, "SalePrice": 242000}, {"GrLivArea": 803, "SalePrice": 87000}, {"GrLivArea": 1719, "SalePrice": 324000}, {"GrLivArea": 1383, "SalePrice": 145250}, {"GrLivArea": 2134, "SalePrice": 214500}, {"GrLivArea": 1192, "SalePrice": 78000}, {"GrLivArea": 1728, "SalePrice": 119000}, {"GrLivArea": 1056, "SalePrice": 139000}, {"GrLivArea": 1629, "SalePrice": 284000}, {"GrLivArea": 1358, "SalePrice": 207000}, {"GrLivArea": 1638, "SalePrice": 192000}, {"GrLivArea": 1786, "SalePrice": 228950}, {"GrLivArea": 1922, "SalePrice": 377426}, {"GrLivArea": 1536, "SalePrice": 214000}, {"GrLivArea": 1621, "SalePrice": 202500}, {"GrLivArea": 1215, "SalePrice": 155000}, {"GrLivArea": 1908, "SalePrice": 202900}, {"GrLivArea": 841, "SalePrice": 82000}, {"GrLivArea": 1040, "SalePrice": 87500}, {"GrLivArea": 1684, "SalePrice": 266000}, {"GrLivArea": 1112, "SalePrice": 85000}, {"GrLivArea": 1577, "SalePrice": 140200}, {"GrLivArea": 958, "SalePrice": 151500}, {"GrLivArea": 1478, "SalePrice": 157500}, {"GrLivArea": 1626, "SalePrice": 154000}, {"GrLivArea": 2728, "SalePrice": 437154}, {"GrLivArea": 1869, "SalePrice": 318061}, {"GrLivArea": 1453, "SalePrice": 190000}, {"GrLivArea": 1111, "SalePrice": 95000}, {"GrLivArea": 720, "SalePrice": 105900}, {"GrLivArea": 1595, "SalePrice": 140000}, {"GrLivArea": 1200, "SalePrice": 177500}, {"GrLivArea": 1167, "SalePrice": 173000}, {"GrLivArea": 1142, "SalePrice": 134000}, {"GrLivArea": 1352, "SalePrice": 130000}, {"GrLivArea": 1924, "SalePrice": 280000}, {"GrLivArea": 912, "SalePrice": 156000}, {"GrLivArea": 1505, "SalePrice": 145000}, {"GrLivArea": 1922, "SalePrice": 198500}, {"GrLivArea": 987, "SalePrice": 118000}, {"GrLivArea": 1574, "SalePrice": 190000}, {"GrLivArea": 1344, "SalePrice": 147000}, {"GrLivArea": 1394, "SalePrice": 159000}, {"GrLivArea": 1431, "SalePrice": 165000}, {"GrLivArea": 1268, "SalePrice": 132000}, {"GrLivArea": 1287, "SalePrice": 162000}, {"GrLivArea": 1664, "SalePrice": 172400}, {"GrLivArea": 1588, "SalePrice": 134432}, {"GrLivArea": 752, "SalePrice": 125000}, {"GrLivArea": 1319, "SalePrice": 123000}, {"GrLivArea": 1928, "SalePrice": 219500}, {"GrLivArea": 904, "SalePrice": 61000}, {"GrLivArea": 914, "SalePrice": 148000}, {"GrLivArea": 2466, "SalePrice": 340000}, {"GrLivArea": 1856, "SalePrice": 394432}, {"GrLivArea": 1800, "SalePrice": 179000}, {"GrLivArea": 1691, "SalePrice": 127000}, {"GrLivArea": 1301, "SalePrice": 187750}, {"GrLivArea": 1797, "SalePrice": 213500}, {"GrLivArea": 784, "SalePrice": 76000}, {"GrLivArea": 1953, "SalePrice": 240000}, {"GrLivArea": 1269, "SalePrice": 192000}, {"GrLivArea": 1184, "SalePrice": 81000}, {"GrLivArea": 1125, "SalePrice": 125000}, {"GrLivArea": 1479, "SalePrice": 191000}, {"GrLivArea": 2332, "SalePrice": 426000}, {"GrLivArea": 1367, "SalePrice": 119000}, {"GrLivArea": 1961, "SalePrice": 215000}, {"GrLivArea": 882, "SalePrice": 106500}, {"GrLivArea": 788, "SalePrice": 100000}, {"GrLivArea": 1034, "SalePrice": 109000}, {"GrLivArea": 1144, "SalePrice": 129000}, {"GrLivArea": 894, "SalePrice": 123000}, {"GrLivArea": 1812, "SalePrice": 169500}, {"GrLivArea": 1077, "SalePrice": 67000}, {"GrLivArea": 1550, "SalePrice": 241000}, {"GrLivArea": 1288, "SalePrice": 245500}, {"GrLivArea": 1310, "SalePrice": 164990}, {"GrLivArea": 672, "SalePrice": 108000}, {"GrLivArea": 2263, "SalePrice": 258000}, {"GrLivArea": 1572, "SalePrice": 168000}, {"GrLivArea": 1620, "SalePrice": 150000}, {"GrLivArea": 1639, "SalePrice": 115000}, {"GrLivArea": 1680, "SalePrice": 177000}, {"GrLivArea": 2172, "SalePrice": 280000}, {"GrLivArea": 2078, "SalePrice": 339750}, {"GrLivArea": 1276, "SalePrice": 60000}, {"GrLivArea": 1056, "SalePrice": 145000}, {"GrLivArea": 1478, "SalePrice": 222000}, {"GrLivArea": 1028, "SalePrice": 115000}, {"GrLivArea": 2097, "SalePrice": 228000}, {"GrLivArea": 1340, "SalePrice": 181134}, {"GrLivArea": 1400, "SalePrice": 149500}, {"GrLivArea": 2624, "SalePrice": 239000}, {"GrLivArea": 1134, "SalePrice": 126000}, {"GrLivArea": 1056, "SalePrice": 142000}, {"GrLivArea": 1344, "SalePrice": 206300}, {"GrLivArea": 1602, "SalePrice": 215000}, {"GrLivArea": 988, "SalePrice": 113000}, {"GrLivArea": 2630, "SalePrice": 315000}, {"GrLivArea": 1196, "SalePrice": 139000}, {"GrLivArea": 1389, "SalePrice": 135000}, {"GrLivArea": 1644, "SalePrice": 275000}, {"GrLivArea": 907, "SalePrice": 109008}, {"GrLivArea": 1208, "SalePrice": 195400}, {"GrLivArea": 1412, "SalePrice": 175000}, {"GrLivArea": 987, "SalePrice": 85400}, {"GrLivArea": 1198, "SalePrice": 79900}, {"GrLivArea": 1365, "SalePrice": 122500}, {"GrLivArea": 1604, "SalePrice": 181000}, {"GrLivArea": 630, "SalePrice": 81000}, {"GrLivArea": 1661, "SalePrice": 212000}, {"GrLivArea": 1118, "SalePrice": 116000}, {"GrLivArea": 904, "SalePrice": 119000}, {"GrLivArea": 694, "SalePrice": 90350}, {"GrLivArea": 1196, "SalePrice": 110000}, {"GrLivArea": 2402, "SalePrice": 555000}, {"GrLivArea": 1440, "SalePrice": 118000}, {"GrLivArea": 1573, "SalePrice": 162900}, {"GrLivArea": 1258, "SalePrice": 172500}, {"GrLivArea": 1908, "SalePrice": 210000}, {"GrLivArea": 1689, "SalePrice": 127500}, {"GrLivArea": 1888, "SalePrice": 190000}, {"GrLivArea": 1886, "SalePrice": 199900}, {"GrLivArea": 1376, "SalePrice": 119500}, {"GrLivArea": 1183, "SalePrice": 120000}, {"GrLivArea": 813, "SalePrice": 110000}, {"GrLivArea": 1533, "SalePrice": 280000}, {"GrLivArea": 1756, "SalePrice": 204000}, {"GrLivArea": 1590, "SalePrice": 210000}, {"GrLivArea": 1728, "SalePrice": 188000}, {"GrLivArea": 1242, "SalePrice": 175500}, {"GrLivArea": 1344, "SalePrice": 98000}, {"GrLivArea": 1663, "SalePrice": 256000}, {"GrLivArea": 1666, "SalePrice": 161000}, {"GrLivArea": 1203, "SalePrice": 110000}, {"GrLivArea": 1935, "SalePrice": 263435}, {"GrLivArea": 1135, "SalePrice": 155000}, {"GrLivArea": 864, "SalePrice": 62383}, {"GrLivArea": 1660, "SalePrice": 188700}, {"GrLivArea": 1040, "SalePrice": 124000}, {"GrLivArea": 1414, "SalePrice": 178740}, {"GrLivArea": 1277, "SalePrice": 167000}, {"GrLivArea": 1644, "SalePrice": 146500}, {"GrLivArea": 1634, "SalePrice": 250000}, {"GrLivArea": 1710, "SalePrice": 187000}, {"GrLivArea": 1502, "SalePrice": 212000}, {"GrLivArea": 1969, "SalePrice": 190000}, {"GrLivArea": 1072, "SalePrice": 148000}, {"GrLivArea": 1976, "SalePrice": 440000}, {"GrLivArea": 1652, "SalePrice": 251000}, {"GrLivArea": 970, "SalePrice": 132500}, {"GrLivArea": 1493, "SalePrice": 208900}, {"GrLivArea": 2643, "SalePrice": 380000}, {"GrLivArea": 1718, "SalePrice": 297000}, {"GrLivArea": 1131, "SalePrice": 89471}, {"GrLivArea": 1850, "SalePrice": 326000}, {"GrLivArea": 1792, "SalePrice": 374000}, {"GrLivArea": 1826, "SalePrice": 155000}, {"GrLivArea": 1216, "SalePrice": 164000}, {"GrLivArea": 999, "SalePrice": 132500}, {"GrLivArea": 1113, "SalePrice": 147000}, {"GrLivArea": 1073, "SalePrice": 156000}, {"GrLivArea": 1484, "SalePrice": 175000}, {"GrLivArea": 2414, "SalePrice": 160000}, {"GrLivArea": 630, "SalePrice": 86000}, {"GrLivArea": 1304, "SalePrice": 115000}, {"GrLivArea": 1578, "SalePrice": 133000}, {"GrLivArea": 1456, "SalePrice": 172785}, {"GrLivArea": 1269, "SalePrice": 155000}, {"GrLivArea": 886, "SalePrice": 91300}, {"GrLivArea": 720, "SalePrice": 34900}, {"GrLivArea": 3228, "SalePrice": 430000}, {"GrLivArea": 1820, "SalePrice": 184000}, {"GrLivArea": 899, "SalePrice": 130000}, {"GrLivArea": 912, "SalePrice": 120000}, {"GrLivArea": 1218, "SalePrice": 113000}, {"GrLivArea": 1768, "SalePrice": 226700}, {"GrLivArea": 1214, "SalePrice": 140000}, {"GrLivArea": 1801, "SalePrice": 289000}, {"GrLivArea": 1322, "SalePrice": 147000}, {"GrLivArea": 1960, "SalePrice": 124500}, {"GrLivArea": 1911, "SalePrice": 215000}, {"GrLivArea": 1218, "SalePrice": 208300}, {"GrLivArea": 1378, "SalePrice": 161000}, {"GrLivArea": 1041, "SalePrice": 124500}, {"GrLivArea": 1363, "SalePrice": 164900}, {"GrLivArea": 1368, "SalePrice": 202665}, {"GrLivArea": 864, "SalePrice": 129900}, {"GrLivArea": 1080, "SalePrice": 134000}, {"GrLivArea": 789, "SalePrice": 96500}, {"GrLivArea": 2020, "SalePrice": 402861}, {"GrLivArea": 2119, "SalePrice": 158000}, {"GrLivArea": 2344, "SalePrice": 265000}, {"GrLivArea": 1796, "SalePrice": 211000}, {"GrLivArea": 2080, "SalePrice": 234000}, {"GrLivArea": 1294, "SalePrice": 106250}, {"GrLivArea": 1244, "SalePrice": 150000}, {"GrLivArea": 1664, "SalePrice": 159000}, {"GrLivArea": 4676, "SalePrice": 184750}, {"GrLivArea": 2398, "SalePrice": 315750}, {"GrLivArea": 1266, "SalePrice": 176000}, {"GrLivArea": 928, "SalePrice": 132000}, {"GrLivArea": 2713, "SalePrice": 446261}, {"GrLivArea": 605, "SalePrice": 86000}, {"GrLivArea": 2515, "SalePrice": 200624}, {"GrLivArea": 1509, "SalePrice": 175000}, {"GrLivArea": 1362, "SalePrice": 128000}, {"GrLivArea": 827, "SalePrice": 107500}, {"GrLivArea": 334, "SalePrice": 39300}, {"GrLivArea": 1414, "SalePrice": 178000}, {"GrLivArea": 1347, "SalePrice": 107500}, {"GrLivArea": 1724, "SalePrice": 188000}, {"GrLivArea": 864, "SalePrice": 111250}, {"GrLivArea": 1159, "SalePrice": 158000}, {"GrLivArea": 1601, "SalePrice": 272000}, {"GrLivArea": 1838, "SalePrice": 315000}, {"GrLivArea": 2285, "SalePrice": 248000}, {"GrLivArea": 1680, "SalePrice": 213250}, {"GrLivArea": 767, "SalePrice": 133000}, {"GrLivArea": 1496, "SalePrice": 179665}, {"GrLivArea": 2183, "SalePrice": 229000}, {"GrLivArea": 1635, "SalePrice": 210000}, {"GrLivArea": 768, "SalePrice": 129500}, {"GrLivArea": 825, "SalePrice": 125000}, {"GrLivArea": 2094, "SalePrice": 263000}, {"GrLivArea": 1069, "SalePrice": 140000}, {"GrLivArea": 928, "SalePrice": 112500}, {"GrLivArea": 1717, "SalePrice": 255500}, {"GrLivArea": 1126, "SalePrice": 108000}, {"GrLivArea": 2046, "SalePrice": 284000}, {"GrLivArea": 1048, "SalePrice": 113000}, {"GrLivArea": 1092, "SalePrice": 141000}, {"GrLivArea": 1336, "SalePrice": 108000}, {"GrLivArea": 1446, "SalePrice": 175000}, {"GrLivArea": 1557, "SalePrice": 234000}, {"GrLivArea": 1392, "SalePrice": 121500}, {"GrLivArea": 1389, "SalePrice": 170000}, {"GrLivArea": 996, "SalePrice": 108000}, {"GrLivArea": 1674, "SalePrice": 185000}, {"GrLivArea": 2295, "SalePrice": 268000}, {"GrLivArea": 1647, "SalePrice": 128000}, {"GrLivArea": 2504, "SalePrice": 325000}, {"GrLivArea": 1535, "SalePrice": 214000}, {"GrLivArea": 2132, "SalePrice": 316600}, {"GrLivArea": 943, "SalePrice": 135960}, {"GrLivArea": 1728, "SalePrice": 142600}, {"GrLivArea": 864, "SalePrice": 120000}, {"GrLivArea": 1692, "SalePrice": 224500}, {"GrLivArea": 1430, "SalePrice": 170000}, {"GrLivArea": 1109, "SalePrice": 139000}, {"GrLivArea": 1216, "SalePrice": 118500}, {"GrLivArea": 1477, "SalePrice": 145000}, {"GrLivArea": 1320, "SalePrice": 164500}, {"GrLivArea": 1392, "SalePrice": 146000}, {"GrLivArea": 1795, "SalePrice": 131500}, {"GrLivArea": 1429, "SalePrice": 181900}, {"GrLivArea": 2042, "SalePrice": 253293}, {"GrLivArea": 816, "SalePrice": 118500}, {"GrLivArea": 2775, "SalePrice": 325000}, {"GrLivArea": 1573, "SalePrice": 133000}, {"GrLivArea": 2028, "SalePrice": 369900}, {"GrLivArea": 838, "SalePrice": 130000}, {"GrLivArea": 860, "SalePrice": 137000}, {"GrLivArea": 1473, "SalePrice": 143000}, {"GrLivArea": 935, "SalePrice": 79500}, {"GrLivArea": 1582, "SalePrice": 185900}, {"GrLivArea": 2296, "SalePrice": 451950}, {"GrLivArea": 816, "SalePrice": 138000}, {"GrLivArea": 848, "SalePrice": 140000}, {"GrLivArea": 924, "SalePrice": 110000}, {"GrLivArea": 1826, "SalePrice": 319000}, {"GrLivArea": 1368, "SalePrice": 114504}, {"GrLivArea": 1402, "SalePrice": 194201}, {"GrLivArea": 1647, "SalePrice": 217500}, {"GrLivArea": 1556, "SalePrice": 151000}, {"GrLivArea": 1904, "SalePrice": 275000}, {"GrLivArea": 1375, "SalePrice": 141000}, {"GrLivArea": 1915, "SalePrice": 220000}, {"GrLivArea": 1200, "SalePrice": 151000}, {"GrLivArea": 1494, "SalePrice": 221000}, {"GrLivArea": 1986, "SalePrice": 205000}, {"GrLivArea": 1040, "SalePrice": 152000}, {"GrLivArea": 2008, "SalePrice": 225000}, {"GrLivArea": 3194, "SalePrice": 359100}, {"GrLivArea": 1029, "SalePrice": 118500}, {"GrLivArea": 2153, "SalePrice": 313000}, {"GrLivArea": 1032, "SalePrice": 148000}, {"GrLivArea": 1872, "SalePrice": 261500}, {"GrLivArea": 1120, "SalePrice": 147000}, {"GrLivArea": 630, "SalePrice": 75500}, {"GrLivArea": 1054, "SalePrice": 137500}, {"GrLivArea": 1509, "SalePrice": 183200}, {"GrLivArea": 832, "SalePrice": 105500}, {"GrLivArea": 1828, "SalePrice": 314813}, {"GrLivArea": 2262, "SalePrice": 305000}, {"GrLivArea": 864, "SalePrice": 67000}, {"GrLivArea": 2614, "SalePrice": 240000}, {"GrLivArea": 980, "SalePrice": 135000}, {"GrLivArea": 1512, "SalePrice": 168500}, {"GrLivArea": 1790, "SalePrice": 165150}, {"GrLivArea": 1116, "SalePrice": 160000}, {"GrLivArea": 1422, "SalePrice": 139900}, {"GrLivArea": 1520, "SalePrice": 153000}, {"GrLivArea": 2080, "SalePrice": 135000}, {"GrLivArea": 1350, "SalePrice": 168500}, {"GrLivArea": 1750, "SalePrice": 124000}, {"GrLivArea": 1554, "SalePrice": 209500}, {"GrLivArea": 1411, "SalePrice": 82500}, {"GrLivArea": 1056, "SalePrice": 139400}, {"GrLivArea": 1056, "SalePrice": 144000}, {"GrLivArea": 3395, "SalePrice": 200000}, {"GrLivArea": 800, "SalePrice": 60000}, {"GrLivArea": 1387, "SalePrice": 93000}, {"GrLivArea": 796, "SalePrice": 85000}, {"GrLivArea": 1567, "SalePrice": 264561}, {"GrLivArea": 1518, "SalePrice": 274000}, {"GrLivArea": 1929, "SalePrice": 226000}, {"GrLivArea": 2704, "SalePrice": 345000}, {"GrLivArea": 1620, "SalePrice": 152000}, {"GrLivArea": 1766, "SalePrice": 370878}, {"GrLivArea": 981, "SalePrice": 143250}, {"GrLivArea": 1048, "SalePrice": 98300}, {"GrLivArea": 1094, "SalePrice": 155000}, {"GrLivArea": 1839, "SalePrice": 155000}, {"GrLivArea": 630, "SalePrice": 84500}, {"GrLivArea": 1665, "SalePrice": 205950}, {"GrLivArea": 1510, "SalePrice": 108000}, {"GrLivArea": 1716, "SalePrice": 191000}, {"GrLivArea": 1469, "SalePrice": 135000}, {"GrLivArea": 2113, "SalePrice": 350000}, {"GrLivArea": 1092, "SalePrice": 88000}, {"GrLivArea": 1053, "SalePrice": 145500}, {"GrLivArea": 1502, "SalePrice": 149000}, {"GrLivArea": 1458, "SalePrice": 97500}, {"GrLivArea": 1486, "SalePrice": 167000}, {"GrLivArea": 1935, "SalePrice": 197900}, {"GrLivArea": 2448, "SalePrice": 402000}, {"GrLivArea": 1392, "SalePrice": 110000}, {"GrLivArea": 1181, "SalePrice": 137500}, {"GrLivArea": 2097, "SalePrice": 423000}, {"GrLivArea": 1936, "SalePrice": 230500}, {"GrLivArea": 2380, "SalePrice": 129000}, {"GrLivArea": 1679, "SalePrice": 193500}, {"GrLivArea": 1437, "SalePrice": 168000}, {"GrLivArea": 1180, "SalePrice": 137500}, {"GrLivArea": 1476, "SalePrice": 173500}, {"GrLivArea": 1369, "SalePrice": 103600}, {"GrLivArea": 1208, "SalePrice": 165000}, {"GrLivArea": 1839, "SalePrice": 257500}, {"GrLivArea": 1136, "SalePrice": 140000}, {"GrLivArea": 1441, "SalePrice": 148500}, {"GrLivArea": 1774, "SalePrice": 87000}, {"GrLivArea": 792, "SalePrice": 109500}, {"GrLivArea": 2046, "SalePrice": 372500}, {"GrLivArea": 988, "SalePrice": 128500}, {"GrLivArea": 923, "SalePrice": 143000}, {"GrLivArea": 1520, "SalePrice": 159434}, {"GrLivArea": 1291, "SalePrice": 173000}, {"GrLivArea": 1668, "SalePrice": 285000}, {"GrLivArea": 1839, "SalePrice": 221000}, {"GrLivArea": 2090, "SalePrice": 207500}, {"GrLivArea": 1761, "SalePrice": 227875}, {"GrLivArea": 1102, "SalePrice": 148800}, {"GrLivArea": 1419, "SalePrice": 392000}, {"GrLivArea": 1362, "SalePrice": 194700}, {"GrLivArea": 848, "SalePrice": 141000}, {"GrLivArea": 4316, "SalePrice": 755000}, {"GrLivArea": 2519, "SalePrice": 335000}, {"GrLivArea": 1073, "SalePrice": 108480}, {"GrLivArea": 1539, "SalePrice": 141500}, {"GrLivArea": 1137, "SalePrice": 176000}, {"GrLivArea": 616, "SalePrice": 89000}, {"GrLivArea": 1148, "SalePrice": 123500}, {"GrLivArea": 894, "SalePrice": 138500}, {"GrLivArea": 1391, "SalePrice": 196000}, {"GrLivArea": 1800, "SalePrice": 312500}, {"GrLivArea": 1164, "SalePrice": 140000}, {"GrLivArea": 2576, "SalePrice": 361919}, {"GrLivArea": 1812, "SalePrice": 140000}, {"GrLivArea": 1484, "SalePrice": 213000}, {"GrLivArea": 1092, "SalePrice": 55000}, {"GrLivArea": 1824, "SalePrice": 302000}, {"GrLivArea": 1324, "SalePrice": 254000}, {"GrLivArea": 1456, "SalePrice": 179540}, {"GrLivArea": 904, "SalePrice": 109900}, {"GrLivArea": 729, "SalePrice": 52000}, {"GrLivArea": 1178, "SalePrice": 102776}, {"GrLivArea": 1228, "SalePrice": 189000}, {"GrLivArea": 960, "SalePrice": 129000}, {"GrLivArea": 1479, "SalePrice": 130500}, {"GrLivArea": 1350, "SalePrice": 165000}, {"GrLivArea": 2554, "SalePrice": 159500}, {"GrLivArea": 1178, "SalePrice": 157000}, {"GrLivArea": 2418, "SalePrice": 341000}, {"GrLivArea": 971, "SalePrice": 128500}, {"GrLivArea": 1742, "SalePrice": 275000}, {"GrLivArea": 848, "SalePrice": 143000}, {"GrLivArea": 864, "SalePrice": 124500}, {"GrLivArea": 1470, "SalePrice": 135000}, {"GrLivArea": 1698, "SalePrice": 320000}, {"GrLivArea": 864, "SalePrice": 120500}, {"GrLivArea": 1680, "SalePrice": 222000}, {"GrLivArea": 1232, "SalePrice": 194500}, {"GrLivArea": 1776, "SalePrice": 110000}, {"GrLivArea": 1208, "SalePrice": 103000}, {"GrLivArea": 1616, "SalePrice": 236500}, {"GrLivArea": 1146, "SalePrice": 187500}, {"GrLivArea": 2031, "SalePrice": 222500}, {"GrLivArea": 1144, "SalePrice": 131400}, {"GrLivArea": 948, "SalePrice": 108000}, {"GrLivArea": 1768, "SalePrice": 163000}, {"GrLivArea": 1040, "SalePrice": 93500}, {"GrLivArea": 1801, "SalePrice": 239900}, {"GrLivArea": 1200, "SalePrice": 179000}, {"GrLivArea": 1728, "SalePrice": 190000}, {"GrLivArea": 1432, "SalePrice": 132000}, {"GrLivArea": 912, "SalePrice": 142000}, {"GrLivArea": 1349, "SalePrice": 179000}, {"GrLivArea": 1464, "SalePrice": 175000}, {"GrLivArea": 1337, "SalePrice": 180000}, {"GrLivArea": 2715, "SalePrice": 299800}, {"GrLivArea": 2256, "SalePrice": 236000}, {"GrLivArea": 2640, "SalePrice": 265979}, {"GrLivArea": 1720, "SalePrice": 260400}, {"GrLivArea": 1529, "SalePrice": 98000}, {"GrLivArea": 1140, "SalePrice": 96500}, {"GrLivArea": 1320, "SalePrice": 162000}, {"GrLivArea": 1494, "SalePrice": 217000}, {"GrLivArea": 2098, "SalePrice": 275500}, {"GrLivArea": 1026, "SalePrice": 156000}, {"GrLivArea": 1471, "SalePrice": 172500}, {"GrLivArea": 1768, "SalePrice": 212000}, {"GrLivArea": 1386, "SalePrice": 158900}, {"GrLivArea": 1501, "SalePrice": 179400}, {"GrLivArea": 2531, "SalePrice": 290000}, {"GrLivArea": 864, "SalePrice": 127500}, {"GrLivArea": 1301, "SalePrice": 100000}, {"GrLivArea": 1547, "SalePrice": 215200}, {"GrLivArea": 2365, "SalePrice": 337000}, {"GrLivArea": 1494, "SalePrice": 270000}, {"GrLivArea": 1506, "SalePrice": 264132}, {"GrLivArea": 1714, "SalePrice": 196500}, {"GrLivArea": 1750, "SalePrice": 160000}, {"GrLivArea": 1836, "SalePrice": 216837}, {"GrLivArea": 3279, "SalePrice": 538000}, {"GrLivArea": 858, "SalePrice": 134900}, {"GrLivArea": 1220, "SalePrice": 102000}, {"GrLivArea": 1117, "SalePrice": 107000}, {"GrLivArea": 912, "SalePrice": 114500}, {"GrLivArea": 1973, "SalePrice": 395000}, {"GrLivArea": 1204, "SalePrice": 162000}, {"GrLivArea": 1614, "SalePrice": 221500}, {"GrLivArea": 894, "SalePrice": 142500}, {"GrLivArea": 2020, "SalePrice": 144000}, {"GrLivArea": 1004, "SalePrice": 135000}, {"GrLivArea": 1253, "SalePrice": 176000}, {"GrLivArea": 1603, "SalePrice": 175900}, {"GrLivArea": 1430, "SalePrice": 187100}, {"GrLivArea": 1110, "SalePrice": 165500}, {"GrLivArea": 1484, "SalePrice": 128000}, {"GrLivArea": 1342, "SalePrice": 161500}, {"GrLivArea": 1652, "SalePrice": 139000}, {"GrLivArea": 2084, "SalePrice": 233000}, {"GrLivArea": 901, "SalePrice": 107900}, {"GrLivArea": 2087, "SalePrice": 187500}, {"GrLivArea": 1145, "SalePrice": 160200}, {"GrLivArea": 1062, "SalePrice": 146800}, {"GrLivArea": 2013, "SalePrice": 269790}, {"GrLivArea": 1496, "SalePrice": 225000}, {"GrLivArea": 1895, "SalePrice": 194500}, {"GrLivArea": 1564, "SalePrice": 171000}, {"GrLivArea": 1285, "SalePrice": 143500}, {"GrLivArea": 773, "SalePrice": 110000}, {"GrLivArea": 3140, "SalePrice": 485000}, {"GrLivArea": 1768, "SalePrice": 175000}, {"GrLivArea": 1688, "SalePrice": 200000}, {"GrLivArea": 1196, "SalePrice": 109900}, {"GrLivArea": 1456, "SalePrice": 189000}, {"GrLivArea": 2822, "SalePrice": 582933}, {"GrLivArea": 1128, "SalePrice": 118000}, {"GrLivArea": 1428, "SalePrice": 227680}, {"GrLivArea": 980, "SalePrice": 135500}, {"GrLivArea": 1576, "SalePrice": 223500}, {"GrLivArea": 1086, "SalePrice": 159950}, {"GrLivArea": 2138, "SalePrice": 106000}, {"GrLivArea": 1309, "SalePrice": 181000}, {"GrLivArea": 848, "SalePrice": 144500}, {"GrLivArea": 1044, "SalePrice": 55993}, {"GrLivArea": 1442, "SalePrice": 157900}, {"GrLivArea": 1250, "SalePrice": 116000}, {"GrLivArea": 1661, "SalePrice": 224900}, {"GrLivArea": 1008, "SalePrice": 137000}, {"GrLivArea": 1689, "SalePrice": 271000}, {"GrLivArea": 1052, "SalePrice": 155000}, {"GrLivArea": 1358, "SalePrice": 224000}, {"GrLivArea": 1640, "SalePrice": 183000}, {"GrLivArea": 936, "SalePrice": 93000}, {"GrLivArea": 1733, "SalePrice": 225000}, {"GrLivArea": 1489, "SalePrice": 139500}, {"GrLivArea": 1489, "SalePrice": 232600}, {"GrLivArea": 2084, "SalePrice": 385000}, {"GrLivArea": 784, "SalePrice": 109500}, {"GrLivArea": 1434, "SalePrice": 189000}, {"GrLivArea": 2126, "SalePrice": 185000}, {"GrLivArea": 1223, "SalePrice": 147400}, {"GrLivArea": 1392, "SalePrice": 166000}, {"GrLivArea": 1200, "SalePrice": 151000}, {"GrLivArea": 1829, "SalePrice": 237000}, {"GrLivArea": 1516, "SalePrice": 167000}, {"GrLivArea": 1144, "SalePrice": 139950}, {"GrLivArea": 1067, "SalePrice": 128000}, {"GrLivArea": 1559, "SalePrice": 153500}, {"GrLivArea": 987, "SalePrice": 100000}, {"GrLivArea": 1099, "SalePrice": 144000}, {"GrLivArea": 1200, "SalePrice": 130500}, {"GrLivArea": 1482, "SalePrice": 140000}, {"GrLivArea": 1539, "SalePrice": 157500}, {"GrLivArea": 1165, "SalePrice": 174900}, {"GrLivArea": 1800, "SalePrice": 141000}, {"GrLivArea": 1416, "SalePrice": 153900}, {"GrLivArea": 1701, "SalePrice": 171000}, {"GrLivArea": 1775, "SalePrice": 213000}, {"GrLivArea": 864, "SalePrice": 133500}, {"GrLivArea": 2358, "SalePrice": 240000}, {"GrLivArea": 1855, "SalePrice": 187000}, {"GrLivArea": 848, "SalePrice": 131500}, {"GrLivArea": 1456, "SalePrice": 215000}, {"GrLivArea": 1646, "SalePrice": 164000}, {"GrLivArea": 1445, "SalePrice": 158000}, {"GrLivArea": 1779, "SalePrice": 170000}, {"GrLivArea": 1040, "SalePrice": 127000}, {"GrLivArea": 1026, "SalePrice": 147000}, {"GrLivArea": 1481, "SalePrice": 174000}, {"GrLivArea": 1370, "SalePrice": 152000}, {"GrLivArea": 2654, "SalePrice": 250000}, {"GrLivArea": 1426, "SalePrice": 189950}, {"GrLivArea": 1039, "SalePrice": 131500}, {"GrLivArea": 1097, "SalePrice": 152000}, {"GrLivArea": 1148, "SalePrice": 132500}, {"GrLivArea": 1372, "SalePrice": 250580}, {"GrLivArea": 1002, "SalePrice": 148500}, {"GrLivArea": 1646, "SalePrice": 248900}, {"GrLivArea": 1120, "SalePrice": 129000}, {"GrLivArea": 2320, "SalePrice": 169000}, {"GrLivArea": 1949, "SalePrice": 236000}, {"GrLivArea": 894, "SalePrice": 109500}, {"GrLivArea": 1682, "SalePrice": 200500}, {"GrLivArea": 910, "SalePrice": 116000}, {"GrLivArea": 1268, "SalePrice": 133000}, {"GrLivArea": 1131, "SalePrice": 66500}, {"GrLivArea": 2610, "SalePrice": 303477}, {"GrLivArea": 1040, "SalePrice": 132250}, {"GrLivArea": 2224, "SalePrice": 350000}, {"GrLivArea": 1155, "SalePrice": 148000}, {"GrLivArea": 864, "SalePrice": 136500}, {"GrLivArea": 1090, "SalePrice": 157000}, {"GrLivArea": 1717, "SalePrice": 187500}, {"GrLivArea": 1593, "SalePrice": 178000}, {"GrLivArea": 2230, "SalePrice": 118500}, {"GrLivArea": 892, "SalePrice": 100000}, {"GrLivArea": 1709, "SalePrice": 328900}, {"GrLivArea": 1712, "SalePrice": 145000}, {"GrLivArea": 1393, "SalePrice": 135500}, {"GrLivArea": 2217, "SalePrice": 268000}, {"GrLivArea": 1505, "SalePrice": 149500}, {"GrLivArea": 924, "SalePrice": 122900}, {"GrLivArea": 1683, "SalePrice": 172500}, {"GrLivArea": 1068, "SalePrice": 154500}, {"GrLivArea": 1383, "SalePrice": 165000}, {"GrLivArea": 1535, "SalePrice": 118858}, {"GrLivArea": 1796, "SalePrice": 140000}, {"GrLivArea": 951, "SalePrice": 106500}, {"GrLivArea": 2240, "SalePrice": 142953}, {"GrLivArea": 2364, "SalePrice": 611657}, {"GrLivArea": 1236, "SalePrice": 135000}, {"GrLivArea": 858, "SalePrice": 110000}, {"GrLivArea": 1306, "SalePrice": 153000}, {"GrLivArea": 1509, "SalePrice": 180000}, {"GrLivArea": 1670, "SalePrice": 240000}, {"GrLivArea": 902, "SalePrice": 125500}, {"GrLivArea": 1063, "SalePrice": 128000}, {"GrLivArea": 1636, "SalePrice": 255000}, {"GrLivArea": 2057, "SalePrice": 250000}, {"GrLivArea": 902, "SalePrice": 131000}, {"GrLivArea": 1484, "SalePrice": 174000}, {"GrLivArea": 2274, "SalePrice": 154300}, {"GrLivArea": 1268, "SalePrice": 143500}, {"GrLivArea": 1015, "SalePrice": 88000}, {"GrLivArea": 2002, "SalePrice": 145000}, {"GrLivArea": 1224, "SalePrice": 173733}, {"GrLivArea": 1092, "SalePrice": 75000}, {"GrLivArea": 480, "SalePrice": 35311}, {"GrLivArea": 1229, "SalePrice": 135000}, {"GrLivArea": 2127, "SalePrice": 238000}, {"GrLivArea": 1414, "SalePrice": 176500}, {"GrLivArea": 1721, "SalePrice": 201000}, {"GrLivArea": 2200, "SalePrice": 145900}, {"GrLivArea": 1316, "SalePrice": 169990}, {"GrLivArea": 1617, "SalePrice": 193000}, {"GrLivArea": 1686, "SalePrice": 207500}, {"GrLivArea": 1126, "SalePrice": 175000}, {"GrLivArea": 2374, "SalePrice": 285000}, {"GrLivArea": 1978, "SalePrice": 176000}, {"GrLivArea": 1788, "SalePrice": 236500}, {"GrLivArea": 2236, "SalePrice": 222000}, {"GrLivArea": 1466, "SalePrice": 201000}, {"GrLivArea": 925, "SalePrice": 117500}, {"GrLivArea": 1905, "SalePrice": 320000}, {"GrLivArea": 1500, "SalePrice": 190000}, {"GrLivArea": 2069, "SalePrice": 242000}, {"GrLivArea": 747, "SalePrice": 79900}, {"GrLivArea": 1200, "SalePrice": 184900}, {"GrLivArea": 1971, "SalePrice": 253000}, {"GrLivArea": 1962, "SalePrice": 239799}, {"GrLivArea": 2403, "SalePrice": 244400}, {"GrLivArea": 1728, "SalePrice": 150900}, {"GrLivArea": 2060, "SalePrice": 214000}, {"GrLivArea": 1440, "SalePrice": 150000}, {"GrLivArea": 1632, "SalePrice": 143000}, {"GrLivArea": 1344, "SalePrice": 137500}, {"GrLivArea": 1869, "SalePrice": 124900}, {"GrLivArea": 1144, "SalePrice": 143000}, {"GrLivArea": 1629, "SalePrice": 270000}, {"GrLivArea": 1776, "SalePrice": 192500}, {"GrLivArea": 1381, "SalePrice": 197500}, {"GrLivArea": 864, "SalePrice": 129000}, {"GrLivArea": 965, "SalePrice": 119900}, {"GrLivArea": 768, "SalePrice": 133900}, {"GrLivArea": 1968, "SalePrice": 172000}, {"GrLivArea": 980, "SalePrice": 127500}, {"GrLivArea": 1958, "SalePrice": 145000}, {"GrLivArea": 1229, "SalePrice": 124000}, {"GrLivArea": 1057, "SalePrice": 132000}, {"GrLivArea": 1337, "SalePrice": 185000}, {"GrLivArea": 1416, "SalePrice": 155000}, {"GrLivArea": 858, "SalePrice": 116500}, {"GrLivArea": 2872, "SalePrice": 272000}, {"GrLivArea": 1548, "SalePrice": 155000}, {"GrLivArea": 1800, "SalePrice": 239000}, {"GrLivArea": 1894, "SalePrice": 214900}, {"GrLivArea": 1484, "SalePrice": 178900}, {"GrLivArea": 1308, "SalePrice": 160000}, {"GrLivArea": 1098, "SalePrice": 135000}, {"GrLivArea": 968, "SalePrice": 37900}, {"GrLivArea": 1095, "SalePrice": 140000}, {"GrLivArea": 1192, "SalePrice": 135000}, {"GrLivArea": 1626, "SalePrice": 173000}, {"GrLivArea": 918, "SalePrice": 99500}, {"GrLivArea": 1428, "SalePrice": 182000}, {"GrLivArea": 2019, "SalePrice": 167500}, {"GrLivArea": 1382, "SalePrice": 165000}, {"GrLivArea": 869, "SalePrice": 85500}, {"GrLivArea": 1241, "SalePrice": 199900}, {"GrLivArea": 894, "SalePrice": 110000}, {"GrLivArea": 1121, "SalePrice": 139000}, {"GrLivArea": 999, "SalePrice": 178400}, {"GrLivArea": 2612, "SalePrice": 336000}, {"GrLivArea": 1266, "SalePrice": 159895}, {"GrLivArea": 2290, "SalePrice": 255900}, {"GrLivArea": 1734, "SalePrice": 126000}, {"GrLivArea": 1164, "SalePrice": 125000}, {"GrLivArea": 1635, "SalePrice": 117000}, {"GrLivArea": 1940, "SalePrice": 395192}, {"GrLivArea": 2030, "SalePrice": 195000}, {"GrLivArea": 1576, "SalePrice": 197000}, {"GrLivArea": 2392, "SalePrice": 348000}, {"GrLivArea": 1742, "SalePrice": 168000}, {"GrLivArea": 1851, "SalePrice": 187000}, {"GrLivArea": 1500, "SalePrice": 173900}, {"GrLivArea": 1718, "SalePrice": 337500}, {"GrLivArea": 1230, "SalePrice": 121600}, {"GrLivArea": 1050, "SalePrice": 136500}, {"GrLivArea": 1442, "SalePrice": 185000}, {"GrLivArea": 1077, "SalePrice": 91000}, {"GrLivArea": 1208, "SalePrice": 206000}, {"GrLivArea": 944, "SalePrice": 82000}, {"GrLivArea": 691, "SalePrice": 86000}, {"GrLivArea": 1574, "SalePrice": 232000}, {"GrLivArea": 1680, "SalePrice": 136905}, {"GrLivArea": 1504, "SalePrice": 181000}, {"GrLivArea": 985, "SalePrice": 149900}, {"GrLivArea": 1657, "SalePrice": 163500}, {"GrLivArea": 1092, "SalePrice": 88000}, {"GrLivArea": 1710, "SalePrice": 240000}, {"GrLivArea": 1522, "SalePrice": 102000}, {"GrLivArea": 1271, "SalePrice": 135000}, {"GrLivArea": 1664, "SalePrice": 100000}, {"GrLivArea": 1502, "SalePrice": 165000}, {"GrLivArea": 1022, "SalePrice": 85000}, {"GrLivArea": 1082, "SalePrice": 119200}, {"GrLivArea": 1665, "SalePrice": 227000}, {"GrLivArea": 1504, "SalePrice": 203000}, {"GrLivArea": 1360, "SalePrice": 187500}, {"GrLivArea": 1472, "SalePrice": 160000}, {"GrLivArea": 1506, "SalePrice": 213490}, {"GrLivArea": 1132, "SalePrice": 176000}, {"GrLivArea": 1220, "SalePrice": 194000}, {"GrLivArea": 1248, "SalePrice": 87000}, {"GrLivArea": 1504, "SalePrice": 191000}, {"GrLivArea": 2898, "SalePrice": 287000}, {"GrLivArea": 882, "SalePrice": 112500}, {"GrLivArea": 1264, "SalePrice": 167500}, {"GrLivArea": 1646, "SalePrice": 293077}, {"GrLivArea": 1376, "SalePrice": 105000}, {"GrLivArea": 1218, "SalePrice": 118000}, {"GrLivArea": 1928, "SalePrice": 160000}, {"GrLivArea": 3082, "SalePrice": 197000}, {"GrLivArea": 2520, "SalePrice": 310000}, {"GrLivArea": 1654, "SalePrice": 230000}, {"GrLivArea": 954, "SalePrice": 119750}, {"GrLivArea": 845, "SalePrice": 84000}, {"GrLivArea": 1620, "SalePrice": 315500}, {"GrLivArea": 2263, "SalePrice": 287000}, {"GrLivArea": 1344, "SalePrice": 97000}, {"GrLivArea": 630, "SalePrice": 80000}, {"GrLivArea": 1803, "SalePrice": 155000}, {"GrLivArea": 1632, "SalePrice": 173000}, {"GrLivArea": 1306, "SalePrice": 196000}, {"GrLivArea": 2329, "SalePrice": 262280}, {"GrLivArea": 2524, "SalePrice": 278000}, {"GrLivArea": 1733, "SalePrice": 139600}, {"GrLivArea": 2868, "SalePrice": 556581}, {"GrLivArea": 990, "SalePrice": 145000}, {"GrLivArea": 1771, "SalePrice": 115000}, {"GrLivArea": 930, "SalePrice": 84900}, {"GrLivArea": 1302, "SalePrice": 176485}, {"GrLivArea": 1316, "SalePrice": 200141}, {"GrLivArea": 1977, "SalePrice": 165000}, {"GrLivArea": 1526, "SalePrice": 144500}, {"GrLivArea": 1989, "SalePrice": 255000}, {"GrLivArea": 1523, "SalePrice": 180000}, {"GrLivArea": 1364, "SalePrice": 185850}, {"GrLivArea": 1850, "SalePrice": 248000}, {"GrLivArea": 2184, "SalePrice": 335000}, {"GrLivArea": 1991, "SalePrice": 220000}, {"GrLivArea": 1338, "SalePrice": 213500}, {"GrLivArea": 894, "SalePrice": 81000}, {"GrLivArea": 2337, "SalePrice": 90000}, {"GrLivArea": 1103, "SalePrice": 110500}, {"GrLivArea": 1154, "SalePrice": 154000}, {"GrLivArea": 2260, "SalePrice": 328000}, {"GrLivArea": 1571, "SalePrice": 178000}, {"GrLivArea": 1611, "SalePrice": 167900}, {"GrLivArea": 2521, "SalePrice": 151400}, {"GrLivArea": 893, "SalePrice": 135000}, {"GrLivArea": 1048, "SalePrice": 135000}, {"GrLivArea": 1556, "SalePrice": 154000}, {"GrLivArea": 1456, "SalePrice": 91500}, {"GrLivArea": 1426, "SalePrice": 159500}, {"GrLivArea": 1240, "SalePrice": 194000}, {"GrLivArea": 1740, "SalePrice": 219500}, {"GrLivArea": 1466, "SalePrice": 170000}, {"GrLivArea": 1096, "SalePrice": 138800}, {"GrLivArea": 848, "SalePrice": 155900}, {"GrLivArea": 990, "SalePrice": 126000}, {"GrLivArea": 1258, "SalePrice": 145000}, {"GrLivArea": 1040, "SalePrice": 133000}, {"GrLivArea": 1459, "SalePrice": 192000}, {"GrLivArea": 1251, "SalePrice": 160000}, {"GrLivArea": 1498, "SalePrice": 187500}, {"GrLivArea": 996, "SalePrice": 147000}, {"GrLivArea": 1092, "SalePrice": 83500}, {"GrLivArea": 1953, "SalePrice": 252000}, {"GrLivArea": 1709, "SalePrice": 137500}, {"GrLivArea": 1247, "SalePrice": 197000}, {"GrLivArea": 1040, "SalePrice": 92900}, {"GrLivArea": 1252, "SalePrice": 160000}, {"GrLivArea": 1694, "SalePrice": 136500}, {"GrLivArea": 1200, "SalePrice": 146000}, {"GrLivArea": 936, "SalePrice": 129000}, {"GrLivArea": 1314, "SalePrice": 176432}, {"GrLivArea": 1355, "SalePrice": 127000}, {"GrLivArea": 1088, "SalePrice": 170000}, {"GrLivArea": 1324, "SalePrice": 128000}, {"GrLivArea": 1601, "SalePrice": 157000}, {"GrLivArea": 438, "SalePrice": 60000}, {"GrLivArea": 950, "SalePrice": 119500}, {"GrLivArea": 1134, "SalePrice": 135000}, {"GrLivArea": 1194, "SalePrice": 159500}, {"GrLivArea": 1302, "SalePrice": 106000}, {"GrLivArea": 2622, "SalePrice": 325000}, {"GrLivArea": 1442, "SalePrice": 179900}, {"GrLivArea": 2021, "SalePrice": 274725}, {"GrLivArea": 1690, "SalePrice": 181000}, {"GrLivArea": 1836, "SalePrice": 280000}, {"GrLivArea": 1658, "SalePrice": 188000}, {"GrLivArea": 1964, "SalePrice": 205000}, {"GrLivArea": 816, "SalePrice": 129900}, {"GrLivArea": 1008, "SalePrice": 134500}, {"GrLivArea": 833, "SalePrice": 117000}, {"GrLivArea": 1734, "SalePrice": 318000}, {"GrLivArea": 1419, "SalePrice": 184100}, {"GrLivArea": 894, "SalePrice": 130000}, {"GrLivArea": 1601, "SalePrice": 140000}, {"GrLivArea": 1040, "SalePrice": 133700}, {"GrLivArea": 1012, "SalePrice": 118400}, {"GrLivArea": 1552, "SalePrice": 212900}, {"GrLivArea": 960, "SalePrice": 112000}, {"GrLivArea": 698, "SalePrice": 118000}, {"GrLivArea": 1482, "SalePrice": 163900}, {"GrLivArea": 1005, "SalePrice": 115000}, {"GrLivArea": 1555, "SalePrice": 174000}, {"GrLivArea": 1530, "SalePrice": 259000}, {"GrLivArea": 1959, "SalePrice": 215000}, {"GrLivArea": 936, "SalePrice": 140000}, {"GrLivArea": 1981, "SalePrice": 135000}, {"GrLivArea": 974, "SalePrice": 93500}, {"GrLivArea": 2210, "SalePrice": 117500}, {"GrLivArea": 2020, "SalePrice": 239500}, {"GrLivArea": 1600, "SalePrice": 169000}, {"GrLivArea": 986, "SalePrice": 102000}, {"GrLivArea": 1252, "SalePrice": 119000}, {"GrLivArea": 1020, "SalePrice": 94000}, {"GrLivArea": 1567, "SalePrice": 196000}, {"GrLivArea": 1167, "SalePrice": 144000}, {"GrLivArea": 952, "SalePrice": 139000}, {"GrLivArea": 1868, "SalePrice": 197500}, {"GrLivArea": 2828, "SalePrice": 424870}, {"GrLivArea": 1006, "SalePrice": 80000}, {"GrLivArea": 924, "SalePrice": 80000}, {"GrLivArea": 1576, "SalePrice": 149000}, {"GrLivArea": 1298, "SalePrice": 180000}, {"GrLivArea": 1564, "SalePrice": 174500}, {"GrLivArea": 1111, "SalePrice": 116900}, {"GrLivArea": 1482, "SalePrice": 143000}, {"GrLivArea": 932, "SalePrice": 124000}, {"GrLivArea": 1466, "SalePrice": 149900}, {"GrLivArea": 1811, "SalePrice": 230000}, {"GrLivArea": 816, "SalePrice": 120500}, {"GrLivArea": 1820, "SalePrice": 201800}, {"GrLivArea": 1437, "SalePrice": 218000}, {"GrLivArea": 1265, "SalePrice": 179900}, {"GrLivArea": 1314, "SalePrice": 230000}, {"GrLivArea": 1580, "SalePrice": 235128}, {"GrLivArea": 1876, "SalePrice": 185000}, {"GrLivArea": 1456, "SalePrice": 146000}, {"GrLivArea": 1640, "SalePrice": 224000}, {"GrLivArea": 894, "SalePrice": 129000}, {"GrLivArea": 1258, "SalePrice": 108959}, {"GrLivArea": 1432, "SalePrice": 194000}, {"GrLivArea": 1502, "SalePrice": 233170}, {"GrLivArea": 1694, "SalePrice": 245350}, {"GrLivArea": 1671, "SalePrice": 173000}, {"GrLivArea": 2108, "SalePrice": 235000}, {"GrLivArea": 3627, "SalePrice": 625000}, {"GrLivArea": 1118, "SalePrice": 171000}, {"GrLivArea": 1261, "SalePrice": 163000}, {"GrLivArea": 1250, "SalePrice": 171900}, {"GrLivArea": 3086, "SalePrice": 200500}, {"GrLivArea": 2345, "SalePrice": 239000}, {"GrLivArea": 2872, "SalePrice": 285000}, {"GrLivArea": 923, "SalePrice": 119500}, {"GrLivArea": 1224, "SalePrice": 115000}, {"GrLivArea": 1343, "SalePrice": 154900}, {"GrLivArea": 1124, "SalePrice": 93000}, {"GrLivArea": 2514, "SalePrice": 250000}, {"GrLivArea": 1652, "SalePrice": 392500}, {"GrLivArea": 4476, "SalePrice": 745000}, {"GrLivArea": 1130, "SalePrice": 120000}, {"GrLivArea": 1572, "SalePrice": 186700}, {"GrLivArea": 1221, "SalePrice": 104900}, {"GrLivArea": 1699, "SalePrice": 95000}, {"GrLivArea": 1624, "SalePrice": 262000}, {"GrLivArea": 1660, "SalePrice": 195000}, {"GrLivArea": 1804, "SalePrice": 189000}, {"GrLivArea": 1622, "SalePrice": 168000}, {"GrLivArea": 1441, "SalePrice": 174000}, {"GrLivArea": 1472, "SalePrice": 125000}, {"GrLivArea": 1224, "SalePrice": 165000}, {"GrLivArea": 1352, "SalePrice": 158000}, {"GrLivArea": 1456, "SalePrice": 176000}, {"GrLivArea": 1863, "SalePrice": 219210}, {"GrLivArea": 1690, "SalePrice": 144000}, {"GrLivArea": 1212, "SalePrice": 178000}, {"GrLivArea": 1382, "SalePrice": 148000}, {"GrLivArea": 864, "SalePrice": 116050}, {"GrLivArea": 1779, "SalePrice": 197900}, {"GrLivArea": 1348, "SalePrice": 117000}, {"GrLivArea": 1630, "SalePrice": 213000}, {"GrLivArea": 1074, "SalePrice": 153500}, {"GrLivArea": 2196, "SalePrice": 271900}, {"GrLivArea": 1056, "SalePrice": 107000}, {"GrLivArea": 1700, "SalePrice": 200000}, {"GrLivArea": 1283, "SalePrice": 140000}, {"GrLivArea": 1660, "SalePrice": 290000}, {"GrLivArea": 1845, "SalePrice": 189000}, {"GrLivArea": 1752, "SalePrice": 164000}, {"GrLivArea": 672, "SalePrice": 113000}, {"GrLivArea": 960, "SalePrice": 145000}, {"GrLivArea": 999, "SalePrice": 134500}, {"GrLivArea": 894, "SalePrice": 125000}, {"GrLivArea": 1902, "SalePrice": 112000}, {"GrLivArea": 1314, "SalePrice": 229456}, {"GrLivArea": 912, "SalePrice": 80500}, {"GrLivArea": 1218, "SalePrice": 91500}, {"GrLivArea": 912, "SalePrice": 115000}, {"GrLivArea": 1211, "SalePrice": 134000}, {"GrLivArea": 1846, "SalePrice": 143000}, {"GrLivArea": 2136, "SalePrice": 137900}, {"GrLivArea": 1490, "SalePrice": 184000}, {"GrLivArea": 1138, "SalePrice": 145000}, {"GrLivArea": 1933, "SalePrice": 214000}, {"GrLivArea": 912, "SalePrice": 147000}, {"GrLivArea": 1702, "SalePrice": 367294}, {"GrLivArea": 1507, "SalePrice": 127000}, {"GrLivArea": 2620, "SalePrice": 190000}, {"GrLivArea": 1190, "SalePrice": 132500}, {"GrLivArea": 1224, "SalePrice": 101800}, {"GrLivArea": 1188, "SalePrice": 142000}, {"GrLivArea": 1964, "SalePrice": 130000}, {"GrLivArea": 1784, "SalePrice": 138887}, {"GrLivArea": 1626, "SalePrice": 175500}, {"GrLivArea": 1948, "SalePrice": 195000}, {"GrLivArea": 1141, "SalePrice": 142500}, {"GrLivArea": 1484, "SalePrice": 265900}, {"GrLivArea": 1768, "SalePrice": 224900}, {"GrLivArea": 1689, "SalePrice": 248328}, {"GrLivArea": 1173, "SalePrice": 170000}, {"GrLivArea": 2076, "SalePrice": 465000}, {"GrLivArea": 1517, "SalePrice": 230000}, {"GrLivArea": 1868, "SalePrice": 178000}, {"GrLivArea": 1553, "SalePrice": 186500}, {"GrLivArea": 1034, "SalePrice": 169900}, {"GrLivArea": 2058, "SalePrice": 129500}, {"GrLivArea": 988, "SalePrice": 119000}, {"GrLivArea": 2110, "SalePrice": 244000}, {"GrLivArea": 1405, "SalePrice": 171750}, {"GrLivArea": 874, "SalePrice": 130000}, {"GrLivArea": 2167, "SalePrice": 294000}, {"GrLivArea": 1656, "SalePrice": 165400}, {"GrLivArea": 1367, "SalePrice": 127500}, {"GrLivArea": 1987, "SalePrice": 301500}, {"GrLivArea": 864, "SalePrice": 99900}, {"GrLivArea": 1166, "SalePrice": 190000}, {"GrLivArea": 1054, "SalePrice": 151000}, {"GrLivArea": 1675, "SalePrice": 181000}, {"GrLivArea": 1050, "SalePrice": 128900}, {"GrLivArea": 1788, "SalePrice": 161500}, {"GrLivArea": 1824, "SalePrice": 180500}, {"GrLivArea": 1337, "SalePrice": 181000}, {"GrLivArea": 1452, "SalePrice": 183900}, {"GrLivArea": 1889, "SalePrice": 122000}, {"GrLivArea": 2018, "SalePrice": 378500}, {"GrLivArea": 3447, "SalePrice": 381000}, {"GrLivArea": 1524, "SalePrice": 144000}, {"GrLivArea": 1524, "SalePrice": 260000}, {"GrLivArea": 1489, "SalePrice": 185750}, {"GrLivArea": 935, "SalePrice": 137000}, {"GrLivArea": 1357, "SalePrice": 177000}, {"GrLivArea": 1250, "SalePrice": 139000}, {"GrLivArea": 1920, "SalePrice": 137000}, {"GrLivArea": 1395, "SalePrice": 162000}, {"GrLivArea": 1724, "SalePrice": 197900}, {"GrLivArea": 2031, "SalePrice": 237000}, {"GrLivArea": 1128, "SalePrice": 68400}, {"GrLivArea": 1573, "SalePrice": 227000}, {"GrLivArea": 1339, "SalePrice": 180000}, {"GrLivArea": 1040, "SalePrice": 150500}, {"GrLivArea": 1824, "SalePrice": 139000}, {"GrLivArea": 2447, "SalePrice": 169000}, {"GrLivArea": 1412, "SalePrice": 132500}, {"GrLivArea": 1328, "SalePrice": 143000}, {"GrLivArea": 1582, "SalePrice": 190000}, {"GrLivArea": 1659, "SalePrice": 278000}, {"GrLivArea": 1970, "SalePrice": 281000}, {"GrLivArea": 1152, "SalePrice": 180500}, {"GrLivArea": 1302, "SalePrice": 119500}, {"GrLivArea": 2372, "SalePrice": 107500}, {"GrLivArea": 1664, "SalePrice": 162900}, {"GrLivArea": 864, "SalePrice": 115000}, {"GrLivArea": 1052, "SalePrice": 138500}, {"GrLivArea": 1128, "SalePrice": 155000}, {"GrLivArea": 1072, "SalePrice": 140000}, {"GrLivArea": 5642, "SalePrice": 160000}, {"GrLivArea": 1246, "SalePrice": 154000}, {"GrLivArea": 1983, "SalePrice": 225000}, {"GrLivArea": 1494, "SalePrice": 177500}, {"GrLivArea": 2526, "SalePrice": 290000}, {"GrLivArea": 1616, "SalePrice": 232000}, {"GrLivArea": 1708, "SalePrice": 130000}, {"GrLivArea": 1652, "SalePrice": 325000}, {"GrLivArea": 1368, "SalePrice": 202500}, {"GrLivArea": 990, "SalePrice": 138000}, {"GrLivArea": 1122, "SalePrice": 147000}, {"GrLivArea": 1294, "SalePrice": 179200}, {"GrLivArea": 1902, "SalePrice": 335000}, {"GrLivArea": 1274, "SalePrice": 203000}, {"GrLivArea": 2810, "SalePrice": 302000}, {"GrLivArea": 2599, "SalePrice": 333168}, {"GrLivArea": 948, "SalePrice": 119000}, {"GrLivArea": 2112, "SalePrice": 206900}, {"GrLivArea": 1630, "SalePrice": 295493}, {"GrLivArea": 1352, "SalePrice": 208900}, {"GrLivArea": 1787, "SalePrice": 275000}, {"GrLivArea": 948, "SalePrice": 111000}, {"GrLivArea": 1478, "SalePrice": 156500}, {"GrLivArea": 720, "SalePrice": 72500}, {"GrLivArea": 1923, "SalePrice": 190000}, {"GrLivArea": 708, "SalePrice": 82500}, {"GrLivArea": 1795, "SalePrice": 147000}, {"GrLivArea": 796, "SalePrice": 55000}, {"GrLivArea": 774, "SalePrice": 79000}, {"GrLivArea": 816, "SalePrice": 130500}, {"GrLivArea": 2792, "SalePrice": 256000}, {"GrLivArea": 1632, "SalePrice": 176500}, {"GrLivArea": 1588, "SalePrice": 227000}, {"GrLivArea": 954, "SalePrice": 132500}, {"GrLivArea": 816, "SalePrice": 100000}, {"GrLivArea": 1360, "SalePrice": 125500}, {"GrLivArea": 1365, "SalePrice": 125000}, {"GrLivArea": 1334, "SalePrice": 167900}, {"GrLivArea": 1656, "SalePrice": 135000}, {"GrLivArea": 693, "SalePrice": 52500}, {"GrLivArea": 1861, "SalePrice": 200000}, {"GrLivArea": 864, "SalePrice": 128500}, {"GrLivArea": 872, "SalePrice": 123000}, {"GrLivArea": 1114, "SalePrice": 155000}, {"GrLivArea": 2169, "SalePrice": 228500}, {"GrLivArea": 1913, "SalePrice": 177000}, {"GrLivArea": 1456, "SalePrice": 155835}, {"GrLivArea": 960, "SalePrice": 108500}, {"GrLivArea": 2156, "SalePrice": 262500}, {"GrLivArea": 1776, "SalePrice": 283463}, {"GrLivArea": 1494, "SalePrice": 215000}, {"GrLivArea": 2358, "SalePrice": 122000}, {"GrLivArea": 2634, "SalePrice": 200000}, {"GrLivArea": 1716, "SalePrice": 171000}, {"GrLivArea": 1176, "SalePrice": 134900}, {"GrLivArea": 3238, "SalePrice": 410000}, {"GrLivArea": 1865, "SalePrice": 235000}, {"GrLivArea": 1920, "SalePrice": 170000}, {"GrLivArea": 892, "SalePrice": 110000}, {"GrLivArea": 1078, "SalePrice": 149900}, {"GrLivArea": 1573, "SalePrice": 177500}, {"GrLivArea": 1980, "SalePrice": 315000}, {"GrLivArea": 2601, "SalePrice": 189000}, {"GrLivArea": 1530, "SalePrice": 260000}, {"GrLivArea": 1738, "SalePrice": 104900}, {"GrLivArea": 1412, "SalePrice": 156932}, {"GrLivArea": 1200, "SalePrice": 144152}, {"GrLivArea": 1674, "SalePrice": 216000}, {"GrLivArea": 1790, "SalePrice": 193000}, {"GrLivArea": 1475, "SalePrice": 127000}, {"GrLivArea": 848, "SalePrice": 144000}, {"GrLivArea": 1668, "SalePrice": 232000}, {"GrLivArea": 1374, "SalePrice": 105000}, {"GrLivArea": 1661, "SalePrice": 165500}, {"GrLivArea": 2097, "SalePrice": 274300}, {"GrLivArea": 2633, "SalePrice": 466500}, {"GrLivArea": 1958, "SalePrice": 250000}, {"GrLivArea": 1571, "SalePrice": 239000}, {"GrLivArea": 790, "SalePrice": 91000}, {"GrLivArea": 1604, "SalePrice": 117000}, {"GrLivArea": 987, "SalePrice": 83000}, {"GrLivArea": 1394, "SalePrice": 167500}, {"GrLivArea": 864, "SalePrice": 58500}, {"GrLivArea": 2117, "SalePrice": 237500}, {"GrLivArea": 1762, "SalePrice": 157000}, {"GrLivArea": 1416, "SalePrice": 112000}, {"GrLivArea": 1258, "SalePrice": 105000}, {"GrLivArea": 1154, "SalePrice": 125500}, {"GrLivArea": 2784, "SalePrice": 250000}, {"GrLivArea": 2526, "SalePrice": 136000}, {"GrLivArea": 1746, "SalePrice": 377500}, {"GrLivArea": 1218, "SalePrice": 131000}, {"GrLivArea": 1525, "SalePrice": 235000}, {"GrLivArea": 1584, "SalePrice": 124000}, {"GrLivArea": 900, "SalePrice": 123000}, {"GrLivArea": 1912, "SalePrice": 163000}, {"GrLivArea": 1500, "SalePrice": 246578}, {"GrLivArea": 2482, "SalePrice": 281213}, {"GrLivArea": 1687, "SalePrice": 160000}, {"GrLivArea": 1513, "SalePrice": 137500}, {"GrLivArea": 1904, "SalePrice": 138000}, {"GrLivArea": 1608, "SalePrice": 137450}, {"GrLivArea": 1158, "SalePrice": 120000}, {"GrLivArea": 1593, "SalePrice": 193000}, {"GrLivArea": 1294, "SalePrice": 193879}, {"GrLivArea": 1464, "SalePrice": 282922}, {"GrLivArea": 1214, "SalePrice": 105000}, {"GrLivArea": 1646, "SalePrice": 275000}, {"GrLivArea": 768, "SalePrice": 133000}, {"GrLivArea": 833, "SalePrice": 112000}, {"GrLivArea": 1363, "SalePrice": 125500}, {"GrLivArea": 2093, "SalePrice": 215000}, {"GrLivArea": 1840, "SalePrice": 230000}, {"GrLivArea": 1668, "SalePrice": 140000}, {"GrLivArea": 1040, "SalePrice": 90000}, {"GrLivArea": 1844, "SalePrice": 257000}, {"GrLivArea": 1848, "SalePrice": 207000}, {"GrLivArea": 1569, "SalePrice": 175900}, {"GrLivArea": 2290, "SalePrice": 122500}, {"GrLivArea": 2450, "SalePrice": 340000}, {"GrLivArea": 1144, "SalePrice": 124000}, {"GrLivArea": 1844, "SalePrice": 223000}, {"GrLivArea": 1416, "SalePrice": 179900}, {"GrLivArea": 1069, "SalePrice": 127500}, {"GrLivArea": 848, "SalePrice": 136500}, {"GrLivArea": 2201, "SalePrice": 274970}, {"GrLivArea": 1344, "SalePrice": 144000}, {"GrLivArea": 1252, "SalePrice": 142000}, {"GrLivArea": 2127, "SalePrice": 271000}, {"GrLivArea": 1558, "SalePrice": 140000}, {"GrLivArea": 804, "SalePrice": 119000}, {"GrLivArea": 1440, "SalePrice": 182900}, {"GrLivArea": 1838, "SalePrice": 192140}, {"GrLivArea": 958, "SalePrice": 143750}, {"GrLivArea": 968, "SalePrice": 64500}, {"GrLivArea": 1792, "SalePrice": 186500}, {"GrLivArea": 1126, "SalePrice": 160000}, {"GrLivArea": 1537, "SalePrice": 174000}, {"GrLivArea": 864, "SalePrice": 120500}, {"GrLivArea": 1932, "SalePrice": 394617}, {"GrLivArea": 1236, "SalePrice": 149700}, {"GrLivArea": 1725, "SalePrice": 197000}, {"GrLivArea": 2555, "SalePrice": 191000}, {"GrLivArea": 848, "SalePrice": 149300}, {"GrLivArea": 2007, "SalePrice": 310000}, {"GrLivArea": 952, "SalePrice": 121000}, {"GrLivArea": 1422, "SalePrice": 179600}, {"GrLivArea": 913, "SalePrice": 129000}, {"GrLivArea": 1188, "SalePrice": 157900}, {"GrLivArea": 2090, "SalePrice": 240000}, {"GrLivArea": 1346, "SalePrice": 112000}, {"GrLivArea": 630, "SalePrice": 92000}, {"GrLivArea": 1792, "SalePrice": 136000}, {"GrLivArea": 1578, "SalePrice": 287090}, {"GrLivArea": 1072, "SalePrice": 145000}, {"GrLivArea": 1140, "SalePrice": 84500}, {"GrLivArea": 1221, "SalePrice": 185000}, {"GrLivArea": 1647, "SalePrice": 175000}, {"GrLivArea": 2073, "SalePrice": 210000}, {"GrLivArea": 2340, "SalePrice": 266500}, {"GrLivArea": 1078, "SalePrice": 142125}, {"GrLivArea": 1256, "SalePrice": 147500}]}}, {"mode": "vega-lite"});
+</script>
+</div>
+</div>
+<section id="loss" class="level2">
+<h2 class="anchored" data-anchor-id="loss">Loss</h2>
+<p>We use <span class="math inline">\(y\)</span> to denote the actual price, <span class="math inline">\(x\)</span> to denote the area, <span class="math inline">\(\beta\)</span> is the parameter (or the multiple in this case), <span class="math inline">\(\epsilon\)</span> is the irreducible error that collects all the unmodeled parts of our data. We use superscript <span class="math inline">\((i)\)</span> to denote the index of the data. For example, the first row of data is:</p>
+<p><span class="math display">\[
+y^{(0)} = \beta x^{(0)} + \epsilon^{(0)}
+\]</span></p>
+<p>And <span class="math inline">\(\hat{y}\)</span> is the predicted price and <span class="math inline">\(\hat{\beta}\)</span> is the predicted parameter.</p>
+<p><span class="math display">\[
+\hat{y}^{(0)} = \hat{\beta} x^{(0)}
+\]</span></p>
+It can be easily vectorized. <span class="math inline">\(y\)</span> is the column of housing price, $
+<span class="math display">\[\begin{bmatrix}
+   y^{(0)} \\
+   y^{(1)} \\
+   \vdots   \\
+   y^{(n)} \\
+\end{bmatrix}\]</span>
+$. <span class="math inline">\(x\)</span> is the column of housing area, $
+<span class="math display">\[\begin{bmatrix}
+   x^{(0)} \\
+   x^{(1)} \\
+   \vdots   \\
+   x^{(n)} \\
+\end{bmatrix}\]</span>
+<p>$. We have:</p>
+<p><span class="math display">\[
+y = \beta x + \epsilon
+\]</span></p>
+<p><span class="math display">\[
+\hat{y} = \hat{\beta} x
+\]</span></p>
+<p>Our goal is to find <span class="math inline">\(\beta^*\)</span> that minimizes the mean of the squared errors.</p>
+<p><span class="math display">\[
+\beta^*:=\underset{\hat{\beta}}{\operatorname{argmin}}\ J(\hat{\beta})
+\]</span></p>
+<p>The mean of the squared errors is used as a loss or cost function:</p>
+<p><span class="math display">\[
+J(\hat{\beta})
+= \text{MSE}
+= \frac{1}{n} (y - \hat{y})^\top (y - \hat{y})
+= \frac{1}{n} \sum_{i=1}^n\left[y^{(i)}-\hat{y}^{(i)}\right]^2
+= \frac{1}{n} \sum_{i=1}^n\left[y^{(i)}-\hat{\beta} x^{(i)}\right]^2
+\]</span></p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calculate_mse(beta):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Calculate the mean of the squared errors of the housing area and price given beta.</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    squared_error <span class="op">=</span> (housing[<span class="st">"SalePrice"</span>] <span class="op">-</span> housing[<span class="st">"GrLivArea"</span>] <span class="op">*</span> beta) <span class="op">**</span> <span class="dv">2</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    mean_squared_error <span class="op">=</span> squared_error.mean()</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> mean_squared_error</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>calculate_mse(<span class="dv">80</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<pre><code>6905142769.90274</code></pre>
+</div>
+</div>
+<p>We can plot loss function in respect to the parameter <span class="math inline">\(\beta\)</span>, the output is known as the loss landscape.</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_mse(low<span class="op">=</span><span class="dv">0</span>, high<span class="op">=</span><span class="dv">500</span>):</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Plot the mean of the squared errors for a range of betas.</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    betas <span class="op">=</span> np.arange(low, high, <span class="dv">1</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    losses <span class="op">=</span> np.vectorize(calculate_mse)(betas)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    source <span class="op">=</span> pd.DataFrame({<span class="st">"beta"</span>: betas, <span class="st">"loss"</span>: losses})</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    chart <span class="op">=</span> alt.Chart(source).mark_line().encode(</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="st">"beta"</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>        y <span class="op">=</span> <span class="st">"loss"</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> chart</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>plot_mse(low<span class="op">=</span><span class="dv">0</span>, high<span class="op">=</span><span class="dv">300</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+
+<div id="altair-viz-8c281c76b07a4c6ca70152de3c0f07da"></div>
+<script type="text/javascript">
+  var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
+  (function(spec, embedOpt){
+    let outputDiv = document.currentScript.previousElementSibling;
+    if (outputDiv.id !== "altair-viz-8c281c76b07a4c6ca70152de3c0f07da") {
+      outputDiv = document.getElementById("altair-viz-8c281c76b07a4c6ca70152de3c0f07da");
+    }
+    const paths = {
+      "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
+      "vega-lib": "https://cdn.jsdelivr.net/npm//vega-lib?noext",
+      "vega-lite": "https://cdn.jsdelivr.net/npm//vega-lite@4.17.0?noext",
+      "vega-embed": "https://cdn.jsdelivr.net/npm//vega-embed@6?noext",
+    };
+
+    function maybeLoadScript(lib, version) {
+      var key = `${lib.replace("-", "")}_version`;
+      return (VEGA_DEBUG[key] == version) ?
+        Promise.resolve(paths[lib]) :
+        new Promise(function(resolve, reject) {
+          var s = document.createElement('script');
+          document.getElementsByTagName("head")[0].appendChild(s);
+          s.async = true;
+          s.onload = () => {
+            VEGA_DEBUG[key] = version;
+            return resolve(paths[lib]);
+          };
+          s.onerror = () => reject(`Error loading script: ${paths[lib]}`);
+          s.src = paths[lib];
+        });
+    }
+
+    function showError(err) {
+      outputDiv.innerHTML = `<div class="error" style="color:red;">${err}</div>`;
+      throw err;
+    }
+
+    function displayChart(vegaEmbed) {
+      vegaEmbed(outputDiv, spec, embedOpt)
+        .catch(err => showError(`Javascript Error: ${err.message}<br>This usually means there's a typo in your chart specification. See the javascript console for the full traceback.`));
+    }
+
+    if(typeof define === "function" && define.amd) {
+      requirejs.config({paths});
+      require(["vega-embed"], displayChart, err => showError(`Error loading script: ${err.message}`));
+    } else {
+      maybeLoadScript("vega", "5")
+        .then(() => maybeLoadScript("vega-lite", "4.17.0"))
+        .then(() => maybeLoadScript("vega-embed", "6"))
+        .catch(showError)
+        .then(() => displayChart(vegaEmbed));
+    }
+  })({"config": {"view": {"continuousWidth": 400, "continuousHeight": 300}}, "data": {"name": "data-090674cac1bf10559ee551f257687c2a"}, "mark": "line", "encoding": {"x": {"field": "beta", "type": "quantitative"}, "y": {"field": "loss", "type": "quantitative"}}, "$schema": "https://vega.github.io/schema/vega-lite/v4.17.0.json", "datasets": {"data-090674cac1bf10559ee551f257687c2a": [{"beta": 0, "loss": 39039267707.765755}, {"beta": 1, "loss": 38434358058.74041}, {"beta": 2, "loss": 37834593551.16576}, {"beta": 3, "loss": 37239974185.04178}, {"beta": 4, "loss": 36650499960.36849}, {"beta": 5, "loss": 36066170877.14589}, {"beta": 6, "loss": 35486986935.37397}, {"beta": 7, "loss": 34912948135.05274}, {"beta": 8, "loss": 34344054476.18219}, {"beta": 9, "loss": 33780305958.76233}, {"beta": 10, "loss": 33221702582.79315}, {"beta": 11, "loss": 32668244348.27466}, {"beta": 12, "loss": 32119931255.20685}, {"beta": 13, "loss": 31576763303.589725}, {"beta": 14, "loss": 31038740493.423286}, {"beta": 15, "loss": 30505862824.707535}, {"beta": 16, "loss": 29978130297.442467}, {"beta": 17, "loss": 29455542911.628082}, {"beta": 18, "loss": 28938100667.264385}, {"beta": 19, "loss": 28425803564.35137}, {"beta": 20, "loss": 27918651602.88904}, {"beta": 21, "loss": 27416644782.877396}, {"beta": 22, "loss": 26919783104.316437}, {"beta": 23, "loss": 26428066567.206165}, {"beta": 24, "loss": 25941495171.546574}, {"beta": 25, "loss": 25460068917.33767}, {"beta": 26, "loss": 24983787804.579453}, {"beta": 27, "loss": 24512651833.27192}, {"beta": 28, "loss": 24046661003.41507}, {"beta": 29, "loss": 23585815315.008904}, {"beta": 30, "loss": 23130114768.053425}, {"beta": 31, "loss": 22679559362.54863}, {"beta": 32, "loss": 22234149098.494522}, {"beta": 33, "loss": 21793883975.891094}, {"beta": 34, "loss": 21358763994.738358}, {"beta": 35, "loss": 20928789155.0363}, {"beta": 36, "loss": 20503959456.78493}, {"beta": 37, "loss": 20084274899.984245}, {"beta": 38, "loss": 19669735484.634247}, {"beta": 39, "loss": 19260341210.734932}, {"beta": 40, "loss": 18856092078.2863}, {"beta": 41, "loss": 18456988087.288357}, {"beta": 42, "loss": 18063029237.741096}, {"beta": 43, "loss": 17674215529.64452}, {"beta": 44, "loss": 17290546962.99863}, {"beta": 45, "loss": 16912023537.803425}, {"beta": 46, "loss": 16538645254.058905}, {"beta": 47, "loss": 16170412111.765068}, {"beta": 48, "loss": 15807324110.921917}, {"beta": 49, "loss": 15449381251.529451}, {"beta": 50, "loss": 15096583533.587671}, {"beta": 51, "loss": 14748930957.096575}, {"beta": 52, "loss": 14406423522.056164}, {"beta": 53, "loss": 14069061228.466438}, {"beta": 54, "loss": 13736844076.327396}, {"beta": 55, "loss": 13409772065.639042}, {"beta": 56, "loss": 13087845196.40137}, {"beta": 57, "loss": 12771063468.614384}, {"beta": 58, "loss": 12459426882.278082}, {"beta": 59, "loss": 12152935437.392466}, {"beta": 60, "loss": 11851589133.957535}, {"beta": 61, "loss": 11555387971.973288}, {"beta": 62, "loss": 11264331951.439726}, {"beta": 63, "loss": 10978421072.35685}, {"beta": 64, "loss": 10697655334.724657}, {"beta": 65, "loss": 10422034738.54315}, {"beta": 66, "loss": 10151559283.812328}, {"beta": 67, "loss": 9886228970.532192}, {"beta": 68, "loss": 9626043798.70274}, {"beta": 69, "loss": 9371003768.323973}, {"beta": 70, "loss": 9121108879.395891}, {"beta": 71, "loss": 8876359131.918493}, {"beta": 72, "loss": 8636754525.89178}, {"beta": 73, "loss": 8402295061.315753}, {"beta": 74, "loss": 8172980738.190411}, {"beta": 75, "loss": 7948811556.515754}, {"beta": 76, "loss": 7729787516.29178}, {"beta": 77, "loss": 7515908617.518493}, {"beta": 78, "loss": 7307174860.19589}, {"beta": 79, "loss": 7103586244.323973}, {"beta": 80, "loss": 6905142769.90274}, {"beta": 81, "loss": 6711844436.932192}, {"beta": 82, "loss": 6523691245.412329}, {"beta": 83, "loss": 6340683195.343151}, {"beta": 84, "loss": 6162820286.724657}, {"beta": 85, "loss": 5990102519.5568495}, {"beta": 86, "loss": 5822529893.839726}, {"beta": 87, "loss": 5660102409.573288}, {"beta": 88, "loss": 5502820066.757534}, {"beta": 89, "loss": 5350682865.392466}, {"beta": 90, "loss": 5203690805.478083}, {"beta": 91, "loss": 5061843887.014383}, {"beta": 92, "loss": 4925142110.001369}, {"beta": 93, "loss": 4793585474.439041}, {"beta": 94, "loss": 4667173980.327397}, {"beta": 95, "loss": 4545907627.666438}, {"beta": 96, "loss": 4429786416.456164}, {"beta": 97, "loss": 4318810346.696575}, {"beta": 98, "loss": 4212979418.3876715}, {"beta": 99, "loss": 4112293631.529452}, {"beta": 100, "loss": 4016752986.1219177}, {"beta": 101, "loss": 3926357482.1650686}, {"beta": 102, "loss": 3841107119.658904}, {"beta": 103, "loss": 3761001898.6034245}, {"beta": 104, "loss": 3686041818.99863}, {"beta": 105, "loss": 3616226880.8445206}, {"beta": 106, "loss": 3551557084.141096}, {"beta": 107, "loss": 3492032428.888356}, {"beta": 108, "loss": 3437652915.0863013}, {"beta": 109, "loss": 3388418542.7349315}, {"beta": 110, "loss": 3344329311.8342466}, {"beta": 111, "loss": 3305385222.3842463}, {"beta": 112, "loss": 3271586274.3849316}, {"beta": 113, "loss": 3242932467.8363013}, {"beta": 114, "loss": 3219423802.738356}, {"beta": 115, "loss": 3201060279.091096}, {"beta": 116, "loss": 3187841896.8945208}, {"beta": 117, "loss": 3179768656.14863}, {"beta": 118, "loss": 3176840556.8534245}, {"beta": 119, "loss": 3179057599.008904}, {"beta": 120, "loss": 3186419782.6150684}, {"beta": 121, "loss": 3198927107.671918}, {"beta": 122, "loss": 3216579574.179452}, {"beta": 123, "loss": 3239377182.1376715}, {"beta": 124, "loss": 3267319931.5465755}, {"beta": 125, "loss": 3300407822.406164}, {"beta": 126, "loss": 3338640854.7164383}, {"beta": 127, "loss": 3382019028.4773974}, {"beta": 128, "loss": 3430542343.689041}, {"beta": 129, "loss": 3484210800.35137}, {"beta": 130, "loss": 3543024398.4643836}, {"beta": 131, "loss": 3606983138.0280824}, {"beta": 132, "loss": 3676087019.0424657}, {"beta": 133, "loss": 3750336041.507534}, {"beta": 134, "loss": 3829730205.423288}, {"beta": 135, "loss": 3914269510.7897263}, {"beta": 136, "loss": 4003953957.606849}, {"beta": 137, "loss": 4098783545.8746576}, {"beta": 138, "loss": 4198758275.5931506}, {"beta": 139, "loss": 4303878146.762329}, {"beta": 140, "loss": 4414143159.382192}, {"beta": 141, "loss": 4529553313.45274}, {"beta": 142, "loss": 4650108608.973972}, {"beta": 143, "loss": 4775809045.94589}, {"beta": 144, "loss": 4906654624.368493}, {"beta": 145, "loss": 5042645344.241781}, {"beta": 146, "loss": 5183781205.565753}, {"beta": 147, "loss": 5330062208.340411}, {"beta": 148, "loss": 5481488352.565753}, {"beta": 149, "loss": 5638059638.241781}, {"beta": 150, "loss": 5799776065.368493}, {"beta": 151, "loss": 5966637633.94589}, {"beta": 152, "loss": 6138644343.973972}, {"beta": 153, "loss": 6315796195.45274}, {"beta": 154, "loss": 6498093188.382192}, {"beta": 155, "loss": 6685535322.762329}, {"beta": 156, "loss": 6878122598.593151}, {"beta": 157, "loss": 7075855015.874658}, {"beta": 158, "loss": 7278732574.60685}, {"beta": 159, "loss": 7486755274.789726}, {"beta": 160, "loss": 7699923116.423287}, {"beta": 161, "loss": 7918236099.507534}, {"beta": 162, "loss": 8141694224.042466}, {"beta": 163, "loss": 8370297490.028082}, {"beta": 164, "loss": 8604045897.464384}, {"beta": 165, "loss": 8842939446.35137}, {"beta": 166, "loss": 9086978136.689041}, {"beta": 167, "loss": 9336161968.477398}, {"beta": 168, "loss": 9590490941.716438}, {"beta": 169, "loss": 9849965056.406164}, {"beta": 170, "loss": 10114584312.546576}, {"beta": 171, "loss": 10384348710.13767}, {"beta": 172, "loss": 10659258249.179453}, {"beta": 173, "loss": 10939312929.671917}, {"beta": 174, "loss": 11224512751.615068}, {"beta": 175, "loss": 11514857715.008904}, {"beta": 176, "loss": 11810347819.853424}, {"beta": 177, "loss": 12110983066.14863}, {"beta": 178, "loss": 12416763453.89452}, {"beta": 179, "loss": 12727688983.091095}, {"beta": 180, "loss": 13043759653.738356}, {"beta": 181, "loss": 13364975465.836302}, {"beta": 182, "loss": 13691336419.384932}, {"beta": 183, "loss": 14022842514.384247}, {"beta": 184, "loss": 14359493750.834246}, {"beta": 185, "loss": 14701290128.734932}, {"beta": 186, "loss": 15048231648.086302}, {"beta": 187, "loss": 15400318308.888355}, {"beta": 188, "loss": 15757550111.141096}, {"beta": 189, "loss": 16119927054.84452}, {"beta": 190, "loss": 16487449139.99863}, {"beta": 191, "loss": 16860116366.603424}, {"beta": 192, "loss": 17237928734.658905}, {"beta": 193, "loss": 17620886244.16507}, {"beta": 194, "loss": 18008988895.121918}, {"beta": 195, "loss": 18402236687.529453}, {"beta": 196, "loss": 18800629621.387672}, {"beta": 197, "loss": 19204167696.696575}, {"beta": 198, "loss": 19612850913.456165}, {"beta": 199, "loss": 20026679271.66644}, {"beta": 200, "loss": 20445652771.327396}, {"beta": 201, "loss": 20869771412.43904}, {"beta": 202, "loss": 21299035195.00137}, {"beta": 203, "loss": 21733444119.014385}, {"beta": 204, "loss": 22172998184.47808}, {"beta": 205, "loss": 22617697391.392467}, {"beta": 206, "loss": 23067541739.757534}, {"beta": 207, "loss": 23522531229.573288}, {"beta": 208, "loss": 23982665860.839725}, {"beta": 209, "loss": 24447945633.55685}, {"beta": 210, "loss": 24918370547.72466}, {"beta": 211, "loss": 25393940603.34315}, {"beta": 212, "loss": 25874655800.41233}, {"beta": 213, "loss": 26360516138.93219}, {"beta": 214, "loss": 26851521618.90274}, {"beta": 215, "loss": 27347672240.32397}, {"beta": 216, "loss": 27848968003.19589}, {"beta": 217, "loss": 28355408907.518494}, {"beta": 218, "loss": 28866994953.291782}, {"beta": 219, "loss": 29383726140.515755}, {"beta": 220, "loss": 29905602469.19041}, {"beta": 221, "loss": 30432623939.315754}, {"beta": 222, "loss": 30964790550.89178}, {"beta": 223, "loss": 31502102303.91849}, {"beta": 224, "loss": 32044559198.39589}, {"beta": 225, "loss": 32592161234.32397}, {"beta": 226, "loss": 33144908411.70274}, {"beta": 227, "loss": 33702800730.532192}, {"beta": 228, "loss": 34265838190.81233}, {"beta": 229, "loss": 34834020792.54315}, {"beta": 230, "loss": 35407348535.724655}, {"beta": 231, "loss": 35985821420.35685}, {"beta": 232, "loss": 36569439446.43973}, {"beta": 233, "loss": 37158202613.97329}, {"beta": 234, "loss": 37752110922.957535}, {"beta": 235, "loss": 38351164373.39246}, {"beta": 236, "loss": 38955362965.27808}, {"beta": 237, "loss": 39564706698.61438}, {"beta": 238, "loss": 40179195573.40137}, {"beta": 239, "loss": 40798829589.63904}, {"beta": 240, "loss": 41423608747.3274}, {"beta": 241, "loss": 42053533046.46644}, {"beta": 242, "loss": 42688602487.05617}, {"beta": 243, "loss": 43328817069.09657}, {"beta": 244, "loss": 43974176792.58767}, {"beta": 245, "loss": 44624681657.52945}, {"beta": 246, "loss": 45280331663.92192}, {"beta": 247, "loss": 45941126811.76507}, {"beta": 248, "loss": 46607067101.05891}, {"beta": 249, "loss": 47278152531.80342}, {"beta": 250, "loss": 47954383103.99863}, {"beta": 251, "loss": 48635758817.64452}, {"beta": 252, "loss": 49322279672.7411}, {"beta": 253, "loss": 50013945669.28835}, {"beta": 254, "loss": 50710756807.2863}, {"beta": 255, "loss": 51412713086.73493}, {"beta": 256, "loss": 52119814507.63425}, {"beta": 257, "loss": 52832061069.984245}, {"beta": 258, "loss": 53549452773.784935}, {"beta": 259, "loss": 54271989619.0363}, {"beta": 260, "loss": 54999671605.73836}, {"beta": 261, "loss": 55732498733.8911}, {"beta": 262, "loss": 56470471003.49452}, {"beta": 263, "loss": 57213588414.54863}, {"beta": 264, "loss": 57961850967.05342}, {"beta": 265, "loss": 58715258661.0089}, {"beta": 266, "loss": 59473811496.41507}, {"beta": 267, "loss": 60237509473.27192}, {"beta": 268, "loss": 61006352591.57945}, {"beta": 269, "loss": 61780340851.33767}, {"beta": 270, "loss": 62559474252.54658}, {"beta": 271, "loss": 63343752795.20616}, {"beta": 272, "loss": 64133176479.31644}, {"beta": 273, "loss": 64927745304.877396}, {"beta": 274, "loss": 65727459271.88904}, {"beta": 275, "loss": 66532318380.35137}, {"beta": 276, "loss": 67342322630.26438}, {"beta": 277, "loss": 68157472021.62808}, {"beta": 278, "loss": 68977766554.44246}, {"beta": 279, "loss": 69803206228.70753}, {"beta": 280, "loss": 70633791044.4233}, {"beta": 281, "loss": 71469521001.58972}, {"beta": 282, "loss": 72310396100.20685}, {"beta": 283, "loss": 73156416340.27466}, {"beta": 284, "loss": 74007581721.79315}, {"beta": 285, "loss": 74863892244.76233}, {"beta": 286, "loss": 75725347909.18219}, {"beta": 287, "loss": 76591948715.05273}, {"beta": 288, "loss": 77463694662.37398}, {"beta": 289, "loss": 78340585751.14589}, {"beta": 290, "loss": 79222621981.3685}, {"beta": 291, "loss": 80109803353.04178}, {"beta": 292, "loss": 81002129866.16576}, {"beta": 293, "loss": 81899601520.74042}, {"beta": 294, "loss": 82802218316.76575}, {"beta": 295, "loss": 83709980254.24178}, {"beta": 296, "loss": 84622887333.16849}, {"beta": 297, "loss": 85540939553.54588}, {"beta": 298, "loss": 86464136915.37398}, {"beta": 299, "loss": 87392479418.65274}]}}, {"mode": "vega-lite"});
+</script>
+</div>
+</div>
+</section>
+<section id="first-derivative" class="level2">
+<h2 class="anchored" data-anchor-id="first-derivative">First Derivative</h2>
+<p>We can rewrite the loss function <span class="math inline">\(J(\hat{\beta})\)</span> in a more friendly format:</p>
+<p><span class="math display">\[
+J(\hat{\beta}) = \frac{1}{2} \sum_{i=1}^n\left[y^{(i)}-\hat{\beta} x^{(i)}\right]^2
+\]</span></p>
+<p>The first derivative of <span class="math inline">\(J(\hat{\beta})\)</span> becomes:</p>
+<p><span class="math display">\[
+\frac{\partial}{\partial \hat{\beta}} J(\hat{\beta}) = -\sum_{i=1}^n\left[y^{(i)}-\hat{\beta} x^{(i)}\right]x^{(i)}
+\]</span></p>
+<p>We can use gradient descent to reach the minimum of loss function by taking the steps towards to direction indicated by the first derivative. For linear regression, a solution can be directly calculated because the loss function is convex, which can be proved by the second derivative.</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calculate_mse_prime(beta):</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Calculate the first derivative of mean squread error given beta.</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    mse_prime <span class="op">=</span> <span class="op">-</span>((housing[<span class="st">"SalePrice"</span>] <span class="op">-</span> housing[<span class="st">"GrLivArea"</span>] <span class="op">*</span> beta) <span class="op">*</span> housing[<span class="st">"GrLivArea"</span>]).<span class="bu">sum</span>()</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> mse_prime</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_mse_prime(low<span class="op">=</span><span class="dv">0</span>, high<span class="op">=</span><span class="dv">500</span>):</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">    Plot the first derivative of mean squread error given beta.</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    betas <span class="op">=</span> np.arange(low, high, <span class="dv">1</span>)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    prime <span class="op">=</span> np.vectorize(calculate_mse_prime)(betas)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    source <span class="op">=</span> pd.DataFrame({<span class="st">"beta"</span>: betas, <span class="st">"loss"</span>: prime})</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    chart <span class="op">=</span> alt.Chart(source).mark_line().encode(</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="st">"beta"</span>,</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>        y <span class="op">=</span> <span class="st">"loss"</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> chart</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>plot_mse_prime(low<span class="op">=</span><span class="dv">0</span>, high<span class="op">=</span><span class="dv">300</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="16">
+
+<div id="altair-viz-c9d8a4df6d4d4564b728d3a801235dce"></div>
+<script type="text/javascript">
+  var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
+  (function(spec, embedOpt){
+    let outputDiv = document.currentScript.previousElementSibling;
+    if (outputDiv.id !== "altair-viz-c9d8a4df6d4d4564b728d3a801235dce") {
+      outputDiv = document.getElementById("altair-viz-c9d8a4df6d4d4564b728d3a801235dce");
+    }
+    const paths = {
+      "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
+      "vega-lib": "https://cdn.jsdelivr.net/npm//vega-lib?noext",
+      "vega-lite": "https://cdn.jsdelivr.net/npm//vega-lite@4.17.0?noext",
+      "vega-embed": "https://cdn.jsdelivr.net/npm//vega-embed@6?noext",
+    };
+
+    function maybeLoadScript(lib, version) {
+      var key = `${lib.replace("-", "")}_version`;
+      return (VEGA_DEBUG[key] == version) ?
+        Promise.resolve(paths[lib]) :
+        new Promise(function(resolve, reject) {
+          var s = document.createElement('script');
+          document.getElementsByTagName("head")[0].appendChild(s);
+          s.async = true;
+          s.onload = () => {
+            VEGA_DEBUG[key] = version;
+            return resolve(paths[lib]);
+          };
+          s.onerror = () => reject(`Error loading script: ${paths[lib]}`);
+          s.src = paths[lib];
+        });
+    }
+
+    function showError(err) {
+      outputDiv.innerHTML = `<div class="error" style="color:red;">${err}</div>`;
+      throw err;
+    }
+
+    function displayChart(vegaEmbed) {
+      vegaEmbed(outputDiv, spec, embedOpt)
+        .catch(err => showError(`Javascript Error: ${err.message}<br>This usually means there's a typo in your chart specification. See the javascript console for the full traceback.`));
+    }
+
+    if(typeof define === "function" && define.amd) {
+      requirejs.config({paths});
+      require(["vega-embed"], displayChart, err => showError(`Error loading script: ${err.message}`));
+    } else {
+      maybeLoadScript("vega", "5")
+        .then(() => maybeLoadScript("vega-lite", "4.17.0"))
+        .then(() => maybeLoadScript("vega-embed", "6"))
+        .catch(showError)
+        .then(() => displayChart(vegaEmbed));
+    }
+  })({"config": {"view": {"continuousWidth": 400, "continuousHeight": 300}}, "data": {"name": "data-688e3cb0ee3b394d21143959c36b9323"}, "mark": "line", "encoding": {"x": {"field": "beta", "type": "quantitative"}, "y": {"field": "loss", "type": "quantitative"}}, "$schema": "https://vega.github.io/schema/vega-lite/v4.17.0.json", "datasets": {"data-688e3cb0ee3b394d21143959c36b9323": [{"beta": 0, "loss": -443462020418}, {"beta": 1, "loss": -439706067159}, {"beta": 2, "loss": -435950113900}, {"beta": 3, "loss": -432194160641}, {"beta": 4, "loss": -428438207382}, {"beta": 5, "loss": -424682254123}, {"beta": 6, "loss": -420926300864}, {"beta": 7, "loss": -417170347605}, {"beta": 8, "loss": -413414394346}, {"beta": 9, "loss": -409658441087}, {"beta": 10, "loss": -405902487828}, {"beta": 11, "loss": -402146534569}, {"beta": 12, "loss": -398390581310}, {"beta": 13, "loss": -394634628051}, {"beta": 14, "loss": -390878674792}, {"beta": 15, "loss": -387122721533}, {"beta": 16, "loss": -383366768274}, {"beta": 17, "loss": -379610815015}, {"beta": 18, "loss": -375854861756}, {"beta": 19, "loss": -372098908497}, {"beta": 20, "loss": -368342955238}, {"beta": 21, "loss": -364587001979}, {"beta": 22, "loss": -360831048720}, {"beta": 23, "loss": -357075095461}, {"beta": 24, "loss": -353319142202}, {"beta": 25, "loss": -349563188943}, {"beta": 26, "loss": -345807235684}, {"beta": 27, "loss": -342051282425}, {"beta": 28, "loss": -338295329166}, {"beta": 29, "loss": -334539375907}, {"beta": 30, "loss": -330783422648}, {"beta": 31, "loss": -327027469389}, {"beta": 32, "loss": -323271516130}, {"beta": 33, "loss": -319515562871}, {"beta": 34, "loss": -315759609612}, {"beta": 35, "loss": -312003656353}, {"beta": 36, "loss": -308247703094}, {"beta": 37, "loss": -304491749835}, {"beta": 38, "loss": -300735796576}, {"beta": 39, "loss": -296979843317}, {"beta": 40, "loss": -293223890058}, {"beta": 41, "loss": -289467936799}, {"beta": 42, "loss": -285711983540}, {"beta": 43, "loss": -281956030281}, {"beta": 44, "loss": -278200077022}, {"beta": 45, "loss": -274444123763}, {"beta": 46, "loss": -270688170504}, {"beta": 47, "loss": -266932217245}, {"beta": 48, "loss": -263176263986}, {"beta": 49, "loss": -259420310727}, {"beta": 50, "loss": -255664357468}, {"beta": 51, "loss": -251908404209}, {"beta": 52, "loss": -248152450950}, {"beta": 53, "loss": -244396497691}, {"beta": 54, "loss": -240640544432}, {"beta": 55, "loss": -236884591173}, {"beta": 56, "loss": -233128637914}, {"beta": 57, "loss": -229372684655}, {"beta": 58, "loss": -225616731396}, {"beta": 59, "loss": -221860778137}, {"beta": 60, "loss": -218104824878}, {"beta": 61, "loss": -214348871619}, {"beta": 62, "loss": -210592918360}, {"beta": 63, "loss": -206836965101}, {"beta": 64, "loss": -203081011842}, {"beta": 65, "loss": -199325058583}, {"beta": 66, "loss": -195569105324}, {"beta": 67, "loss": -191813152065}, {"beta": 68, "loss": -188057198806}, {"beta": 69, "loss": -184301245547}, {"beta": 70, "loss": -180545292288}, {"beta": 71, "loss": -176789339029}, {"beta": 72, "loss": -173033385770}, {"beta": 73, "loss": -169277432511}, {"beta": 74, "loss": -165521479252}, {"beta": 75, "loss": -161765525993}, {"beta": 76, "loss": -158009572734}, {"beta": 77, "loss": -154253619475}, {"beta": 78, "loss": -150497666216}, {"beta": 79, "loss": -146741712957}, {"beta": 80, "loss": -142985759698}, {"beta": 81, "loss": -139229806439}, {"beta": 82, "loss": -135473853180}, {"beta": 83, "loss": -131717899921}, {"beta": 84, "loss": -127961946662}, {"beta": 85, "loss": -124205993403}, {"beta": 86, "loss": -120450040144}, {"beta": 87, "loss": -116694086885}, {"beta": 88, "loss": -112938133626}, {"beta": 89, "loss": -109182180367}, {"beta": 90, "loss": -105426227108}, {"beta": 91, "loss": -101670273849}, {"beta": 92, "loss": -97914320590}, {"beta": 93, "loss": -94158367331}, {"beta": 94, "loss": -90402414072}, {"beta": 95, "loss": -86646460813}, {"beta": 96, "loss": -82890507554}, {"beta": 97, "loss": -79134554295}, {"beta": 98, "loss": -75378601036}, {"beta": 99, "loss": -71622647777}, {"beta": 100, "loss": -67866694518}, {"beta": 101, "loss": -64110741259}, {"beta": 102, "loss": -60354788000}, {"beta": 103, "loss": -56598834741}, {"beta": 104, "loss": -52842881482}, {"beta": 105, "loss": -49086928223}, {"beta": 106, "loss": -45330974964}, {"beta": 107, "loss": -41575021705}, {"beta": 108, "loss": -37819068446}, {"beta": 109, "loss": -34063115187}, {"beta": 110, "loss": -30307161928}, {"beta": 111, "loss": -26551208669}, {"beta": 112, "loss": -22795255410}, {"beta": 113, "loss": -19039302151}, {"beta": 114, "loss": -15283348892}, {"beta": 115, "loss": -11527395633}, {"beta": 116, "loss": -7771442374}, {"beta": 117, "loss": -4015489115}, {"beta": 118, "loss": -259535856}, {"beta": 119, "loss": 3496417403}, {"beta": 120, "loss": 7252370662}, {"beta": 121, "loss": 11008323921}, {"beta": 122, "loss": 14764277180}, {"beta": 123, "loss": 18520230439}, {"beta": 124, "loss": 22276183698}, {"beta": 125, "loss": 26032136957}, {"beta": 126, "loss": 29788090216}, {"beta": 127, "loss": 33544043475}, {"beta": 128, "loss": 37299996734}, {"beta": 129, "loss": 41055949993}, {"beta": 130, "loss": 44811903252}, {"beta": 131, "loss": 48567856511}, {"beta": 132, "loss": 52323809770}, {"beta": 133, "loss": 56079763029}, {"beta": 134, "loss": 59835716288}, {"beta": 135, "loss": 63591669547}, {"beta": 136, "loss": 67347622806}, {"beta": 137, "loss": 71103576065}, {"beta": 138, "loss": 74859529324}, {"beta": 139, "loss": 78615482583}, {"beta": 140, "loss": 82371435842}, {"beta": 141, "loss": 86127389101}, {"beta": 142, "loss": 89883342360}, {"beta": 143, "loss": 93639295619}, {"beta": 144, "loss": 97395248878}, {"beta": 145, "loss": 101151202137}, {"beta": 146, "loss": 104907155396}, {"beta": 147, "loss": 108663108655}, {"beta": 148, "loss": 112419061914}, {"beta": 149, "loss": 116175015173}, {"beta": 150, "loss": 119930968432}, {"beta": 151, "loss": 123686921691}, {"beta": 152, "loss": 127442874950}, {"beta": 153, "loss": 131198828209}, {"beta": 154, "loss": 134954781468}, {"beta": 155, "loss": 138710734727}, {"beta": 156, "loss": 142466687986}, {"beta": 157, "loss": 146222641245}, {"beta": 158, "loss": 149978594504}, {"beta": 159, "loss": 153734547763}, {"beta": 160, "loss": 157490501022}, {"beta": 161, "loss": 161246454281}, {"beta": 162, "loss": 165002407540}, {"beta": 163, "loss": 168758360799}, {"beta": 164, "loss": 172514314058}, {"beta": 165, "loss": 176270267317}, {"beta": 166, "loss": 180026220576}, {"beta": 167, "loss": 183782173835}, {"beta": 168, "loss": 187538127094}, {"beta": 169, "loss": 191294080353}, {"beta": 170, "loss": 195050033612}, {"beta": 171, "loss": 198805986871}, {"beta": 172, "loss": 202561940130}, {"beta": 173, "loss": 206317893389}, {"beta": 174, "loss": 210073846648}, {"beta": 175, "loss": 213829799907}, {"beta": 176, "loss": 217585753166}, {"beta": 177, "loss": 221341706425}, {"beta": 178, "loss": 225097659684}, {"beta": 179, "loss": 228853612943}, {"beta": 180, "loss": 232609566202}, {"beta": 181, "loss": 236365519461}, {"beta": 182, "loss": 240121472720}, {"beta": 183, "loss": 243877425979}, {"beta": 184, "loss": 247633379238}, {"beta": 185, "loss": 251389332497}, {"beta": 186, "loss": 255145285756}, {"beta": 187, "loss": 258901239015}, {"beta": 188, "loss": 262657192274}, {"beta": 189, "loss": 266413145533}, {"beta": 190, "loss": 270169098792}, {"beta": 191, "loss": 273925052051}, {"beta": 192, "loss": 277681005310}, {"beta": 193, "loss": 281436958569}, {"beta": 194, "loss": 285192911828}, {"beta": 195, "loss": 288948865087}, {"beta": 196, "loss": 292704818346}, {"beta": 197, "loss": 296460771605}, {"beta": 198, "loss": 300216724864}, {"beta": 199, "loss": 303972678123}, {"beta": 200, "loss": 307728631382}, {"beta": 201, "loss": 311484584641}, {"beta": 202, "loss": 315240537900}, {"beta": 203, "loss": 318996491159}, {"beta": 204, "loss": 322752444418}, {"beta": 205, "loss": 326508397677}, {"beta": 206, "loss": 330264350936}, {"beta": 207, "loss": 334020304195}, {"beta": 208, "loss": 337776257454}, {"beta": 209, "loss": 341532210713}, {"beta": 210, "loss": 345288163972}, {"beta": 211, "loss": 349044117231}, {"beta": 212, "loss": 352800070490}, {"beta": 213, "loss": 356556023749}, {"beta": 214, "loss": 360311977008}, {"beta": 215, "loss": 364067930267}, {"beta": 216, "loss": 367823883526}, {"beta": 217, "loss": 371579836785}, {"beta": 218, "loss": 375335790044}, {"beta": 219, "loss": 379091743303}, {"beta": 220, "loss": 382847696562}, {"beta": 221, "loss": 386603649821}, {"beta": 222, "loss": 390359603080}, {"beta": 223, "loss": 394115556339}, {"beta": 224, "loss": 397871509598}, {"beta": 225, "loss": 401627462857}, {"beta": 226, "loss": 405383416116}, {"beta": 227, "loss": 409139369375}, {"beta": 228, "loss": 412895322634}, {"beta": 229, "loss": 416651275893}, {"beta": 230, "loss": 420407229152}, {"beta": 231, "loss": 424163182411}, {"beta": 232, "loss": 427919135670}, {"beta": 233, "loss": 431675088929}, {"beta": 234, "loss": 435431042188}, {"beta": 235, "loss": 439186995447}, {"beta": 236, "loss": 442942948706}, {"beta": 237, "loss": 446698901965}, {"beta": 238, "loss": 450454855224}, {"beta": 239, "loss": 454210808483}, {"beta": 240, "loss": 457966761742}, {"beta": 241, "loss": 461722715001}, {"beta": 242, "loss": 465478668260}, {"beta": 243, "loss": 469234621519}, {"beta": 244, "loss": 472990574778}, {"beta": 245, "loss": 476746528037}, {"beta": 246, "loss": 480502481296}, {"beta": 247, "loss": 484258434555}, {"beta": 248, "loss": 488014387814}, {"beta": 249, "loss": 491770341073}, {"beta": 250, "loss": 495526294332}, {"beta": 251, "loss": 499282247591}, {"beta": 252, "loss": 503038200850}, {"beta": 253, "loss": 506794154109}, {"beta": 254, "loss": 510550107368}, {"beta": 255, "loss": 514306060627}, {"beta": 256, "loss": 518062013886}, {"beta": 257, "loss": 521817967145}, {"beta": 258, "loss": 525573920404}, {"beta": 259, "loss": 529329873663}, {"beta": 260, "loss": 533085826922}, {"beta": 261, "loss": 536841780181}, {"beta": 262, "loss": 540597733440}, {"beta": 263, "loss": 544353686699}, {"beta": 264, "loss": 548109639958}, {"beta": 265, "loss": 551865593217}, {"beta": 266, "loss": 555621546476}, {"beta": 267, "loss": 559377499735}, {"beta": 268, "loss": 563133452994}, {"beta": 269, "loss": 566889406253}, {"beta": 270, "loss": 570645359512}, {"beta": 271, "loss": 574401312771}, {"beta": 272, "loss": 578157266030}, {"beta": 273, "loss": 581913219289}, {"beta": 274, "loss": 585669172548}, {"beta": 275, "loss": 589425125807}, {"beta": 276, "loss": 593181079066}, {"beta": 277, "loss": 596937032325}, {"beta": 278, "loss": 600692985584}, {"beta": 279, "loss": 604448938843}, {"beta": 280, "loss": 608204892102}, {"beta": 281, "loss": 611960845361}, {"beta": 282, "loss": 615716798620}, {"beta": 283, "loss": 619472751879}, {"beta": 284, "loss": 623228705138}, {"beta": 285, "loss": 626984658397}, {"beta": 286, "loss": 630740611656}, {"beta": 287, "loss": 634496564915}, {"beta": 288, "loss": 638252518174}, {"beta": 289, "loss": 642008471433}, {"beta": 290, "loss": 645764424692}, {"beta": 291, "loss": 649520377951}, {"beta": 292, "loss": 653276331210}, {"beta": 293, "loss": 657032284469}, {"beta": 294, "loss": 660788237728}, {"beta": 295, "loss": 664544190987}, {"beta": 296, "loss": 668300144246}, {"beta": 297, "loss": 672056097505}, {"beta": 298, "loss": 675812050764}, {"beta": 299, "loss": 679568004023}]}}, {"mode": "vega-lite"});
+</script>
+</div>
+</div>
+</section>
+<section id="second-derivative" class="level2">
+<h2 class="anchored" data-anchor-id="second-derivative">Second Derivative</h2>
+<p>From the plot, we can already tell the first derivative is a straight line. This can be expressed as the second derivative of the loss function:</p>
+<p><span class="math display">\[
+\frac{\partial^2}{\partial^2 \hat{\beta}} J(\hat{\beta}) = \sum_{i=1}^n \left[x^{(i)}\right]^2
+\]</span></p>
+<p>Which is a positive constant number.</p>
+</section>
+<section id="optimization" class="level2">
+<h2 class="anchored" data-anchor-id="optimization">Optimization</h2>
+<p>The second derivative gives us indication that the loss function is convex. So we can set first derivative to zero to get the global minumum.</p>
+<p><span class="math display">\[
+\begin{aligned}
+   \frac{\partial}{\partial \beta^*} J(\beta^*) &amp;= 0 \\
+   \sum_{i=1}^n\left[y^{(i)}-\beta^* x^{(i)}\right] x^{(i)} &amp;= 0 \\
+   \sum_{i=1}^n y^{(i)} &amp;= \sum_{i=1}^n \beta^* x^{(i)} \\
+   \beta^* &amp;= \frac{\sum_{i=1}^n y^{(i)}}{\sum_{i=1}^n x^{(i)}}  
+\end{aligned}
+\]</span></p>
+<p>On your exercise, the matrix form is used to accomodate intercept term and more features. For example, if we add an intercept to our equation:</p>
+<p><span class="math display">\[
+\text{price} = \beta_0 + \beta_1 \times \text{area}
+\]</span></p>
+We can rewrite <span class="math inline">\(\beta\)</span> as <span class="math inline">\(\begin{bmatrix}  \beta_0 \\  \beta_1 \end{bmatrix}\)</span>, the feature <span class="math inline">\(X\)</span> as $
+<span class="math display">\[\begin{bmatrix}
+   1 &amp; x^{(0)} \\
+   1 &amp; x^{(1)} \\
+   \vdots &amp; \vdots   \\
+   1 &amp; x^{(n)} \\
+\end{bmatrix}\]</span>
+<p>$, and the equation becomes:</p>
+<p><span class="math display">\[
+\hat{y} = X \hat{\beta}
+\]</span></p>
+<p>From <a href="https://www.khanacademy.org/math/precalculus/x9e81a4f98389efdf:matrices/x9e81a4f98389efdf:properties-of-matrix-multiplication/a/properties-of-matrix-multiplication">properties of matrix multiplication</a>, we know that $(AB)^= B<sup>A</sup>$ and <span class="math inline">\(A(B+C) = AB + AC\)</span>. The loss function becomes:</p>
+<p><span class="math display">\[
+\begin{aligned}
+J(\hat{\beta}) &amp;= \frac{1}{2} \left[ (\hat{y} - X \hat{\beta})^\top (\hat{y} - X \hat{\beta}) \right] \\
+&amp;= \frac{1}{2} \left[(y - X\hat{\beta})^\top y - (y - X\hat{\beta})^\top X\hat{\beta} \right]\\
+&amp;= \frac{1}{2} \left[y^\top y - (X\hat{\beta})^\top y - y^\top X\hat{\beta} + (X\hat{\beta})^\top X\hat{\beta} \right]\\
+&amp;= \frac{1}{2} \left[y^\top y - \hat{\beta}^\top X^\top y - y^\top X\hat{\beta} + \hat{\beta}^\top X^\top X\hat{\beta} \right]
+\end{aligned}
+\]</span></p>
+<p>The first derivative to the loss function is the Jacobian matrix:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\nabla_{\hat{\beta}} J(\hat{\beta}) &amp;=\nabla_{\hat{\beta}} \frac{1}{2} \left[y^\top y - \hat{\beta}^\top X^\top y - y^\top X\hat{\beta} + \hat{\beta}^\top X^\top X\hat{\beta} \right] \\
+\end{aligned}
+\]</span></p>
+<p>The first item <span class="math inline">\(y^\top y\)</span> can be ignored since it has nothing to do with <span class="math inline">\(\beta\)</span>. The second and third term are both scaler and are transpose of each other. Therefore these two terms can be combined:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\nabla_{\hat{\beta}} J(\hat{\beta}) &amp;= \nabla_{\hat{\beta}} \frac{1}{2} \left[y^\top y - \hat{\beta}^\top X^\top y - y^\top X\hat{\beta} + \hat{\beta}^\top X^\top X\hat{\beta} \right] \\
+\nabla_{\hat{\beta}} J(\hat{\beta}) &amp;= \nabla_{\hat{\beta}} \frac{1}{2} \left[- 2 (X^\top y)^\top \hat{\beta} + \hat{\beta}^\top X^\top X\hat{\beta} \right] \\
+\end{aligned}
+\]</span></p>
+<p>It is trivial to see that <span class="math inline">\(\nabla_{\hat{\beta}} \left[ 2 (X^\top y)^\top \hat{\beta} \right] = 2 X^\top y\)</span>.</p>
+<p>For <span class="math inline">\(\nabla_{\hat{\beta}} \left[ \hat{\beta}^\top X^\top X\hat{\beta} \right]\)</span>, suppose we have a symetric matrix <span class="math inline">\(A=\begin{bmatrix} a_{11} &amp; a_{12} \\ a_{12} &amp; a_{22} \end{bmatrix}\)</span> in place of <span class="math inline">\(X^\top X\)</span>. The original equation becomes <span class="math inline">\(\hat{\beta}^\top A \hat{\beta}\)</span>, which can be decomposed into:</p>
+$$
+<span class="math display">\[\begin{aligned}
+\hat{\beta}^\top A \hat{\beta}
+=&amp;
+
+\begin{bmatrix}
+\hat{\beta}_0 &amp; \hat{\beta}_1
+\end{bmatrix}
+
+\begin{bmatrix}
+a_{11} &amp; a_{12} \\
+a_{12} &amp; a_{22}
+\end{bmatrix}
+
+\begin{bmatrix}
+\hat{\beta}_0 \\
+\hat{\beta}_1
+\end{bmatrix}\\
+
+=&amp;
+\begin{bmatrix}
+\hat{\beta}_0 &amp; \hat{\beta}_1
+\end{bmatrix}
+
+\begin{bmatrix}
+a_{11} \hat{\beta}_0 + a_{12} \hat{\beta}_1 \\
+a_{12} \hat{\beta}_0 + a_{22} \hat{\beta}_1
+\end{bmatrix}\\
+
+=&amp; \hat{\beta}_0 (a_{11} \hat{\beta}_0+a_{12} \hat{\beta}_1) +\hat{\beta}_1 (a_{12} \hat{\beta}_0+a_{22} \hat{\beta}_1) \\
+
+=&amp; a_{11} \hat{\beta}_0^2 + a_{22} \hat{\beta}_1^2+ 2 a_{12} \hat{\beta}_0 \hat{\beta}_1
+
+\end{aligned}\]</span>
+<p>$$</p>
+<p>The Jacobian matrix of <span class="math inline">\(\hat{\beta}^\top A \hat{\beta}\)</span> is therefore:</p>
+<p><span class="math display">\[
+\nabla_{\hat{\beta}}\hat{\beta}^TA\hat{\beta} =
+\begin{bmatrix}
+\frac{\partial \hat{\beta}^TA\hat{\beta}}{\partial \hat{\beta}_0}\\
+\frac{\partial \hat{\beta}^TA\hat{\beta}}{\partial \hat{\beta}_1}
+\end{bmatrix} =
+\begin{bmatrix}
+2a_{11}\hat{\beta}_0 + 2a_{12}\hat{\beta}_1\\
+2a_{12}\hat{\beta}_0 + 2a_{22}\hat{\beta}_1
+\end{bmatrix} = 2A\hat{\beta}
+\]</span></p>
+<p>And the Jacobian matrix of <span class="math inline">\(\hat{\beta}^\top X^\top X \hat{\beta}\)</span> is <span class="math inline">\(2X^\top X\hat{\beta}\)</span>. we have</p>
+<p><span class="math display">\[
+\begin{aligned}
+\nabla_{\hat{\beta}} J(\hat{\beta}) &amp;= \nabla_{\hat{\beta}} \frac{1}{2} \left[- 2 (X^\top y)^\top \hat{\beta} + \hat{\beta}^\top X^\top X\hat{\beta} \right] \\
+&amp;= - X^\top y + X^\top X\hat{\beta}
+\end{aligned}
+\]</span></p>
+<p>To show that the loss function is convex you need to show that the second derivative of the function, known as the Hessian matirx, is positive semi-definite. This step can be skipped. Set the Jacobian matrix to 0, you will get the normal equation.</p>
+</section>
+</section>
+<section id="further-reading" class="level1">
+<h1>Further Reading</h1>
+<p><a href="https://mlu-explain.github.io/linear-regression/">Linear Regression - MLU</a><br>
+<a href="https://cs229.stanford.edu/summer2020/cs229-linalg.pdf">Linear Algebra Review and Reference</a><br>
+<a href="https://explained.ai/matrix-calculus/index.html">The Matrix Calculus You Need For Deep Learning</a><br>
+<a href="http://cs229.stanford.edu/notes2021fall/cs229-notes1.pdf">Lecture Notes 1 - CS229</a><br>
+<a href="https://iewaij.github.io/introDataScience/OLS.html">最小二乘法线性回归：矩阵视角 (Chinese)</a></p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
