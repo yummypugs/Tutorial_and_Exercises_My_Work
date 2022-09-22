@@ -130,7 +130,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <section id="housing-prices" class="level1">
 <h1>Housing Prices</h1>
-<p>For this tutorial, let us use <a href="https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques/data">Ames Housing dataset</a> on Kaggle to explore the housing prices. One simpliest way to model housing prices is a “multiple” measure between between housing area and price:</p>
+<p>For this tutorial, let us use <a href="https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques/data">Ames Housing dataset</a> on Kaggle to explore the housing prices. One simplest way to model housing prices is a “multiple” measure between between housing area and price:</p>
 <p><span class="math display">\[
 \text{price} = \beta \times \text{area}
 \]</span></p>
@@ -147,15 +147,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> <span class="st">"GrLivArea"</span>,</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> <span class="st">"SalePrice"</span></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="10">
+<div class="cell-output cell-output-display" data-execution_count="42">
 
-<div id="altair-viz-e432342004d84bcba83b90660744261b"></div>
+<div id="altair-viz-a38453bd321440aa87f758d8c989ad05"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-e432342004d84bcba83b90660744261b") {
-      outputDiv = document.getElementById("altair-viz-e432342004d84bcba83b90660744261b");
+    if (outputDiv.id !== "altair-viz-a38453bd321440aa87f758d8c989ad05") {
+      outputDiv = document.getElementById("altair-viz-a38453bd321440aa87f758d8c989ad05");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -259,7 +259,7 @@ J(\hat{\beta})
 </div>
 <div class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>calculate_mse(<span class="dv">80</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="12">
+<div class="cell-output cell-output-display" data-execution_count="44">
 <pre><code>6905142769.90274</code></pre>
 </div>
 </div>
@@ -280,15 +280,15 @@ J(\hat{\beta})
 </div>
 <div class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>plot_mse(low<span class="op">=</span><span class="dv">0</span>, high<span class="op">=</span><span class="dv">300</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="14">
+<div class="cell-output cell-output-display" data-execution_count="46">
 
-<div id="altair-viz-8c281c76b07a4c6ca70152de3c0f07da"></div>
+<div id="altair-viz-887ee0991afd4021826a549cab927efe"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-8c281c76b07a4c6ca70152de3c0f07da") {
-      outputDiv = document.getElementById("altair-viz-8c281c76b07a4c6ca70152de3c0f07da");
+    if (outputDiv.id !== "altair-viz-887ee0991afd4021826a549cab927efe") {
+      outputDiv = document.getElementById("altair-viz-887ee0991afd4021826a549cab927efe");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -373,15 +373,15 @@ J(\hat{\beta}) = \frac{1}{2} \sum_{i=1}^n\left[y^{(i)}-\hat{\beta} x^{(i)}\right
 </div>
 <div class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>plot_mse_prime(low<span class="op">=</span><span class="dv">0</span>, high<span class="op">=</span><span class="dv">300</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="16">
+<div class="cell-output cell-output-display" data-execution_count="48">
 
-<div id="altair-viz-c9d8a4df6d4d4564b728d3a801235dce"></div>
+<div id="altair-viz-390de53888364da6acbe123e6fcada4f"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-c9d8a4df6d4d4564b728d3a801235dce") {
-      outputDiv = document.getElementById("altair-viz-c9d8a4df6d4d4564b728d3a801235dce");
+    if (outputDiv.id !== "altair-viz-390de53888364da6acbe123e6fcada4f") {
+      outputDiv = document.getElementById("altair-viz-390de53888364da6acbe123e6fcada4f");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -442,7 +442,7 @@ J(\hat{\beta}) = \frac{1}{2} \sum_{i=1}^n\left[y^{(i)}-\hat{\beta} x^{(i)}\right
 </section>
 <section id="optimization" class="level2">
 <h2 class="anchored" data-anchor-id="optimization">Optimization</h2>
-<p>The second derivative gives us indication that the loss function is convex. So we can set first derivative to zero to get the global minumum.</p>
+<p>The second derivative gives us indication that the loss function is convex. So we can set first derivative to zero to get the global minimum.</p>
 <p><span class="math display">\[
 \begin{aligned}
    \frac{\partial}{\partial \beta^*} J(\beta^*) &amp;= 0 \\
@@ -451,7 +451,7 @@ J(\hat{\beta}) = \frac{1}{2} \sum_{i=1}^n\left[y^{(i)}-\hat{\beta} x^{(i)}\right
    \beta^* &amp;= \frac{\sum_{i=1}^n y^{(i)}}{\sum_{i=1}^n x^{(i)}}  
 \end{aligned}
 \]</span></p>
-<p>On your exercise, the matrix form is used to accomodate intercept term and more features. For example, if we add an intercept to our equation:</p>
+<p>On your exercise, the matrix form is used to accommodate intercept term and more features. For example, if we add an intercept to our equation:</p>
 <p><span class="math display">\[
 \text{price} = \beta_0 + \beta_1 \times \text{area}
 \]</span></p>
@@ -544,7 +544,7 @@ a_{12} \hat{\beta}_0 + a_{22} \hat{\beta}_1
 &amp;= - X^\top y + X^\top X\hat{\beta}
 \end{aligned}
 \]</span></p>
-<p>To show that the loss function is convex you need to show that the second derivative of the function, known as the Hessian matirx, is positive semi-definite. This step can be skipped. Set the Jacobian matrix to 0, you will get the normal equation.</p>
+<p>To show that the loss function is convex you need to show that the second derivative of the function, known as the Hessian matrix, is positive semi-definite. This step can be skipped. Set the Jacobian matrix to 0, you will get the normal equation.</p>
 </section>
 </section>
 <section id="further-reading" class="level1">
