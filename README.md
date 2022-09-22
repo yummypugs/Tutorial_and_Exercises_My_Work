@@ -7,7 +7,7 @@ of Finance and Management.
 ## Tutorials
 
 [Tutorial 1: Setup and Introduction to Python and Pandas](https://iewaij.quarto.pub/tutorial-1-setup-and-introduction-to-python-and-pandas/)  
-[Tutorial 2: Dimensionality Reduction](https://iewaij.quarto.pub/tutorial-2-dimensionality-reduction/)
+[Tutorial 2: Dimensionality Reduction](https://iewaij.quarto.pub/tutorial-2-dimensionality-reduction/)  
 [Tutorial 3: Loss and Optimization](https://iewaij.quarto.pub/tutorial-3-loss-and-optimization/)
 
 ## Setup
