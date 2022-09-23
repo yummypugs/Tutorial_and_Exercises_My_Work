@@ -1,0 +1,400 @@
+---
+title: 'Tutorial 4: Data Science as Craftsmanship'
+author: Jiawei Li
+editor:
+  render-on-save: true
+execute:
+  warning: false
+jupyter: python3
+---
+
+# Analysis, Tools and Craftsmanship
+
+Data Science is never about using one tool to solve all problems, but picking the right tool for the appropriate ones. The practice of Data Science has become half science and half engineering. This means that you are continuously figuring out the problem you are trying to solve, understanding principles of different steps in the workflow, and apply different tools accordingly.
+
+The academia and industry dealing with data and science is often messy and chaotic. One prime example is the usage of Excel. See [why using Microsoft's tool caused Covid-19 results to be lost](https://www.bbc.com/news/technology-54423988), [its Hacker News discussion](https://news.ycombinator.com/item?id=24689247), [scientists rename human genes to stop Microsoft Excel from misreading them as dates](https://www.theverge.com/2020/8/6/21355674/human-genes-rename-microsoft-excel-misreading-dates) and [science as amateur software development](https://www.youtube.com/watch?v=zwRdO9_GGhY). Personally, I believe that Excel should never be used for any computation. Today, programming languages offer a much better abstraction layer than Excel. And software engineering practices make data analysis much less error-prone. 
+
+Of course, mistakes can still happen even when you are using programming languages and state-of-the-art libraries, unmaintainable and unreproducible data analysis using notebooks is equally bad as using Excel. But, there are certain conventions, tools and practices that help you navigate in this complex work flow and produce something meaningful. Thus, I call the process of producing good data analysis a craftsmanship. This tutorial will walk you through the process of making an efficient, maintainable and reproducible data analysis project.
+
+![Data Science by talking v.s. Data Science in real life](data_science.jpg)
+
+## Further Reading
+
+[I Don't Like Notebooks - Joel Grus](https://www.youtube.com/watch?v=7jiPeIFXb6U)  
+[I Like Notebooks - Jeremy Howard](https://www.youtube.com/watch?v=9Q6sLbz37gk)  
+[Science as Amateur Software Development - Richard McElreath](https://www.youtube.com/watch?v=zwRdO9_GGhY)  
+[The Natural Selection of Bad Science](https://royalsocietypublishing.org/doi/10.1098/rsos.160384)  
+[Operationalizing Machine Learning: An Interview Study](https://arxiv.org/abs/2209.09125)  
+[When We Build - Wilson Miner](https://vimeo.com/34017777)  
+[The Future of Programming - Bret Victor](https://www.youtube.com/watch?v=8pTEmbeENF4)
+
+# Git
+
+Git is the fundamental tool for collaboration. By now, you should have some ideas of using Git. Let us start by creating a Git repository on GitHub.
+
+Then we clone the repository and create a new git branch:
+
+```
+git branch dev
+```
+
+We use `environment.yml` to set up a new conda environment.
+
+```
+mamba env create -f environment.yml
+```
+
+Feel free to invite my Github and Gitlab handle `iewaij` into your repository. I will review your code and make suggestions from time to time.
+
+# Style and Convention
+
+Convention makes our brain hurt less. Code is written for humans to read, only incidentally for machines to execute (quote from Harold Abelson). PEP 20, known as the Zen of Python, is about style and how to write Pythonic code.
+
+``` {python}
+import this
+```
+
+PEP 8 specifies the standard Python coding conventions. For example, we use 4 consec­utive spaces to indicate indent­ation. Variables are named as `x`, `var`, `my_var­iable` while classes are named as `Model`, `MyClass`. There are certain libraries to help you conform to the style guide. I will illustrate using [`black`](https://github.com/psf/black). If you are using Jupyter Lab or Jupyter Notebooks, you can use [nb_black](https://github.com/dnanhkhoa/nb_black) or [jupyterlab-code-formatter](https://github.com/ryantam626/jupyterlab_code_formatter).
+
+## Further Reading
+
+[Black Tutorial - Calmcode](https://calmcode.io/black/introduction.html)  
+[Pythonic Syntax and Common Pitfalls - Mastering Python](https://www.packtpub.com/product/mastering-python/9781800207721)
+
+# Prepare Data
+
+Now, with things set up and running, we can finally get our hands on data. Often, the data you have is not clean. We need to clean the data into a tidy format. What do we mean by that? 
+
+[Tidy data](http://www.jstatsoft.org/v59/i10/paper) is a concept proposed by Hadley Wickham. Wickham formulizes the process of data cleaning and what we should expect in the end. The three interrelated rules that make a dataset tidy are:
+
+1. Each variable must have its own column.
+2. Each observation must have its own row.
+3. Each value must have its own cell.
+
+![Following three rules makes a dataset tidy: variables are in columns, observations are in rows, and values are in cells.](https://d33wubrfki0l68.cloudfront.net/6f1ddb544fc5c69a2478e444ab8112fb0eea23f8/91adc/images/tidy-1.png)
+
+Take the mushroom dataset in tutorial 2 for example. We can see that the `stem-height` and `stem-width` fields are text fields indicating the range. To tidy this data for future processing, we need to convert this range either into the mean values or into separate columns such as `stem-height-low` and `stem-height-high`.
+
+``` {python}
+import pandas as pd
+
+mushroom = pd.read_csv("https://mushroom.mathematik.uni-marburg.de/files/PrimaryData/primary_data_edited.csv", sep=";")
+mushroom.loc[:5, ["stem-height", "stem-width"]]
+```
+
+After cleaning the dataset, we should also check for data types and missing values. Here, I use the [birthday dataset](https://calmcode.io/datasets/birthdays.html) that contains births across the United States per state. 
+
+``` {python}
+brithdays = pd.read_csv("https://calmcode.io/datasets/birthdays.csv")
+brithdays.head(5)
+```
+
+The dataset seems pretty tidy, now we use `info()` to check the data types and missing values.
+
+``` {python}
+brithdays.info()
+```
+
+There are no missing values, but the date is not recognized by pandas. We can ask pandas explicitly to parse the date column when reading the csv file.
+
+``` {python}
+brithdays = pd.read_csv("https://calmcode.io/datasets/birthdays.csv", parse_dates=["date"])
+brithdays.info()
+```
+
+It should be noted that preparing data does not have to be done in Python. If you are dealing with large dataset in a database, it makes more sense to query them using SQL. Pandas is also not perfect, [polars](https://pola-rs.github.io/polars-book/user-guide/) and [DuckDB](https://duckdb.org/docs/) can be very good alternatives as well.
+
+## Further Reading
+
+[Tidy Data](https://r4ds.had.co.nz/tidy-data.html)  
+[Tidy Data in Python](https://www.jeannicholashould.com/tidy-data-in-python.html)
+
+# Abstraction
+
+As soon as you have made some progress in your notebooks, you should put them into functions with docstrings. For example, here I made summarization using `groupby()`.
+
+``` {python}
+brithdays["day_of_year"] = brithdays["date"].dt.dayofyear
+brithdays = brithdays.groupby(["date", "wday", "day_of_year"]).agg(
+    births=("births", "sum"), month=("month", "first")
+).reset_index()
+brithdays.head(5)
+```
+
+I'm happy with the final product, so I will move it to another `.py` file and import it. In the `birthday.py` file, I defined the following function:
+
+```python
+def clean_dataset(frame):
+    """
+    Clean birthdays dataset.
+
+    Args:
+        frame (pd.DataFrame): The data frame to be cleaned
+    
+    Returns:
+        pd.DataFrame: The cleaned data frame
+    """
+    frame["day_of_year"] = frame["date"].dt.dayofyear
+    frame = frame.groupby(["date", "wday", "day_of_year"]).agg(
+        births=("births", "sum"), month=("month", "first")
+    ).reset_index()
+    return frame
+```
+
+``` {python}
+from birthday import clean_dataset
+
+brithdays = pd.read_csv("https://calmcode.io/datasets/birthdays.csv", parse_dates=["date"])
+brithdays = brithdays.pipe(clean_dataset)
+brithdays.head(5)
+```
+
+In order for notebooks to pick up your changes without restarting every time, you should use an IPython extension called [`autoload`](https://ipython.readthedocs.io/en/stable/config/extensions/autoreload.html).
+
+```python
+%load_ext autoreload
+%autoreload 2
+import birthday
+```
+
+# Unit Test
+
+One reason that we should use functions more often is that they make it easy for testing. One way is to use `doctest`. Add example code into your function's doc string:
+
+```python
+def clean_dataset(frame):
+    """
+    Clean birthdays dataset.
+
+    >>> brithdays = pd.read_csv("https://calmcode.io/datasets/birthdays.csv", parse_dates=["date"])
+    >>> brithdays = brithdays.pipe(clean_dataset)
+    >>> brithdays.head(5)
+            date   wday  day_of_year  births  month
+    0 1969-01-01    Wed            1    8486      1
+    1 1969-01-02  Thurs            2    9002      1
+    2 1969-01-03    Fri            3    9542      1
+    3 1969-01-04    Sat            4    8960      1
+    4 1969-01-05    Sun            5    8390      1
+
+    Args:
+        frame (pd.DataFrame): The data frame to be cleaned
+
+    Returns:
+        pd.DataFrame: The cleaned data frame
+    """
+    frame["day_of_year"] = frame["date"].dt.dayofyear
+    frame = (
+        frame.groupby(["date", "wday", "day_of_year"])
+        .agg(births=("births", "sum"), month=("month", "first"))
+        .reset_index()
+    )
+    return frame
+
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
+```
+
+In your terminal, run the python file should give you test result:
+
+```
+python birthday.py -v
+```
+
+You can also use the module without putting `testmod()` in your file:
+
+```
+python -m doctest -v birthday.py
+```
+
+Another way is to use `pytest`. Create another file called `test_birthday.py` and put the following function:
+
+```python
+import pandas as pd
+from birthday import clean_dataset
+
+def test_clean_dataset():
+    brithdays = pd.read_csv("https://calmcode.io/datasets/birthdays.csv", parse_dates=["date"])
+    brithdays = brithdays.pipe(clean_dataset)
+    assert brithdays.loc[0, "wday"] == "Wed"
+```
+
+In your terminal, run the following command:
+
+```
+pytest test_birthday.py
+```
+
+## Further Reading
+
+[Writing Robust Tests for Data & Machine Learning Pipelines](https://eugeneyan.com/writing/testing-pipelines/)  
+[Testing and Logging - Mastering Python](https://www.packtpub.com/product/mastering-python/9781800207721)
+
+# Visualization
+
+Data scientists heavily rely on visualization to explore the data and communicate the findings with stakeholders. My preference is `altalir`. It produces a beautiful chart in JavaScript, allows interaction and uses a grammar-of-graphics API.
+
+``` {python}
+import altair as alt
+
+alt.Chart(brithdays.sample(1000)).mark_circle().encode(
+    x="day_of_year",
+    y="births",
+    tooltip=["date", "births", "wday"]
+).interactive()
+```
+
+And of course, we should put this into a function:
+
+```python
+def plot_day_of_year():
+    """
+    Plot number of births by day of year.
+    """
+    return alt.Chart(brithdays.sample(1000)).mark_circle().encode(
+        x="day_of_year",
+        y="births",
+        tooltip=["date", "births", "wday"]
+    ).interactive()
+```
+
+## Further Reading
+
+[Altair Tutorial - Calmcode](https://calmcode.io/altair/introduction.html)  
+[Data Visualization Curriculum using Vega-Lite and Altair](https://uwdata.github.io/visualization-curriculum/intro.html)  
+[CSE512 Data Visualization](https://courses.cs.washington.edu/courses/cse512/22sp/)  
+
+# Documentation
+
+## Markdown
+
+In your repository, you may notice there is a `README.md` file. This is a markdown text file. In notebooks, you can write markdown alongside with code to better communicate with stakeholders. This practice is known as literature programming and is commonly adopted by data scientists. Surely, you can write everything in a Word document. But markdown gives you the flexibility to think, code and write at the same time. Markdown also let you focus on writing rather than formatting, include citations and math equations painlessly, and execute code in the documentation.
+
+A document typically is divided into multiple sections. To make a new section, you give it a header. The headers start with a hashtag (`#`). Using one hashtag means a level-one header. Two hashtags means a level-two header.
+
+```markdown
+# Introduction
+## Motivation
+## History
+### 1910s 
+### 1920S
+# Main Texts
+# Conclusion
+```
+
+We emphasize part of a text by putting it in italic or boldface. In Markdown, we wrap asterisks (`*`) around the word to achieve this. One asterisk puts the work in italic, and two asterisks put it in boldface. 
+
+```markdown
+Some of the **greatest** discoveries in *science* were made by ***accident***.
+```
+
+To create a numbered list, you put a number, followed by a period, at the start of a line and write the list item after it.
+
+```markdown
+1. This is a numbered list.
+2. Where this is list item two.
+3. And this is list item three.
+    1. A numbered list inside a list.
+    2. This is item 3.2.
+```
+
+To create an unnumbered list, you simply put a dash (`-`) or an asterisk (`*`) at the beginning of the line.
+
+```markdown
+- This is a unnumbered list.
+- Where this is list item two.
+- And this is list item three.
+    - You can also indent a list here.
+```
+
+## $\LaTeX$
+
+Before Markdown was invented, document typesetting is often done by $\LaTeX$. The syntax is very bloated, but it allows you to produce any kind of documents. Often, you just use a $\LaTeX$ template made by others. For example, my [CV](https://www.overleaf.com/read/htmbyyjzfqpz) is made by $\LaTeX$ with some modifications on someone else's code.
+
+You can use $\LaTeX$ in Markdown. Since $\LaTeX$ is almost the only way to display math blocks properly. Inline math equation is wrapped by the dollar sign ($).
+
+```markdown
+Here we define $m = ab$.
+```
+
+A math block is surrounded by two dollar signs.
+
+```markdown
+Bla bla bla
+$$
+m = ab
+$$
+```
+
+Most of the time, when you work with math equations, you just want to copy them from the slides or the books. You may find [mathpix](https://mathpix.com/), an OCR tool for math equations, very helpful. You can also create your formulas using `sympy` and export them into $\LaTeX$.
+
+``` {python}
+from sympy import symbols, latex, Integral, cos, pi
+x = symbols("x")
+print(latex(Integral(cos(x)**2, (x, 0, pi))))
+```
+
+$$
+\int\limits_{0}^{\pi} \cos^{2}{\left(x \right)}\, dx
+$$
+
+
+## Quarto
+
+[Quarto](https://quarto.org/) is a publishing software built on RMarkdown and [Pandoc](https://pandoc.org/). Every tutorial in this course are made by Quarto. It allows writing documents and executing code at the same time, compute variables in texts, exporting them into nearly any formats, publishing them on the internet. You can also convert jupyter notebooks into a quarto documents. It is mighty and flexible. There are still some rough edges in terms of installation and virtual environments, I [complained a lot](https://github.com/quarto-dev/quarto-cli/issues/1661#issuecomment-1204181009) in their GitHub issues. Please contact me if you run into any problems.
+
+## Further Reading
+
+[Quarto](https://quarto.org/)  
+[Learn LaTeX in 30 minutes](https://www.overleaf.com/learn/latex/Learn_LaTeX_in_30_minutes)  
+[Introduction to Markdown and Modern Document Workflow](https://github.com/iewaij/talkMarkdown/blob/main/notes.pdf)
+
+# Package
+
+Now, we have a documented `.py` file, a notebook that documents our analysis and a bunch of unit tests. We can reorganize the folder a bit and add `setup.py` and `__init__.py`.
+
+```
+craftsmanship/
+    birthday/
+        __init__.py
+        clean.py
+        plot.py
+        ...
+    test/
+        test_clean.py
+        test_plot.py
+    setup.py
+    ...
+```
+
+The content of `setup.py` should be:
+
+```python
+from setuptools import setup, find_packages
+
+setup(
+    name="birthday",
+    version="0.1.0",
+    packages=find_packages(),
+)
+```
+In the `__init__.py`, we can add:
+
+```python
+from birthday.clean import clean_dataset
+from birthday.plot import plot_day_of_year
+```
+
+We can now install the package in the virtual environment. You can use pip command to achieve that:
+
+```
+pip install -e .
+```
+
+After making sure the tests are passed, we can push our changes and make pull requests. Code reviews should be carried here. Don't worry too much about code reviews or pull requests if you are aiming to iterate your codebase quickly, it all depends on your team's work style and schedule.
+
+## Further Reading
+
+[Setup Tutorial - Calmcode](https://calmcode.io/setup/import.html)  
+[Software Engineering at Google](https://abseil.io/resources/swe-book)

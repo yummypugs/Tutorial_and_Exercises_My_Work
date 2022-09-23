@@ -8,9 +8,12 @@ dependencies:
   - isort
   - numpy
   - pandas
+  - pytest
   - jupyterlab
   - scipy
   - scikit-learn
   - seaborn
+  - sympy
   - pip:
       - watermark
+      - nb_black
