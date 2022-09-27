@@ -213,6 +213,10 @@ called `intro-data-analytics` and install all required packages using one comman
     mamba env create -f environment.yml
     mamba activate intro-data-analytics
 
+You may also update your existing environment from `environment.yml`:
+
+    mamba env update -f environment.yml
+
 ### Install Python and Packages
 
 Most packages you need for this course should already been included in

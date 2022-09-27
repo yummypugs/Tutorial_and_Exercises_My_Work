@@ -9,6 +9,7 @@ dependencies:
   - isort
   - numpy
   - pandas
+  - pip
   - pytest
   - jupyterlab
   - scipy
