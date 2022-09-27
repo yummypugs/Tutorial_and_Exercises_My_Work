@@ -156,5 +156,7 @@ cython_debug/
 src/exercise*
 src/solution*
 src/tutorial*
+.vscode/
+*_files/
+_*
 .DS_Store
-.vscode

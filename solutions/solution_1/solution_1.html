@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jiawei Li">
+
+<title>Solution 1</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="solution_1_files/libs/clipboard/clipboard.min.js"></script>
+<script src="solution_1_files/libs/quarto-html/quarto.js"></script>
+<script src="solution_1_files/libs/quarto-html/popper.min.js"></script>
+<script src="solution_1_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="solution_1_files/libs/quarto-html/anchor.min.js"></script>
+<link href="solution_1_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="solution_1_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="solution_1_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="solution_1_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="solution_1_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Solution 1</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jiawei Li </p>
+          </div>
+  </div>
+    
+    
+  </div>
+  
+
+</header>
+
+<section id="working-with-pandas" class="level1">
+<h1>Working with pandas</h1>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol type="a">
+<li>Create a pandas series from each of the items below (a list, numpy array, and dictionary).</li>
+</ol>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>a_list <span class="op">=</span> <span class="bu">list</span>(<span class="st">"abcdefg"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>pd.Series(a_list)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<pre><code>0    a
+1    b
+2    c
+3    d
+4    e
+5    f
+6    g
+dtype: object</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>a_array <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="dv">10</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>pd.Series(a_array)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<pre><code>0    1
+1    2
+2    3
+3    4
+4    5
+5    6
+6    7
+7    8
+8    9
+dtype: int64</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>a_dictionary <span class="op">=</span> {<span class="st">"A"</span>:<span class="dv">0</span>, <span class="st">"B"</span>:<span class="dv">1</span>, <span class="st">"C"</span>:<span class="dv">2</span>, <span class="st">"D"</span>:<span class="dv">3</span>, <span class="st">"E"</span>:<span class="dv">5</span>}</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>pd.Series(a_dictionary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>A    0
+B    1
+C    2
+D    3
+E    5
+dtype: int64</code></pre>
+</div>
+</div>
+<ol start="2" type="a">
+<li>Combine the following to series into one dataframe.</li>
+</ol>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>ser_1 <span class="op">=</span> pd.Series(<span class="bu">list</span>(<span class="st">"abcedfghijklmnopqrstuvwxyz"</span>))</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>ser_2 <span class="op">=</span> pd.Series(np.arange(<span class="dv">26</span>))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Method 1: Initialize a DataFrame from Series</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>pd.DataFrame({<span class="st">"series_1"</span>: ser_1, <span class="st">"series_2"</span>: ser_2})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>series_1</th>
+      <th>series_2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>a</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>b</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>c</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>e</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>d</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>f</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>g</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>h</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>i</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>j</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>k</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>l</td>
+      <td>11</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>m</td>
+      <td>12</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>n</td>
+      <td>13</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>o</td>
+      <td>14</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>p</td>
+      <td>15</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>q</td>
+      <td>16</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>r</td>
+      <td>17</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>s</td>
+      <td>18</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>t</td>
+      <td>19</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>u</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>v</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>w</td>
+      <td>22</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>x</td>
+      <td>23</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>y</td>
+      <td>24</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>z</td>
+      <td>25</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Method 2: Concat multiple series into a DataFrame</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>pd.concat([ser_1, ser_2], axis<span class="op">=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>a</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>b</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>c</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>e</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>d</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>f</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>g</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>h</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>i</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>j</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>k</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>l</td>
+      <td>11</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>m</td>
+      <td>12</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>n</td>
+      <td>13</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>o</td>
+      <td>14</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>p</td>
+      <td>15</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>q</td>
+      <td>16</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>r</td>
+      <td>17</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>s</td>
+      <td>18</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>t</td>
+      <td>19</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>u</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>v</td>
+      <td>21</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>w</td>
+      <td>22</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>x</td>
+      <td>23</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>y</td>
+      <td>24</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>z</td>
+      <td>25</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<ol start="3" type="a">
+<li>Compute the minimum, 25th percentile, median, 75th percentile, and maximum of the following series.</li>
+</ol>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>state <span class="op">=</span> np.random.RandomState(<span class="dv">100</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>ser <span class="op">=</span> pd.Series(state.normal(<span class="dv">10</span>, <span class="dv">5</span>, <span class="dv">25</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>ser.<span class="bu">min</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>1.2511726347265129</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>ser.quantile(<span class="fl">0.25</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre><code>7.7098650724868785</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>ser.quantile(<span class="fl">0.75</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>13.363604028548306</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>ser.<span class="bu">max</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<pre><code>18.0949083033763</code></pre>
+</div>
+</div>
+<ol start="4" type="a">
+<li>Calculate the frequency counts of each unique value in the following series.</li>
+</ol>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>ser <span class="op">=</span> pd.Series(np.take(<span class="bu">list</span>(<span class="st">"abcdefgh"</span>), np.random.randint(<span class="dv">8</span>, size<span class="op">=</span><span class="dv">30</span>)))</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>ser.value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<pre><code>c    6
+g    4
+f    4
+h    4
+b    4
+a    3
+d    3
+e    2
+dtype: int64</code></pre>
+</div>
+</div>
+<ol start="5" type="a">
+<li>Reshape the series ser into a dataframe with 7 rows and 5 columns.</li>
+</ol>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>ser <span class="op">=</span> pd.Series(np.random.randint(<span class="dv">1</span>, <span class="dv">10</span>, <span class="dv">35</span>))</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Use numpy to reshape values and initialize a new DataFrame</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>array <span class="op">=</span> ser.to_numpy().reshape(<span class="dv">7</span>, <span class="dv">5</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>pd.DataFrame(array)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>4</td>
+      <td>5</td>
+      <td>6</td>
+      <td>5</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>5</td>
+      <td>5</td>
+      <td>6</td>
+      <td>6</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>7</td>
+      <td>3</td>
+      <td>8</td>
+      <td>1</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>9</td>
+      <td>5</td>
+      <td>7</td>
+      <td>5</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>5</td>
+      <td>6</td>
+      <td>5</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>9</td>
+      <td>9</td>
+      <td>3</td>
+      <td>6</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>5</td>
+      <td>6</td>
+      <td>3</td>
+      <td>9</td>
+      <td>3</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<ol start="6" type="a">
+<li>Import the Boston housing dataset, but while importing change the “medv” (median house value) column so that values &lt; 25 becomes “Low” and &gt; 25 becomes “High”. What is the proportion of “High” and “Low” values in the dataset?</li>
+</ol>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>data_url <span class="op">=</span> <span class="st">"http://lib.stat.cmu.edu/datasets/boston"</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> pd.read_csv(data_url, sep<span class="op">=</span><span class="st">"\s+"</span>, skiprows<span class="op">=</span><span class="dv">22</span>, header<span class="op">=</span><span class="va">None</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co"># medv is at column 2 at every second row</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>medv <span class="op">=</span> raw.loc[<span class="dv">1</span>::<span class="dv">2</span>, <span class="dv">2</span>]</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> replace_high_low(x):</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="co">    When x &lt; 25, return "Low". If x &gt; 25, return "High".</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> x <span class="op">&lt;</span> <span class="dv">25</span>:</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"Low"</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> x <span class="op">&gt;</span> <span class="dv">25</span>:</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"High"</span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>medv <span class="op">=</span> medv.<span class="bu">apply</span>(replace_high_low)</span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>medv.value_counts() <span class="op">/</span> <span class="bu">len</span>(medv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<pre><code>Low     0.739130
+High    0.245059
+Name: 2, dtype: float64</code></pre>
+</div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

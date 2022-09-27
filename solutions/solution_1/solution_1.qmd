@@ -1,0 +1,104 @@
+---
+title: Solution 1
+author: Jiawei Li
+jupyter: python3
+---
+
+# Working with pandas
+
+```{python}
+import numpy as np
+import pandas as pd
+```
+
+(a) Create a pandas series from each of the items below (a list, numpy array, and dictionary).
+
+```{python}
+a_list = list("abcdefg")
+pd.Series(a_list)
+```
+
+```{python}
+a_array = np.arange(1, 10)
+pd.Series(a_array)
+```
+
+```{python}
+a_dictionary = {"A":0, "B":1, "C":2, "D":3, "E":5}
+pd.Series(a_dictionary)
+```
+
+(b) Combine the following to series into one dataframe.
+
+```{python}
+ser_1 = pd.Series(list("abcedfghijklmnopqrstuvwxyz"))
+ser_2 = pd.Series(np.arange(26))
+# Method 1: Initialize a DataFrame from Series
+pd.DataFrame({"series_1": ser_1, "series_2": ser_2})
+```
+
+```{python}
+# Method 2: Concat multiple series into a DataFrame
+pd.concat([ser_1, ser_2], axis=1)
+```
+
+(c) Compute the minimum, 25th percentile, median, 75th percentile, and maximum of the following series.
+
+```{python}
+state = np.random.RandomState(100)
+ser = pd.Series(state.normal(10, 5, 25))
+```
+
+```{python}
+ser.min()
+```
+
+```{python}
+ser.quantile(0.25)
+```
+
+```{python}
+ser.quantile(0.75)
+```
+
+```{python}
+ser.max()
+```
+
+(d) Calculate the frequency counts of each unique value in the following series.
+
+```{python}
+ser = pd.Series(np.take(list("abcdefgh"), np.random.randint(8, size=30)))
+ser.value_counts()
+```
+
+(e) Reshape the series ser into a dataframe with 7 rows and 5 columns.
+
+```{python}
+ser = pd.Series(np.random.randint(1, 10, 35))
+# Use numpy to reshape values and initialize a new DataFrame
+array = ser.to_numpy().reshape(7, 5)
+pd.DataFrame(array)
+```
+
+(f) Import the Boston housing dataset, but while importing change the “medv” (median house value) column so that values < 25 becomes “Low” and > 25 becomes “High”. What is the proportion of “High” and “Low” values in the dataset?
+
+```{python}
+data_url = "http://lib.stat.cmu.edu/datasets/boston"
+raw = pd.read_csv(data_url, sep="\s+", skiprows=22, header=None)
+# medv is at column 2 at every second row
+medv = raw.loc[1::2, 2]
+
+def replace_high_low(x):
+    """
+    When x < 25, return "Low". If x > 25, return "High".
+    """
+    if x < 25:
+        return "Low"
+    elif x > 25:
+        return "High"
+
+medv = medv.apply(replace_high_low)
+medv.value_counts() / len(medv)
+```
+

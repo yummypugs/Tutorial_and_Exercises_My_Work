@@ -11,6 +11,10 @@ of Finance and Management.
 [Tutorial 3: Loss and Optimization](https://iewaij.quarto.pub/tutorial-3-loss-and-optimization/)  
 [Tutorial 4: Data Science as Craftsmanship](https://iewaij.quarto.pub/tutorial-4-data-science-as-craftsmanship/)
 
+## Solutions
+
+[Solution 1](https://quartopub.com/sites/iewaij/solution-1)
+
 ## Setup
 
 ### Package Managers
@@ -165,9 +169,9 @@ basically [miniconda](https://docs.conda.io/en/latest/miniconda.html)
 with the following features pre-configured:
 
 -   [`conda-forge`](https://conda-forge.org/) set as the default (and
-    only) channel tp provide more updated and comprehensive coverage of
+    only) channel to provide more updated and comprehensive coverage of
     packages.
--   [`Mamba`](https://github.com/mamba-org/mamba) in place of `conda` to
+-   [`mamba`](https://github.com/mamba-org/mamba) in place of `conda` to
     provide better dependency solving and faster package installation.
     Even though I use `mamba` instead of `conda` throughout this
     tutorial, the command with `mamba` is the same as `conda`. You can
@@ -220,8 +224,7 @@ command:
 
     mamba install python=3.10 pandas jupyterlab
 
-There are always cases when you have to use `pip` because the packages
-you want are not available on `conda-forge`:
+There are always cases when you have to use `pip` to install packages because they are not available on `conda-forge`:
 
     pip install watermark
 
