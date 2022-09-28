@@ -8,7 +8,7 @@
 
 <meta name="author" content="Jiawei Li">
 
-<title>Solution 1</title>
+<title>Solution 1: Pandas</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -107,7 +107,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Solution 1</h1>
+<h1 class="title">Solution 1: Pandas</h1>
 </div>
 
 
@@ -523,14 +523,14 @@ dtype: int64</code></pre>
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>ser <span class="op">=</span> pd.Series(np.take(<span class="bu">list</span>(<span class="st">"abcdefgh"</span>), np.random.randint(<span class="dv">8</span>, size<span class="op">=</span><span class="dv">30</span>)))</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>ser.value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="12">
-<pre><code>c    6
+<pre><code>f    5
+a    5
+e    4
 g    4
-f    4
-h    4
-b    4
-a    3
-d    3
-e    2
+c    4
+h    3
+b    3
+d    2
 dtype: int64</code></pre>
 </div>
 </div>
@@ -560,18 +560,18 @@ dtype: int64</code></pre>
   <tbody>
     <tr>
       <th>0</th>
-      <td>4</td>
-      <td>5</td>
-      <td>6</td>
-      <td>5</td>
-      <td>7</td>
+      <td>8</td>
+      <td>8</td>
+      <td>9</td>
+      <td>3</td>
+      <td>9</td>
     </tr>
     <tr>
       <th>1</th>
+      <td>8</td>
+      <td>2</td>
+      <td>8</td>
       <td>5</td>
-      <td>5</td>
-      <td>6</td>
-      <td>6</td>
       <td>7</td>
     </tr>
     <tr>
@@ -580,39 +580,39 @@ dtype: int64</code></pre>
       <td>3</td>
       <td>8</td>
       <td>1</td>
-      <td>8</td>
+      <td>6</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>9</td>
+      <td>4</td>
+      <td>6</td>
+      <td>3</td>
       <td>5</td>
-      <td>7</td>
-      <td>5</td>
-      <td>8</td>
+      <td>4</td>
     </tr>
     <tr>
       <th>4</th>
       <td>5</td>
-      <td>5</td>
       <td>6</td>
       <td>5</td>
-      <td>2</td>
+      <td>1</td>
+      <td>8</td>
     </tr>
     <tr>
       <th>5</th>
-      <td>9</td>
-      <td>9</td>
-      <td>3</td>
       <td>6</td>
-      <td>5</td>
+      <td>9</td>
+      <td>8</td>
+      <td>7</td>
+      <td>8</td>
     </tr>
     <tr>
       <th>6</th>
-      <td>5</td>
-      <td>6</td>
-      <td>3</td>
       <td>9</td>
-      <td>3</td>
+      <td>9</td>
+      <td>4</td>
+      <td>6</td>
+      <td>9</td>
     </tr>
   </tbody>
 </table>

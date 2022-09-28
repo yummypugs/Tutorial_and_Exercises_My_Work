@@ -1,5 +1,5 @@
 ---
-title: Solution 1
+title: 'Solution 1: Pandas'
 author: Jiawei Li
 jupyter: python3
 ---

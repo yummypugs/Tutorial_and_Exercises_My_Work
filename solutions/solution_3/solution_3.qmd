@@ -1,0 +1,100 @@
+---
+title: 'Solution 3: Linear Regression'
+author: Jiawei Li
+jupyter: python3
+---
+
+# Normal Equation
+To determine the set of parameters $\alpha$ in linear regression (see lecture notes), we minimize the square Euclidean distance between model predictions $\hat{y}^{(j)}=\mathbf{x}^{(j)^{\top}} \alpha$ and the actual values of the dependent variables $y^{(j)}$ :
+
+$$
+J(\alpha)=\sum_{j=1}^m\left[\hat{y}^{(j)}-y^{(j)}\right]^2=\sum_{j=1}^m\left[\mathbf{x}^{(j)^{\top}} \alpha-y^{(j)}\right]^2=\|X \alpha-\mathbf{y}\|_2^2
+$$
+
+Show that the least-squares estimate $\alpha^*$ of $\alpha$ is given by the normal equation
+
+$$
+\alpha^*=\left(X^{\top} X\right)^{-1} X^{\top} \mathbf{y}
+$$
+
+The loss function of linear regression can be written as follows, where $\frac{1}{2}$ is added for convenience:
+
+$$
+\begin{aligned}
+J(\alpha) &= \frac{1}{2} \left[ (y - X \alpha)^\top (y - X \alpha) \right] \\
+&= \frac{1}{2} \left[(y - X\alpha)^\top y - (y - X\alpha)^\top X\alpha \right]\\
+&= \frac{1}{2} \left[y^\top y - (X\alpha)^\top y - y^\top X\alpha + (X\alpha)^\top X\alpha \right]\\
+&= \frac{1}{2} \left[y^\top y - 2(X\alpha)^\top y + \alpha X^\top X\alpha \right]
+\end{aligned}
+$$
+
+We can calculate the Jacobian and Hessian matrix of the loss function, corresponding to the first and second derivative:
+
+$$
+\begin{aligned}
+\nabla_{\alpha} J(\alpha) &= \nabla_{\alpha} \frac{1}{2} \left[ y^\top y - 2(X\alpha)^\top y + \alpha^\top X^\top X\alpha \right] \\
+&= \nabla_{\alpha} \frac{1}{2} \left[-2 (X^\top y)^\top \alpha + \alpha^\top X^\top X\alpha \right] \\
+&= - X^\top y  + X^\top X \alpha \\
+\\
+\nabla_{\alpha}^2 J(\alpha) &= \nabla_{\alpha} \left[ \nabla_{\alpha} J(\alpha) \right] \\
+&= \nabla_{\alpha} \left[ - X^\top y  + X^\top X \alpha \right] \\
+&= X^\top X
+\end{aligned}
+$$
+
+For any matrix $X \in \mathbf{R}^{m \times n}$, $X^\top X$ is positive semi-definite. Therefore, $\nabla_{\alpha}^2 J(\alpha)$ is also positive semi-definite and the loss function $J(\alpha)$ is a convex function. A covex function reaches its global minimum when its first derivative, $\nabla_{\alpha} J(\alpha)$, is zero. Therefore,
+
+$$
+\begin{aligned}
+\nabla_{\alpha} J(\alpha^*) &= 0 \\
+- X^\top y  + X^\top X \alpha^* &= 0 \\
+\alpha^* &= (X^\top X)^{-1}X^\top y
+\end{aligned}
+$$
+
+
+# Climate Change and Global Warming
+The file climate_change (CSV) contains climate data from May 1983 to December 2008. The available variables include:
+
+- Year: the observation year.
+- Month: the observation month.
+- Temp: the difference in degrees Celsius between the average global temperature in that period and a reference value. This data comes from the Climatic Research Unit at the University of East Anglia.
+- CO2, N2O, CH4, CFC.11, CFC.12: atmospheric concentrations of carbon dioxide CO2, nitrous oxide N2O, methane CH4, trichlorofluoromethane (CCl3F; commonly referred to as CFC-11) and dichlorodifluoromethane (CCl2F2; commonly referred to as CFC-12), respectively. This data comes from the ESRL/NOAA Global Monitoring Division. CO2, N2O and CH4 are expressed in ppmv (parts per million by volume - i.e., $397 ppmv of CO2 means that CO2 constitutes 397 millionths of the total volume of the atmosphere) CFC.11 and CFC.12 are expressed in ppbv (parts per billion by volume).
+- Aerosols: the mean stratospheric aerosol optical depth at $550 ~nm. This variable is linked to volcanoes, as volcanic eruptions result in new particles being added to the atmosphere, which affect how much of the sun's energy is reflected back into space. This data is from the Godard Institute for Space Studies at NASA.
+- TSI: the total solar irradiance (TSI) in W/m2 (the rate at which the sun's energy is deposited per unit area). Due to sunspots and other solar phenomena, the amount of energy that is given off by the sun varies substantially with time. This data is from the SOLARIS-HEPPA project website.
+- MEI: multivariate El Nino Southern Oscillation index (MEI), a measure of the strength of the El Nino/La Nina-Southern Oscillation (a weather effect in the Pacific Ocean that affects global temperatures). This data comes from the ESRL/NOAA Physical Sciences Division.
+
+(a) Load the dataset into Python. Split the data into a training set, consisting of all the observations up to and including 2006, and a testing set consisting of the remaining years. A training set refers to the data that will be used to build the model, and a testing set refers to the data we will use to test our predictive ability.
+
+```{python}
+import pandas as pd
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score
+```
+
+```{python}
+data = pd.read_csv("climate_change.csv")
+train_data = data[data["Year"] <= 2006]
+test_data = data[data["Year"] > 2006]
+```
+
+(b) Build a linear regression model to predict the dependent variable Temp, using MEI, CO2, CH4, N2O, CFC.11, CFC.12, TSI, and Aerosols as independent variables (Year and Month should NOT be used in the model). Use the training set to build the model.
+
+```{python}
+# Split train and test data into inputs (X) and output (y)
+X_train = train_data.drop(columns=["Year", "Month", "Temp"])
+y_train = train_data["Temp"]
+X_test = test_data.drop(columns=["Year", "Month", "Temp"])
+y_test = test_data["Temp"]
+# Fit the linear regression model
+reg = LinearRegression()
+reg.fit(X_train, y_train);
+```
+
+(c) Determine the coefficient of determination $R^2$ (see lecture notes) for the training data. How good are the temperature forecasts for the test dataset?
+
+```{python}
+train_score = reg.score(X_train, y_train)
+test_score = reg.score(X_test, y_test)
+print(f"R2 of train set: {train_score}", f"R2 of test set: {test_score}", sep="\n")
+```

@@ -9,11 +9,15 @@ of Finance and Management.
 [Tutorial 1: Setup and Introduction to Python and Pandas](https://iewaij.quarto.pub/tutorial-1-setup-and-introduction-to-python-and-pandas/)  
 [Tutorial 2: Dimensionality Reduction](https://iewaij.quarto.pub/tutorial-2-dimensionality-reduction/)  
 [Tutorial 3: Loss and Optimization](https://iewaij.quarto.pub/tutorial-3-loss-and-optimization/)  
-[Tutorial 4: Data Science as Craftsmanship](https://iewaij.quarto.pub/tutorial-4-data-science-as-craftsmanship/)
+[Tutorial 4: Data Science as Craftsmanship](https://iewaij.quarto.pub/tutorial-4-data-science-as-craftsmanship/)  
+Tutorial 5: Network Analysis
 
 ## Solutions
 
-[Solution 1](https://quartopub.com/sites/iewaij/solution-1)
+[Solution 1: Pandas](https://quartopub.com/sites/iewaij/solution-1-pandas)  
+Solution 2: Dimensionality Reduction  
+[Solution 3: Linear Regression](https://quartopub.com/sites/iewaij/solution-3-linear-regression)  
+Solution 4: Network Analysis
 
 ## Setup
 
