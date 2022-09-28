@@ -8,13 +8,13 @@ jupyter: python3
 To determine the set of parameters $\alpha$ in linear regression (see lecture notes), we minimize the square Euclidean distance between model predictions $\hat{y}^{(j)}=\mathbf{x}^{(j)^{\top}} \alpha$ and the actual values of the dependent variables $y^{(j)}$ :
 
 $$
-J(\alpha)=\sum_{j=1}^m\left[\hat{y}^{(j)}-y^{(j)}\right]^2=\sum_{j=1}^m\left[\mathbf{x}^{(j)^{\top}} \alpha-y^{(j)}\right]^2=\|X \alpha-\mathbf{y}\|_2^2
+J(\alpha)=\sum_{j=1}^m\left[\hat{y}^{(j)}-y^{(j)}\right]^2=\sum_{j=1}^m\left[x^{(j)^{\top}} \alpha-y^{(j)}\right]^2=\|X \alpha-y\|_2^2
 $$
 
 Show that the least-squares estimate $\alpha^*$ of $\alpha$ is given by the normal equation
 
 $$
-\alpha^*=\left(X^{\top} X\right)^{-1} X^{\top} \mathbf{y}
+\alpha^*=\left(X^{\top} X\right)^{-1} X^{\top} y
 $$
 
 The loss function of linear regression can be written as follows, where $\frac{1}{2}$ is added for convenience:
@@ -24,7 +24,7 @@ $$
 J(\alpha) &= \frac{1}{2} \left[ (y - X \alpha)^\top (y - X \alpha) \right] \\
 &= \frac{1}{2} \left[(y - X\alpha)^\top y - (y - X\alpha)^\top X\alpha \right]\\
 &= \frac{1}{2} \left[y^\top y - (X\alpha)^\top y - y^\top X\alpha + (X\alpha)^\top X\alpha \right]\\
-&= \frac{1}{2} \left[y^\top y - 2(X\alpha)^\top y + \alpha X^\top X\alpha \right]
+&= \frac{1}{2} \left[y^\top y - 2(X\alpha)^\top y + \alpha^\top X^\top X\alpha \right]
 \end{aligned}
 $$
 

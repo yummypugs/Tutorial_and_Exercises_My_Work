@@ -153,9 +153,6 @@ dmypy.json
 cython_debug/
 
 # Miscellaneous
-src/exercise*
-src/solution*
-src/tutorial*
 .vscode/
 *_files/
 _*
