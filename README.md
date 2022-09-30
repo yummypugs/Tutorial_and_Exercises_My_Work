@@ -10,7 +10,7 @@ of Finance and Management.
 [Tutorial 2: Dimensionality Reduction](https://iewaij.quarto.pub/tutorial-2-dimensionality-reduction/)  
 [Tutorial 3: Loss and Optimization](https://iewaij.quarto.pub/tutorial-3-loss-and-optimization/)  
 [Tutorial 4: Data Science as Craftsmanship](https://iewaij.quarto.pub/tutorial-4-data-science-as-craftsmanship/)  
-Tutorial 5: Network Analysis
+[Tutorial 5: Network Analysis](https://quartopub.com/sites/iewaij/tutorial-5-network-analysis)
 
 ## Solutions
 
