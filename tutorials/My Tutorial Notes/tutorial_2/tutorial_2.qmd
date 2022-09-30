@@ -1,0 +1,215 @@
+---
+title: 'Tutorial 2: Dimensionality Reduction'
+author: Jiawei Li
+execute:
+  warning: false
+jupyter: python3
+---
+
+# Playlist Continuation
+
+You may have used the automatic playlist continuation feature on Spotify. As a matter of fact, Spotify even hosts a [challenge](https://www.aicrowd.com/challenges/spotify-million-playlist-dataset-challenge) to develop a system for the task of automatic playlist continuation, with a dataset of 1 million playlists consist of over 2 million unique tracks. Let us think of a simplified way to solve this challenge:
+
+1. Each playlist is a vector of 2 million unique tracks;
+2. We can find the most similar playlist to what the user is playing;
+3. Suggest the song which the user has not listened to.
+
+It may sound easy, but finding a similar vector with 2 million dimensions is almost impossible. We need a way to reduce the dimensionality of these vectors. Random projection is one simple way. For a $m \times n$ matrix $A$, it is a projection from $\mathbf{R}_n \to \mathbf{R}_m$ when applied to $n$-dimension $x$:
+
+$$
+Ax = b
+$$
+
+Johnson-Lindenstraus theorem simply proves that there is a theoretical guarantee that the errors will be smaller than some number for any random projection $\mathbf{R}_n \to \mathbf{R}_m$. If you are fine with this number of errors, you can go ahead with this projection.
+
+Let us say, we are fine to project the playlist vector to 2 thousand dimensions. Then we need a random matrix which has a shape $2\ \text{thousand} \times 2\ \text{million}$. This is still a fairly difficult problem, many solutions have been proposed. For this tutorial, we do a simple version of projecting $\mathbf{R}_{200} \to \mathbf{R}_{10}$ using Normal Distribution. We first import `numpy`.
+
+```{python}
+import numpy as np
+```
+
+We have a playlist vector $x$.
+
+```{python}
+x = np.random.randint(0, 2, size=200)
+print(f"x:\n{x}")
+```
+
+And a random matrix of Normal Distribution with mean of 0 and standard deviation of 1.
+
+```{python}
+A = np.random.normal(0, 1, size=(10, 200))
+print(f"A:\n{A}")
+```
+
+Multiply and done.
+
+```{python}
+b = A@x
+print(f"b:\n{b}")
+```
+
+On the exercise, you are asked to create a random matrix with specific probabilities. You can refer to [`numpy.random.choice()`](https://numpy.org/doc/stable/reference/random/generated/numpy.random.choice.html).
+
+## Further Reading
+
+[Python Data Science Handbook](https://jakevdp.github.io/PythonDataScienceHandbook/)  
+[Nearest Neighbors in Python with Annoy](https://calmcode.io/annoy/intro.html)  
+[Database-friendly random projections: Johnson-Lindenstrauss with binary coins](https://www.sciencedirect.com/science/article/pii/S0022000003000254)  
+[CS168 Lecture 4: Dimensionality Reduction](https://web.stanford.edu/class/cs168/l/l4.pdf)
+
+# Mushroom Hunting
+
+Now, let us be mushroom hunters who want to understand the underlying attributes of mushrooms. There is a great dataset prepared by researchers at University of Marburg. The research is published in [Nature Scientific Reports](https://www.nature.com/articles/s41598-021-87602-3).
+
+Now, we import the libraries and read the mushroom dataset.
+
+```{python}
+import altair as alt
+import pandas as pd
+import numpy as np
+```
+
+```{python}
+def calculate_mean(x):
+    """
+    Transform a string of "[lower, higher]" into its mean.
+    """
+    from ast import literal_eval
+    
+    try:
+        return int(x)
+    except ValueError:
+        x = literal_eval(x)
+        lower = int(x[0])
+        higher = int(x[-1])
+        mean = (lower + higher) / 2
+        return mean
+```
+
+We first investigate the size of the mushrooms. In particular, the stem height and stem width.
+
+```{python}
+mushroom = pd.read_csv("https://mushroom.mathematik.uni-marburg.de/files/PrimaryData/primary_data_edited.csv", sep=";")
+mushroom["stem-height"] = mushroom["stem-height"].apply(calculate_mean)
+mushroom["stem-width"] = mushroom["stem-width"].apply(calculate_mean)
+mushroom.loc[:5, ["stem-height", "stem-width"]]
+```
+
+These two attributes are correlated. Tall and wide stems mean that the mushrooms is chunky, and short and thin stems means that the mushrooms is probably tiny. These two dimensions can be reduced to one, which means that we can apply Principal Component Analysis (PCA).
+
+```{python}
+alt.Chart(mushroom).mark_circle().encode(
+    x="stem-height",
+    y="stem-width",
+    tooltip=["stem-height", "stem-width"],
+)
+```
+
+Let us start applying PCA. We first centre the data.
+
+```{python}
+# Select columns of "stem-height" and "stem-width"
+mushroom = mushroom.loc[:, ["stem-height", "stem-width"]]
+# Center the data so each feature has zero mean
+mushroom = mushroom - mushroom.mean()
+mushroom_chart = alt.Chart(mushroom).mark_circle().encode(
+    x="stem-height",
+    y="stem-width",
+    tooltip=["stem-height", "stem-width"],
+)
+mushroom_chart
+```
+
+Then we reconstruct the data in row format, this is a purely arbitrary choice that follows most mathematical literature. If you know Linear Algebra, you know how to apply the same procedure on column format data.
+
+```{python}
+# Consturct data in row format
+D = mushroom.to_numpy().transpose()
+# Compute covariance matrix
+S = np.cov(D)
+print(f"S:\n{S}")
+```
+
+```{python}
+# This is equivalent to D@D.T / dof
+# Note that we divide the covariance by D.shape[-1] - 1 because
+# we have D.shape[-1] data points in total and need minus 1 degree of freedom
+S = D @ D.T / (D.shape[-1] - 1)
+print(f"S:\n{S}")
+```
+
+```{python}
+# Compute eigenvalue and eigenvector
+# Note that we use np.linalg.eigh() because S is
+# a symmetric matix, np.linalg.eigh() gives better
+# performance than np.linalg.eig() 
+l, v = np.linalg.eigh(S)
+print(f"l:\n{l},\nv:\n{v}")
+```
+
+```{python}
+# We sort the eigenvectors by their eigenvalues
+# the higher the eigenvalue, the higher importance it associates
+idx = np.argsort(l)[::-1]
+l = l[idx]
+v = v[:,idx]
+print(f"v:\n{v}")
+```
+
+With eigenvectors, we can plot the projection line on our graph.
+
+```{python}
+eigenvector = pd.DataFrame(np.vstack([v[:, 0]*70, v[:, 0]*-30]), columns=["stem-height", "stem-width"])
+
+eigenvector_chart = alt.Chart(eigenvector).mark_line(color="grey", opacity=0.8).encode(
+    x="stem-height",
+    y="stem-width",
+    tooltip=["stem-height", "stem-width"],
+)
+
+eigenvector_chart + mushroom_chart
+```
+
+And do the projections.
+
+```{python}
+# We can then use sorted eigenvectors to transform the orginal data
+# For example, 2D -> 1D
+mushroom["projection"] = (v.T[:1] @ D).reshape(-1)
+mushroom.head(5)
+```
+
+The process of covariance matrix and eigenvalue decomposition can be reduced to only using SVD decomposition on centred data. This gives better numerical stability because we don't have to calculate `D @ D.T` which could cause errors with floating numbers.
+
+```{python}
+u, s, vh = np.linalg.svd(D)
+# There is even no need to sort
+# 2D -> 1D
+mushroom["projection_svd"] = (u.T[:1] @ D).reshape(-1)
+mushroom.head(5)
+```
+
+I demonstrated a simple way to project $\mathbf{R}_2 \to \mathbf{R}_1$. In practice, you normally do PCA on much higher dimensions. For example, here we can see that the cap diameter is correlated with stem sizes. You can try to find a projection that transform $\mathbf{R}_3 \to \mathbf{R}_2$ or $\mathbf{R}_3 \to \mathbf{R}_1$.
+
+```{python}
+mushroom = pd.read_csv("https://mushroom.mathematik.uni-marburg.de/files/PrimaryData/primary_data_edited.csv", sep=";")
+mushroom["cap-diameter"] = mushroom["cap-diameter"].apply(calculate_mean)
+mushroom["stem-height"] = mushroom["stem-height"].apply(calculate_mean)
+mushroom["stem-width"] = mushroom["stem-width"].apply(calculate_mean)
+alt.Chart(mushroom).mark_circle().encode(
+    x="stem-height",
+    y="stem-width",
+    size="cap-diameter",
+    tooltip=["stem-height", "stem-width", "cap-diameter"],
+)
+```
+
+## Further Reading
+
+[Making sense of principal component analysis, eigenvectors & eigenvalues](https://stats.stackexchange.com/questions/2691/making-sense-of-principal-component-analysis-eigenvectors-eigenvalues)  
+[Eigenfaces, for Facial Recognition](https://jeremykun.com/2011/07/27/eigenfaces/)  
+[Manifold learning - Scikit-Learn](https://scikit-learn.org/stable/modules/manifold.html)  
+[Visualizing Data Using t-SNE](https://www.youtube.com/watch?v=RJVL80Gg3lA)  
+[CS168 Lecture 7: Understanding and Using Principal Component Analysis (PCA)](https://web.stanford.edu/class/cs168/l/l7.pdf)  
+[CS168 Lecture 8: How PCA Works](https://web.stanford.edu/class/cs168/l/l8.pdf)

@@ -1,0 +1,301 @@
+---
+title: 'Tutorial 3: Loss and Optimization'
+author: Jiawei Li
+editor:
+  render-on-save: true
+execute:
+  warning: false
+jupyter: python3
+---
+
+# Housing Prices
+
+For this tutorial, let us use [Ames Housing dataset](https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques/data) on Kaggle to explore the housing prices. One simplest way to model housing prices is a "multiple" measure between between housing area and price:
+
+$$
+\text{price} = \beta \times \text{area}
+$$
+
+First, we read the data and plot it.
+
+```{python}
+import altair as alt
+import numpy as np
+import pandas as pd
+```
+
+```{python}
+housing = pd.read_csv("train.csv")[["GrLivArea", "SalePrice"]]
+
+alt.Chart(housing).mark_circle().encode(
+    x = "GrLivArea",
+    y = "SalePrice"
+)
+```
+
+## Loss
+
+We use $y$ to denote the actual price, $x$ to denote the area, $\beta$ is the parameter (or the multiple in this case), $\epsilon$ is the irreducible error that collects all the unmodeled parts of our data. We use superscript $(i)$ to denote the index of the data. For example, the first row of data is:
+
+$$
+y^{(0)} = \beta x^{(0)} + \epsilon^{(0)}
+$$
+
+And $\hat{y}$ is the predicted price and $\hat{\beta}$ is the predicted parameter.
+
+$$
+\hat{y}^{(0)} = \hat{\beta} x^{(0)}
+$$
+
+It can be easily vectorized. $y$ is the column of housing price,$\begin{bmatrix}
+   y^{(0)} \\
+   y^{(1)} \\
+   \vdots   \\
+   y^{(n)} \\
+\end{bmatrix}$. $x$ is the column of housing area, $\begin{bmatrix}
+   x^{(0)} \\
+   x^{(1)} \\
+   \vdots   \\
+   x^{(n)} \\
+\end{bmatrix}$. We have:
+
+$$
+y = \beta x + \epsilon
+$$
+
+$$
+\hat{y} = \hat{\beta} x
+$$
+
+Our goal is to find $\beta^*$ that minimizes the mean of the squared errors.
+
+$$
+\beta^*:=\underset{\hat{\beta}}{\operatorname{argmin}}\ J(\hat{\beta})
+$$
+
+The mean of the squared errors is used as a loss or cost function:
+
+$$
+J(\hat{\beta})
+= \text{MSE}
+= \frac{1}{n} (y - \hat{y})^\top (y - \hat{y})
+= \frac{1}{n} \sum_{i=1}^n\left[y^{(i)}-\hat{y}^{(i)}\right]^2
+= \frac{1}{n} \sum_{i=1}^n\left[y^{(i)}-\hat{\beta} x^{(i)}\right]^2
+$$
+
+```{python}
+def calculate_mse(beta):
+    """
+    Calculate the mean of the squared errors of the housing area and price given beta.
+    """
+    squared_error = (housing["SalePrice"] - housing["GrLivArea"] * beta) ** 2
+    mean_squared_error = squared_error.mean()
+    return mean_squared_error
+```
+
+```{python}
+calculate_mse(80)
+```
+
+We can plot loss function in respect to the parameter $\beta$, the output is known as the loss landscape.
+
+```{python}
+def plot_mse(low=0, high=500):
+    """
+    Plot the mean of the squared errors for a range of betas.
+    """
+    betas = np.arange(low, high, 1)
+    losses = np.vectorize(calculate_mse)(betas)
+    source = pd.DataFrame({"beta": betas, "loss": losses})
+    chart = alt.Chart(source).mark_line().encode(
+        x = "beta",
+        y = "loss"
+    )
+    return chart
+```
+
+```{python}
+plot_mse(low=0, high=300)
+```
+
+## First Derivative
+
+We can rewrite the loss function $J(\hat{\beta})$ in a more friendly format:
+
+$$
+J(\hat{\beta}) = \frac{1}{2} \sum_{i=1}^n\left[y^{(i)}-\hat{\beta} x^{(i)}\right]^2
+$$
+
+The first derivative of $J(\hat{\beta})$ becomes:
+
+$$
+\frac{\partial}{\partial \hat{\beta}} J(\hat{\beta}) = -\sum_{i=1}^n\left[y^{(i)}-\hat{\beta} x^{(i)}\right]x^{(i)}
+$$
+
+We can use gradient descent to reach the minimum of loss function by taking the steps towards to direction indicated by the first derivative. For linear regression, a solution can be directly calculated because the loss function is convex, which can be proved by the second derivative.
+
+```{python}
+def calculate_mse_prime(beta):
+    """
+    Calculate the first derivative of mean squread error given beta.
+    """
+    mse_prime = -((housing["SalePrice"] - housing["GrLivArea"] * beta) * housing["GrLivArea"]).sum()
+    return mse_prime
+
+def plot_mse_prime(low=0, high=500):
+    """
+    Plot the first derivative of mean squread error given beta.
+    """
+    betas = np.arange(low, high, 1)
+    prime = np.vectorize(calculate_mse_prime)(betas)
+    source = pd.DataFrame({"beta": betas, "loss": prime})
+    chart = alt.Chart(source).mark_line().encode(
+        x = "beta",
+        y = "loss"
+    )
+    return chart
+```
+
+```{python}
+plot_mse_prime(low=0, high=300)
+```
+
+## Second Derivative
+
+From the plot, we can already tell the first derivative is a straight line. This can be expressed as the second derivative of the loss function:
+
+$$
+\frac{\partial^2}{\partial^2 \hat{\beta}} J(\hat{\beta}) = \sum_{i=1}^n \left[x^{(i)}\right]^2
+$$
+
+Which is a positive constant number.
+
+## Optimization
+
+The second derivative gives us indication that the loss function is convex. So we can set first derivative to zero to get the global minimum.
+
+$$
+\begin{aligned}
+   \frac{\partial}{\partial \beta^*} J(\beta^*) &= 0 \\
+   \sum_{i=1}^n\left[y^{(i)}-\beta^* x^{(i)}\right] x^{(i)} &= 0 \\
+   \sum_{i=1}^n y^{(i)} &= \sum_{i=1}^n \beta^* x^{(i)} \\
+   \beta^* &= \frac{\sum_{i=1}^n y^{(i)}}{\sum_{i=1}^n x^{(i)}}  
+\end{aligned}
+$$
+
+On your exercise, the matrix form is used to accommodate intercept term and more features. For example, if we add an intercept to our equation:
+
+$$
+\text{price} = \beta_0 + \beta_1 \times \text{area}
+$$
+
+We can rewrite $\beta$ as $\begin{bmatrix}
+   \beta_0 \\
+   \beta_1
+\end{bmatrix}$, the feature $X$ as $\begin{bmatrix}
+   1 & x^{(0)} \\
+   1 & x^{(1)} \\
+   \vdots & \vdots   \\
+   1 & x^{(n)} \\
+\end{bmatrix}$, and the equation becomes:
+
+$$
+\hat{y} = X \hat{\beta}
+$$
+
+From [properties of matrix multiplication](https://www.khanacademy.org/math/precalculus/x9e81a4f98389efdf:matrices/x9e81a4f98389efdf:properties-of-matrix-multiplication/a/properties-of-matrix-multiplication), we know that $(AB)^\top=B^\top A^\top$ and $A(B+C) = AB + AC$. The loss function becomes:
+
+$$
+\begin{aligned}
+J(\hat{\beta}) &= \frac{1}{2} \left[ (\hat{y} - X \hat{\beta})^\top (\hat{y} - X \hat{\beta}) \right] \\
+&= \frac{1}{2} \left[(y - X\hat{\beta})^\top y - (y - X\hat{\beta})^\top X\hat{\beta} \right]\\
+&= \frac{1}{2} \left[y^\top y - (X\hat{\beta})^\top y - y^\top X\hat{\beta} + (X\hat{\beta})^\top X\hat{\beta} \right]\\
+&= \frac{1}{2} \left[y^\top y - \hat{\beta}^\top X^\top y - y^\top X\hat{\beta} + \hat{\beta}^\top X^\top X\hat{\beta} \right]
+\end{aligned}
+$$
+
+The first derivative to the loss function is the Jacobian matrix:
+
+$$
+\begin{aligned}
+\nabla_{\hat{\beta}} J(\hat{\beta}) &=\nabla_{\hat{\beta}} \frac{1}{2} \left[y^\top y - \hat{\beta}^\top X^\top y - y^\top X\hat{\beta} + \hat{\beta}^\top X^\top X\hat{\beta} \right] \\
+\end{aligned}
+$$
+
+The first item $y^\top y$ can be ignored since it has nothing to do with $\beta$. The second and third term are both scaler and are transpose of each other. Therefore these two terms can be combined:
+
+$$
+\begin{aligned}
+\nabla_{\hat{\beta}} J(\hat{\beta}) &= \nabla_{\hat{\beta}} \frac{1}{2} \left[y^\top y - \hat{\beta}^\top X^\top y - y^\top X\hat{\beta} + \hat{\beta}^\top X^\top X\hat{\beta} \right] \\
+\nabla_{\hat{\beta}} J(\hat{\beta}) &= \nabla_{\hat{\beta}} \frac{1}{2} \left[- 2 (X^\top y)^\top \hat{\beta} + \hat{\beta}^\top X^\top X\hat{\beta} \right] \\
+\end{aligned}
+$$
+
+It is trivial to see that $\nabla_{\hat{\beta}} \left[ 2 (X^\top y)^\top \hat{\beta} \right] = 2 X^\top y$.
+
+For $\nabla_{\hat{\beta}} \left[ \hat{\beta}^\top X^\top X\hat{\beta} \right]$, suppose we have a symetric matrix $A=\begin{bmatrix}
+a_{11} & a_{12} \\
+a_{12} & a_{22}
+\end{bmatrix}$ in place of $X^\top X$. The original equation becomes $\hat{\beta}^\top A \hat{\beta}$, which can be decomposed into:
+
+$$
+\begin{aligned}
+\hat{\beta}^\top A \hat{\beta}
+=&
+\begin{bmatrix}
+\hat{\beta}_0 & \hat{\beta}_1
+\end{bmatrix}
+\begin{bmatrix}
+a_{11} & a_{12} \\
+a_{12} & a_{22}
+\end{bmatrix}
+\begin{bmatrix}
+\hat{\beta}_0 \\
+\hat{\beta}_1
+\end{bmatrix}\\
+=&
+\begin{bmatrix}
+\hat{\beta}_0 & \hat{\beta}_1
+\end{bmatrix}
+\begin{bmatrix}
+a_{11} \hat{\beta}_0 + a_{12} \hat{\beta}_1 \\
+a_{12} \hat{\beta}_0 + a_{22} \hat{\beta}_1
+\end{bmatrix}\\
+=& \hat{\beta}_0 (a_{11} \hat{\beta}_0+a_{12} \hat{\beta}_1) +\hat{\beta}_1 (a_{12} \hat{\beta}_0+a_{22} \hat{\beta}_1) \\
+=& a_{11} \hat{\beta}_0^2 + a_{22} \hat{\beta}_1^2+ 2 a_{12} \hat{\beta}_0 \hat{\beta}_1
+\end{aligned}
+$$
+
+The Jacobian matrix of $\hat{\beta}^\top A \hat{\beta}$ is therefore:
+
+$$
+\nabla_{\hat{\beta}}\hat{\beta}^TA\hat{\beta} = 
+\begin{bmatrix}
+\frac{\partial \hat{\beta}^TA\hat{\beta}}{\partial \hat{\beta}_0}\\ 
+\frac{\partial \hat{\beta}^TA\hat{\beta}}{\partial \hat{\beta}_1}
+\end{bmatrix} = 
+\begin{bmatrix}
+2a_{11}\hat{\beta}_0 + 2a_{12}\hat{\beta}_1\\ 
+2a_{12}\hat{\beta}_0 + 2a_{22}\hat{\beta}_1
+\end{bmatrix} = 2A\hat{\beta}
+$$
+
+And the Jacobian matrix of $\hat{\beta}^\top X^\top X \hat{\beta}$ is $2X^\top X\hat{\beta}$. we have
+
+$$
+\begin{aligned}
+\nabla_{\hat{\beta}} J(\hat{\beta}) &= \nabla_{\hat{\beta}} \frac{1}{2} \left[- 2 (X^\top y)^\top \hat{\beta} + \hat{\beta}^\top X^\top X\hat{\beta} \right] \\
+&= - X^\top y + X^\top X\hat{\beta}
+\end{aligned}
+$$
+
+To show that the loss function is convex you need to show that the second derivative of the function, known as the Hessian matrix, is positive semi-definite. This step can be skipped. Set the Jacobian matrix to 0, you will get the normal equation.
+
+# Further Reading
+
+[Linear Regression - MLU](https://mlu-explain.github.io/linear-regression/)  
+[Linear Algebra Review and Reference](https://cs229.stanford.edu/summer2020/cs229-linalg.pdf)  
+[The Matrix Calculus You Need For Deep Learning](https://explained.ai/matrix-calculus/index.html)  
+[Lecture Notes 1 - CS229](http://cs229.stanford.edu/notes2021fall/cs229-notes1.pdf)  
+[最小二乘法线性回归：矩阵视角 (Chinese)](https://iewaij.github.io/introDataScience/OLS.html)
+

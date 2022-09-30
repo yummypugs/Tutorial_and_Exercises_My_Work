@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jiawei Li">
+
+<title>Tutorial 4: Data Science as Craftsmanship</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="tutorial_4_files/libs/clipboard/clipboard.min.js"></script>
+<script src="tutorial_4_files/libs/quarto-html/quarto.js"></script>
+<script src="tutorial_4_files/libs/quarto-html/popper.min.js"></script>
+<script src="tutorial_4_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="tutorial_4_files/libs/quarto-html/anchor.min.js"></script>
+<link href="tutorial_4_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="tutorial_4_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="tutorial_4_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="tutorial_4_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="tutorial_4_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Tutorial 4: Data Science as Craftsmanship</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jiawei Li </p>
+          </div>
+  </div>
+    
+    
+  </div>
+  
+
+</header>
+
+<section id="analysis-tools-and-craftsmanship" class="level1">
+<h1>Analysis, Tools and Craftsmanship</h1>
+<p>Data Science is never about using one tool to solve all problems, but picking the right tool for the appropriate ones. The practice of Data Science has become half science and half engineering. This means that you are continuously figuring out the problem you are trying to solve, understanding principles of different steps in the workflow, and apply different tools accordingly.</p>
+<p>The academia and industry dealing with data and science is often messy and chaotic. One prime example is the usage of Excel. See <a href="https://www.bbc.com/news/technology-54423988">why using Microsoft’s tool caused Covid-19 results to be lost</a>, <a href="https://news.ycombinator.com/item?id=24689247">its Hacker News discussion</a>, <a href="https://www.theverge.com/2020/8/6/21355674/human-genes-rename-microsoft-excel-misreading-dates">scientists rename human genes to stop Microsoft Excel from misreading them as dates</a> and <a href="https://www.youtube.com/watch?v=zwRdO9_GGhY">science as amateur software development</a>. Personally, I believe that Excel should never be used for any computation. Today, programming languages offer a much better abstraction layer than Excel. And software engineering practices make data analysis much less error-prone.</p>
+<p>Of course, mistakes can still happen even when you are using programming languages and state-of-the-art libraries, unmaintainable and unreproducible data analysis using notebooks is equally bad as using Excel. But, there are certain conventions, tools and practices that help you navigate in this complex work flow and produce something meaningful. Thus, I call the process of producing good data analysis a craftsmanship. This tutorial will walk you through the process of making an efficient, maintainable and reproducible data analysis project.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="data_science.jpg" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Data Science by talking v.s. Data Science in real life</figcaption><p></p>
+</figure>
+</div>
+<section id="further-reading" class="level2">
+<h2 class="anchored" data-anchor-id="further-reading">Further Reading</h2>
+<p><a href="https://www.youtube.com/watch?v=7jiPeIFXb6U">I Don’t Like Notebooks - Joel Grus</a><br>
+<a href="https://www.youtube.com/watch?v=9Q6sLbz37gk">I Like Notebooks - Jeremy Howard</a><br>
+<a href="https://www.youtube.com/watch?v=zwRdO9_GGhY">Science as Amateur Software Development - Richard McElreath</a><br>
+<a href="https://royalsocietypublishing.org/doi/10.1098/rsos.160384">The Natural Selection of Bad Science</a><br>
+<a href="https://arxiv.org/abs/2209.09125">Operationalizing Machine Learning: An Interview Study</a><br>
+<a href="https://vimeo.com/34017777">When We Build - Wilson Miner</a><br>
+<a href="https://www.youtube.com/watch?v=8pTEmbeENF4">The Future of Programming - Bret Victor</a></p>
+</section>
+</section>
+<section id="git" class="level1">
+<h1>Git</h1>
+<p>Git is the fundamental tool for collaboration. By now, you should have some ideas of using Git. Let us start by creating a Git repository on GitHub.</p>
+<p>Then we clone the repository and create a new git branch:</p>
+<pre><code>git branch dev</code></pre>
+<p>We use <code>environment.yml</code> to set up a new conda environment.</p>
+<pre><code>mamba env create -f environment.yml</code></pre>
+<p>Feel free to invite my Github and Gitlab handle <code>iewaij</code> into your repository. I will review your code and make suggestions from time to time.</p>
+</section>
+<section id="style-and-convention" class="level1">
+<h1>Style and Convention</h1>
+<p>Convention makes our brain hurt less. Code is written for humans to read, only incidentally for machines to execute (quote from Harold Abelson). PEP 20, known as the Zen of Python, is about style and how to write Pythonic code.</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> this</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>PEP 8 specifies the standard Python coding conventions. For example, we use 4 consec­utive spaces to indicate indent­ation. Variables are named as <code>x</code>, <code>var</code>, <code>my_var­iable</code> while classes are named as <code>Model</code>, <code>MyClass</code>. There are certain libraries to help you conform to the style guide. I will illustrate using <a href="https://github.com/psf/black"><code>black</code></a>. If you are using Jupyter Lab or Jupyter Notebooks, you can use <a href="https://github.com/dnanhkhoa/nb_black">nb_black</a> or <a href="https://github.com/ryantam626/jupyterlab_code_formatter">jupyterlab-code-formatter</a>.</p>
+<section id="further-reading-1" class="level2">
+<h2 class="anchored" data-anchor-id="further-reading-1">Further Reading</h2>
+<p><a href="https://calmcode.io/black/introduction.html">Black Tutorial - Calmcode</a><br>
+<a href="https://www.packtpub.com/product/mastering-python/9781800207721">Pythonic Syntax and Common Pitfalls - Mastering Python</a></p>
+</section>
+</section>
+<section id="prepare-data" class="level1">
+<h1>Prepare Data</h1>
+<p>Now, with things set up and running, we can finally get our hands on data. Often, the data you have is not clean. We need to clean the data into a tidy format. What do we mean by that?</p>
+<p><a href="http://www.jstatsoft.org/v59/i10/paper">Tidy data</a> is a concept proposed by Hadley Wickham. Wickham formulizes the process of data cleaning and what we should expect in the end. The three interrelated rules that make a dataset tidy are:</p>
+<ol type="1">
+<li>Each variable must have its own column.</li>
+<li>Each observation must have its own row.</li>
+<li>Each value must have its own cell.</li>
+</ol>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://d33wubrfki0l68.cloudfront.net/6f1ddb544fc5c69a2478e444ab8112fb0eea23f8/91adc/images/tidy-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Following three rules makes a dataset tidy: variables are in columns, observations are in rows, and values are in cells.</figcaption><p></p>
+</figure>
+</div>
+<p>Take the mushroom dataset in tutorial 2 for example. We can see that the <code>stem-height</code> and <code>stem-width</code> fields are text fields indicating the range. To tidy this data for future processing, we need to convert this range either into the mean values or into separate columns such as <code>stem-height-low</code> and <code>stem-height-high</code>.</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>mushroom <span class="op">=</span> pd.read_csv(<span class="st">"https://mushroom.mathematik.uni-marburg.de/files/PrimaryData/primary_data_edited.csv"</span>, sep<span class="op">=</span><span class="st">";"</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>mushroom.loc[:<span class="dv">5</span>, [<span class="st">"stem-height"</span>, <span class="st">"stem-width"</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="65">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>stem-height</th>
+      <th>stem-width</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>[15, 20]</td>
+      <td>[15, 20]</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>[6, 10]</td>
+      <td>[10, 20]</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>[10, 12]</td>
+      <td>[10, 20]</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>[7, 15]</td>
+      <td>[10, 25]</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>[10, 12]</td>
+      <td>[10, 20]</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>[5, 7]</td>
+      <td>[10, 15]</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p>After cleaning the dataset, we should also check for data types and missing values. Here, I use the <a href="https://calmcode.io/datasets/birthdays.html">birthday dataset</a> that contains births across the United States per state.</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>brithdays <span class="op">=</span> pd.read_csv(<span class="st">"https://calmcode.io/datasets/birthdays.csv"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>brithdays.head(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="66">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>state</th>
+      <th>year</th>
+      <th>month</th>
+      <th>day</th>
+      <th>date</th>
+      <th>wday</th>
+      <th>births</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>AK</td>
+      <td>1969</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1969-01-01</td>
+      <td>Wed</td>
+      <td>14</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>AL</td>
+      <td>1969</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1969-01-01</td>
+      <td>Wed</td>
+      <td>174</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>AR</td>
+      <td>1969</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1969-01-01</td>
+      <td>Wed</td>
+      <td>78</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>AZ</td>
+      <td>1969</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1969-01-01</td>
+      <td>Wed</td>
+      <td>84</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>CA</td>
+      <td>1969</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1969-01-01</td>
+      <td>Wed</td>
+      <td>824</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p>The dataset seems pretty tidy, now we use <code>info()</code> to check the data types and missing values.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>brithdays.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 372555 entries, 0 to 372554
+Data columns (total 7 columns):
+ #   Column  Non-Null Count   Dtype 
+---  ------  --------------   ----- 
+ 0   state   372555 non-null  object
+ 1   year    372555 non-null  int64 
+ 2   month   372555 non-null  int64 
+ 3   day     372555 non-null  int64 
+ 4   date    372555 non-null  object
+ 5   wday    372555 non-null  object
+ 6   births  372555 non-null  int64 
+dtypes: int64(4), object(3)
+memory usage: 19.9+ MB</code></pre>
+</div>
+</div>
+<p>There are no missing values, but the date is not recognized by pandas. We can ask pandas explicitly to parse the date column when reading the csv file.</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>brithdays <span class="op">=</span> pd.read_csv(<span class="st">"https://calmcode.io/datasets/birthdays.csv"</span>, parse_dates<span class="op">=</span>[<span class="st">"date"</span>])</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>brithdays.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 372555 entries, 0 to 372554
+Data columns (total 7 columns):
+ #   Column  Non-Null Count   Dtype         
+---  ------  --------------   -----         
+ 0   state   372555 non-null  object        
+ 1   year    372555 non-null  int64         
+ 2   month   372555 non-null  int64         
+ 3   day     372555 non-null  int64         
+ 4   date    372555 non-null  datetime64[ns]
+ 5   wday    372555 non-null  object        
+ 6   births  372555 non-null  int64         
+dtypes: datetime64[ns](1), int64(4), object(2)
+memory usage: 19.9+ MB</code></pre>
+</div>
+</div>
+<p>It should be noted that preparing data does not have to be done in Python. If you are dealing with large dataset in a database, it makes more sense to query them using SQL. Pandas is also not perfect, <a href="https://pola-rs.github.io/polars-book/user-guide/">polars</a> and <a href="https://duckdb.org/docs/">DuckDB</a> can be very good alternatives as well.</p>
+<section id="further-reading-2" class="level2">
+<h2 class="anchored" data-anchor-id="further-reading-2">Further Reading</h2>
+<p><a href="https://r4ds.had.co.nz/tidy-data.html">Tidy Data</a><br>
+<a href="https://www.jeannicholashould.com/tidy-data-in-python.html">Tidy Data in Python</a></p>
+</section>
+</section>
+<section id="abstraction" class="level1">
+<h1>Abstraction</h1>
+<p>As soon as you have made some progress in your notebooks, you should put them into functions with docstrings. For example, here I made summarization using <code>groupby()</code>.</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>brithdays[<span class="st">"day_of_year"</span>] <span class="op">=</span> brithdays[<span class="st">"date"</span>].dt.dayofyear</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>brithdays <span class="op">=</span> brithdays.groupby([<span class="st">"date"</span>, <span class="st">"wday"</span>, <span class="st">"day_of_year"</span>]).agg(</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    births<span class="op">=</span>(<span class="st">"births"</span>, <span class="st">"sum"</span>), month<span class="op">=</span>(<span class="st">"month"</span>, <span class="st">"first"</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>).reset_index()</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>brithdays.head(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="69">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>date</th>
+      <th>wday</th>
+      <th>day_of_year</th>
+      <th>births</th>
+      <th>month</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1969-01-01</td>
+      <td>Wed</td>
+      <td>1</td>
+      <td>8486</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1969-01-02</td>
+      <td>Thurs</td>
+      <td>2</td>
+      <td>9002</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1969-01-03</td>
+      <td>Fri</td>
+      <td>3</td>
+      <td>9542</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1969-01-04</td>
+      <td>Sat</td>
+      <td>4</td>
+      <td>8960</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1969-01-05</td>
+      <td>Sun</td>
+      <td>5</td>
+      <td>8390</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p>I’m happy with the final product, so I will move it to another <code>.py</code> file and import it. In the <code>birthday.py</code> file, I defined the following function:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> clean_dataset(frame):</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Clean birthdays dataset.</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">        frame (pd.DataFrame): The data frame to be cleaned</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">        pd.DataFrame: The cleaned data frame</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    frame[<span class="st">"day_of_year"</span>] <span class="op">=</span> frame[<span class="st">"date"</span>].dt.dayofyear</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    frame <span class="op">=</span> frame.groupby([<span class="st">"date"</span>, <span class="st">"wday"</span>, <span class="st">"day_of_year"</span>]).agg(</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>        births<span class="op">=</span>(<span class="st">"births"</span>, <span class="st">"sum"</span>), month<span class="op">=</span>(<span class="st">"month"</span>, <span class="st">"first"</span>)</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    ).reset_index()</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> frame</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> birthday <span class="im">import</span> clean_dataset</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>brithdays <span class="op">=</span> pd.read_csv(<span class="st">"https://calmcode.io/datasets/birthdays.csv"</span>, parse_dates<span class="op">=</span>[<span class="st">"date"</span>])</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>brithdays <span class="op">=</span> brithdays.pipe(clean_dataset)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>brithdays.head(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="70">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>date</th>
+      <th>wday</th>
+      <th>day_of_year</th>
+      <th>births</th>
+      <th>month</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1969-01-01</td>
+      <td>Wed</td>
+      <td>1</td>
+      <td>8486</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1969-01-02</td>
+      <td>Thurs</td>
+      <td>2</td>
+      <td>9002</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1969-01-03</td>
+      <td>Fri</td>
+      <td>3</td>
+      <td>9542</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1969-01-04</td>
+      <td>Sat</td>
+      <td>4</td>
+      <td>8960</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1969-01-05</td>
+      <td>Sun</td>
+      <td>5</td>
+      <td>8390</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p>In order for notebooks to pick up your changes without restarting every time, you should use an IPython extension called <a href="https://ipython.readthedocs.io/en/stable/config/extensions/autoreload.html"><code>autoload</code></a>.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>load_ext autoreload</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>autoreload <span class="dv">2</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> birthday</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="unit-test" class="level1">
+<h1>Unit Test</h1>
+<p>One reason that we should use functions more often is that they make it easy for testing. One way is to use <code>doctest</code>. Add example code into your function’s doc string:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> clean_dataset(frame):</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Clean birthdays dataset.</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">    &gt;&gt;&gt; brithdays = pd.read_csv("https://calmcode.io/datasets/birthdays.csv", parse_dates=["date"])</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co">    &gt;&gt;&gt; brithdays = brithdays.pipe(clean_dataset)</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">    &gt;&gt;&gt; brithdays.head(5)</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co">            date   wday  day_of_year  births  month</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co">    0 1969-01-01    Wed            1    8486      1</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co">    1 1969-01-02  Thurs            2    9002      1</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co">    2 1969-01-03    Fri            3    9542      1</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co">    3 1969-01-04    Sat            4    8960      1</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co">    4 1969-01-05    Sun            5    8390      1</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="co">        frame (pd.DataFrame): The data frame to be cleaned</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="co">        pd.DataFrame: The cleaned data frame</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>    frame[<span class="st">"day_of_year"</span>] <span class="op">=</span> frame[<span class="st">"date"</span>].dt.dayofyear</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>    frame <span class="op">=</span> (</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>        frame.groupby([<span class="st">"date"</span>, <span class="st">"wday"</span>, <span class="st">"day_of_year"</span>])</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>        .agg(births<span class="op">=</span>(<span class="st">"births"</span>, <span class="st">"sum"</span>), month<span class="op">=</span>(<span class="st">"month"</span>, <span class="st">"first"</span>))</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>        .reset_index()</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> frame</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">"__main__"</span>:</span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> doctest</span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>    doctest.testmod()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In your terminal, run the python file should give you test result:</p>
+<pre><code>python birthday.py -v</code></pre>
+<p>You can also use the module without putting <code>testmod()</code> in your file:</p>
+<pre><code>python -m doctest -v birthday.py</code></pre>
+<p>Another way is to use <code>pytest</code>. Create another file called <code>test_birthday.py</code> and put the following function:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> birthday <span class="im">import</span> clean_dataset</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_clean_dataset():</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    brithdays <span class="op">=</span> pd.read_csv(<span class="st">"https://calmcode.io/datasets/birthdays.csv"</span>, parse_dates<span class="op">=</span>[<span class="st">"date"</span>])</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    brithdays <span class="op">=</span> brithdays.pipe(clean_dataset)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> brithdays.loc[<span class="dv">0</span>, <span class="st">"wday"</span>] <span class="op">==</span> <span class="st">"Wed"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In your terminal, run the following command:</p>
+<pre><code>pytest test_birthday.py</code></pre>
+<section id="further-reading-3" class="level2">
+<h2 class="anchored" data-anchor-id="further-reading-3">Further Reading</h2>
+<p><a href="https://eugeneyan.com/writing/testing-pipelines/">Writing Robust Tests for Data &amp; Machine Learning Pipelines</a><br>
+<a href="https://www.packtpub.com/product/mastering-python/9781800207721">Testing and Logging - Mastering Python</a></p>
+</section>
+</section>
+<section id="visualization" class="level1">
+<h1>Visualization</h1>
+<p>Data scientists heavily rely on visualization to explore the data and communicate the findings with stakeholders. My preference is <code>altalir</code>. It produces a beautiful chart in JavaScript, allows interaction and uses a grammar-of-graphics API.</p>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> altair <span class="im">as</span> alt</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>alt.Chart(brithdays.sample(<span class="dv">1000</span>)).mark_circle().encode(</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">"day_of_year"</span>,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">"births"</span>,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    tooltip<span class="op">=</span>[<span class="st">"date"</span>, <span class="st">"births"</span>, <span class="st">"wday"</span>]</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>).interactive()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="71">
+
+<div id="altair-viz-0666a1a953b64021ace769447471d129"></div>
+<script type="text/javascript">
+  var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
+  (function(spec, embedOpt){
+    let outputDiv = document.currentScript.previousElementSibling;
+    if (outputDiv.id !== "altair-viz-0666a1a953b64021ace769447471d129") {
+      outputDiv = document.getElementById("altair-viz-0666a1a953b64021ace769447471d129");
+    }
+    const paths = {
+      "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
+      "vega-lib": "https://cdn.jsdelivr.net/npm//vega-lib?noext",
+      "vega-lite": "https://cdn.jsdelivr.net/npm//vega-lite@4.17.0?noext",
+      "vega-embed": "https://cdn.jsdelivr.net/npm//vega-embed@6?noext",
+    };
+
+    function maybeLoadScript(lib, version) {
+      var key = `${lib.replace("-", "")}_version`;
+      return (VEGA_DEBUG[key] == version) ?
+        Promise.resolve(paths[lib]) :
+        new Promise(function(resolve, reject) {
+          var s = document.createElement('script');
+          document.getElementsByTagName("head")[0].appendChild(s);
+          s.async = true;
+          s.onload = () => {
+            VEGA_DEBUG[key] = version;
+            return resolve(paths[lib]);
+          };
+          s.onerror = () => reject(`Error loading script: ${paths[lib]}`);
+          s.src = paths[lib];
+        });
+    }
+
+    function showError(err) {
+      outputDiv.innerHTML = `<div class="error" style="color:red;">${err}</div>`;
+      throw err;
+    }
+
+    function displayChart(vegaEmbed) {
+      vegaEmbed(outputDiv, spec, embedOpt)
+        .catch(err => showError(`Javascript Error: ${err.message}<br>This usually means there's a typo in your chart specification. See the javascript console for the full traceback.`));
+    }
+
+    if(typeof define === "function" && define.amd) {
+      requirejs.config({paths});
+      require(["vega-embed"], displayChart, err => showError(`Error loading script: ${err.message}`));
+    } else {
+      maybeLoadScript("vega", "5")
+        .then(() => maybeLoadScript("vega-lite", "4.17.0"))
+        .then(() => maybeLoadScript("vega-embed", "6"))
+        .catch(showError)
+        .then(() => displayChart(vegaEmbed));
+    }
+  })({"config": {"view": {"continuousWidth": 400, "continuousHeight": 300}}, "data": {"name": "data-b8dfd97634f27f7646a3206e4cfb2dfa"}, "mark": "circle", "encoding": {"tooltip": [{"field": "date", "type": "temporal"}, {"field": "births", "type": "quantitative"}, {"field": "wday", "type": "nominal"}], "x": {"field": "day_of_year", "type": "quantitative"}, "y": {"field": "births", "type": "quantitative"}}, "selection": {"selector008": {"type": "interval", "bind": "scales", "encodings": ["x", "y"]}}, "$schema": "https://vega.github.io/schema/vega-lite/v4.17.0.json", "datasets": {"data-b8dfd97634f27f7646a3206e4cfb2dfa": [{"date": "1978-11-14T00:00:00", "wday": "Tues", "day_of_year": 318, "births": 10031, "month": 11}, {"date": "1984-03-01T00:00:00", "wday": "Thurs", "day_of_year": 61, "births": 10471, "month": 3}, {"date": "1977-04-05T00:00:00", "wday": "Tues", "day_of_year": 95, "births": 9506, "month": 4}, {"date": "1987-12-07T00:00:00", "wday": "Mon", "day_of_year": 341, "births": 10667, "month": 12}, {"date": "1986-04-03T00:00:00", "wday": "Thurs", "day_of_year": 93, "births": 11000, "month": 4}, {"date": "1976-06-05T00:00:00", "wday": "Sat", "day_of_year": 157, "births": 7390, "month": 6}, {"date": "1970-10-18T00:00:00", "wday": "Sun", "day_of_year": 291, "births": 8924, "month": 10}, {"date": "1981-02-19T00:00:00", "wday": "Thurs", "day_of_year": 50, "births": 10337, "month": 2}, {"date": "1979-06-22T00:00:00", "wday": "Fri", "day_of_year": 173, "births": 10007, "month": 6}, {"date": "1973-11-16T00:00:00", "wday": "Fri", "day_of_year": 320, "births": 9139, "month": 11}, {"date": "1971-03-21T00:00:00", "wday": "Sun", "day_of_year": 80, "births": 8688, "month": 3}, {"date": "1981-05-12T00:00:00", "wday": "Tues", "day_of_year": 132, "births": 10076, "month": 5}, {"date": "1977-09-18T00:00:00", "wday": "Sun", "day_of_year": 261, "births": 8728, "month": 9}, {"date": "1980-01-22T00:00:00", "wday": "Tues", "day_of_year": 22, "births": 10076, "month": 1}, {"date": "1982-07-07T00:00:00", "wday": "Wed", "day_of_year": 188, "births": 11742, "month": 7}, {"date": "1972-11-08T00:00:00", "wday": "Wed", "day_of_year": 313, "births": 9240, "month": 11}, {"date": "1970-08-11T00:00:00", "wday": "Tues", "day_of_year": 223, "births": 11566, "month": 8}, {"date": "1982-04-18T00:00:00", "wday": "Sun", "day_of_year": 108, "births": 8195, "month": 4}, {"date": "1985-06-22T00:00:00", "wday": "Sat", "day_of_year": 173, "births": 9258, "month": 6}, {"date": "1986-08-02T00:00:00", "wday": "Sat", "day_of_year": 214, "births": 9357, "month": 8}, {"date": "1979-06-03T00:00:00", "wday": "Sun", "day_of_year": 154, "births": 8190, "month": 6}, {"date": "1972-10-28T00:00:00", "wday": "Sat", "day_of_year": 302, "births": 7995, "month": 10}, {"date": "1983-03-31T00:00:00", "wday": "Thurs", "day_of_year": 90, "births": 10613, "month": 3}, {"date": "1979-12-26T00:00:00", "wday": "Wed", "day_of_year": 360, "births": 9231, "month": 12}, {"date": "1976-10-15T00:00:00", "wday": "Fri", "day_of_year": 289, "births": 9564, "month": 10}, {"date": "1980-07-23T00:00:00", "wday": "Wed", "day_of_year": 205, "births": 10616, "month": 7}, {"date": "1983-02-28T00:00:00", "wday": "Mon", "day_of_year": 59, "births": 10254, "month": 2}, {"date": "1988-06-30T00:00:00", "wday": "Thurs", "day_of_year": 182, "births": 11980, "month": 6}, {"date": "1973-08-20T00:00:00", "wday": "Mon", "day_of_year": 232, "births": 9467, "month": 8}, {"date": "1988-07-16T00:00:00", "wday": "Sat", "day_of_year": 198, "births": 9835, "month": 7}, {"date": "1988-12-10T00:00:00", "wday": "Sat", "day_of_year": 345, "births": 8825, "month": 12}, {"date": "1974-01-01T00:00:00", "wday": "Tues", "day_of_year": 1, "births": 7002, "month": 1}, {"date": "1983-03-15T00:00:00", "wday": "Tues", "day_of_year": 74, "births": 10839, "month": 3}, {"date": "1984-10-27T00:00:00", "wday": "Sat", "day_of_year": 301, "births": 8882, "month": 10}, {"date": "1973-07-15T00:00:00", "wday": "Sun", "day_of_year": 196, "births": 7551, "month": 7}, {"date": "1981-10-13T00:00:00", "wday": "Tues", "day_of_year": 286, "births": 10616, "month": 10}, {"date": "1973-10-05T00:00:00", "wday": "Fri", "day_of_year": 278, "births": 9247, "month": 10}, {"date": "1981-05-27T00:00:00", "wday": "Wed", "day_of_year": 147, "births": 10674, "month": 5}, {"date": "1979-01-30T00:00:00", "wday": "Tues", "day_of_year": 30, "births": 9520, "month": 1}, {"date": "1975-11-04T00:00:00", "wday": "Tues", "day_of_year": 308, "births": 9002, "month": 11}, {"date": "1981-12-29T00:00:00", "wday": "Tues", "day_of_year": 363, "births": 11279, "month": 12}, {"date": "1982-02-28T00:00:00", "wday": "Sun", "day_of_year": 59, "births": 8384, "month": 2}, {"date": "1986-02-06T00:00:00", "wday": "Thurs", "day_of_year": 37, "births": 10606, "month": 2}, {"date": "1977-10-29T00:00:00", "wday": "Sat", "day_of_year": 302, "births": 8183, "month": 10}, {"date": "1987-11-16T00:00:00", "wday": "Mon", "day_of_year": 320, "births": 11017, "month": 11}, {"date": "1975-07-24T00:00:00", "wday": "Thurs", "day_of_year": 205, "births": 9498, "month": 7}, {"date": "1988-09-10T00:00:00", "wday": "Sat", "day_of_year": 254, "births": 9968, "month": 9}, {"date": "1976-01-13T00:00:00", "wday": "Tues", "day_of_year": 13, "births": 9048, "month": 1}, {"date": "1979-10-20T00:00:00", "wday": "Sat", "day_of_year": 293, "births": 8691, "month": 10}, {"date": "1974-10-01T00:00:00", "wday": "Tues", "day_of_year": 274, "births": 10274, "month": 10}, {"date": "1986-12-09T00:00:00", "wday": "Tues", "day_of_year": 343, "births": 10963, "month": 12}, {"date": "1988-03-03T00:00:00", "wday": "Thurs", "day_of_year": 63, "births": 11090, "month": 3}, {"date": "1984-04-29T00:00:00", "wday": "Sun", "day_of_year": 120, "births": 7721, "month": 4}, {"date": "1981-03-03T00:00:00", "wday": "Tues", "day_of_year": 62, "births": 10471, "month": 3}, {"date": "1987-05-18T00:00:00", "wday": "Mon", "day_of_year": 138, "births": 11208, "month": 5}, {"date": "1987-04-24T00:00:00", "wday": "Fri", "day_of_year": 114, "births": 10847, "month": 4}, {"date": "1982-03-12T00:00:00", "wday": "Fri", "day_of_year": 71, "births": 10369, "month": 3}, {"date": "1975-12-17T00:00:00", "wday": "Wed", "day_of_year": 351, "births": 9212, "month": 12}, {"date": "1980-12-07T00:00:00", "wday": "Sun", "day_of_year": 342, "births": 8513, "month": 12}, {"date": "1978-10-14T00:00:00", "wday": "Sat", "day_of_year": 287, "births": 8566, "month": 10}, {"date": "1974-05-17T00:00:00", "wday": "Fri", "day_of_year": 137, "births": 8873, "month": 5}, {"date": "1986-07-18T00:00:00", "wday": "Fri", "day_of_year": 199, "births": 11572, "month": 7}, {"date": "1969-03-04T00:00:00", "wday": "Tues", "day_of_year": 63, "births": 10264, "month": 3}, {"date": "1987-12-15T00:00:00", "wday": "Tues", "day_of_year": 349, "births": 11533, "month": 12}, {"date": "1984-07-28T00:00:00", "wday": "Sat", "day_of_year": 210, "births": 9470, "month": 7}, {"date": "1970-12-05T00:00:00", "wday": "Sat", "day_of_year": 339, "births": 9610, "month": 12}, {"date": "1988-11-04T00:00:00", "wday": "Fri", "day_of_year": 309, "births": 11552, "month": 11}, {"date": "1975-01-24T00:00:00", "wday": "Fri", "day_of_year": 24, "births": 8771, "month": 1}, {"date": "1982-10-30T00:00:00", "wday": "Sat", "day_of_year": 303, "births": 8723, "month": 10}, {"date": "1971-11-15T00:00:00", "wday": "Mon", "day_of_year": 319, "births": 9860, "month": 11}, {"date": "1986-11-10T00:00:00", "wday": "Mon", "day_of_year": 314, "births": 10403, "month": 11}, {"date": "1971-12-17T00:00:00", "wday": "Fri", "day_of_year": 351, "births": 9936, "month": 12}, {"date": "1975-12-16T00:00:00", "wday": "Tues", "day_of_year": 350, "births": 9556, "month": 12}, {"date": "1984-01-12T00:00:00", "wday": "Thurs", "day_of_year": 12, "births": 9798, "month": 1}, {"date": "1969-12-28T00:00:00", "wday": "Sun", "day_of_year": 362, "births": 9004, "month": 12}, {"date": "1984-08-01T00:00:00", "wday": "Wed", "day_of_year": 214, "births": 11227, "month": 8}, {"date": "1971-03-16T00:00:00", "wday": "Tues", "day_of_year": 75, "births": 10438, "month": 3}, {"date": "1980-11-13T00:00:00", "wday": "Thurs", "day_of_year": 318, "births": 9930, "month": 11}, {"date": "1971-09-03T00:00:00", "wday": "Fri", "day_of_year": 246, "births": 10788, "month": 9}, {"date": "1982-06-29T00:00:00", "wday": "Tues", "day_of_year": 180, "births": 11456, "month": 6}, {"date": "1985-07-13T00:00:00", "wday": "Sat", "day_of_year": 194, "births": 9180, "month": 7}, {"date": "1981-01-08T00:00:00", "wday": "Thurs", "day_of_year": 8, "births": 9423, "month": 1}, {"date": "1982-02-07T00:00:00", "wday": "Sun", "day_of_year": 38, "births": 8514, "month": 2}, {"date": "1969-04-10T00:00:00", "wday": "Thurs", "day_of_year": 100, "births": 9708, "month": 4}, {"date": "1981-12-22T00:00:00", "wday": "Tues", "day_of_year": 356, "births": 10567, "month": 12}, {"date": "1973-12-18T00:00:00", "wday": "Tues", "day_of_year": 352, "births": 9536, "month": 12}, {"date": "1971-09-17T00:00:00", "wday": "Fri", "day_of_year": 260, "births": 11004, "month": 9}, {"date": "1984-01-24T00:00:00", "wday": "Tues", "day_of_year": 24, "births": 10285, "month": 1}, {"date": "1979-12-06T00:00:00", "wday": "Thurs", "day_of_year": 340, "births": 10021, "month": 12}, {"date": "1977-08-13T00:00:00", "wday": "Sat", "day_of_year": 225, "births": 8669, "month": 8}, {"date": "1984-10-31T00:00:00", "wday": "Wed", "day_of_year": 305, "births": 10033, "month": 10}, {"date": "1970-04-30T00:00:00", "wday": "Thurs", "day_of_year": 120, "births": 9684, "month": 4}, {"date": "1988-03-05T00:00:00", "wday": "Sat", "day_of_year": 65, "births": 8917, "month": 3}, {"date": "1975-07-20T00:00:00", "wday": "Sun", "day_of_year": 201, "births": 7815, "month": 7}, {"date": "1981-09-03T00:00:00", "wday": "Thurs", "day_of_year": 246, "births": 10894, "month": 9}, {"date": "1974-09-22T00:00:00", "wday": "Sun", "day_of_year": 265, "births": 8622, "month": 9}, {"date": "1983-01-15T00:00:00", "wday": "Sat", "day_of_year": 15, "births": 8784, "month": 1}, {"date": "1970-10-06T00:00:00", "wday": "Tues", "day_of_year": 279, "births": 11582, "month": 10}, {"date": "1970-01-11T00:00:00", "wday": "Sun", "day_of_year": 11, "births": 9158, "month": 1}, {"date": "1981-12-17T00:00:00", "wday": "Thurs", "day_of_year": 351, "births": 10672, "month": 12}, {"date": "1979-09-07T00:00:00", "wday": "Fri", "day_of_year": 250, "births": 10741, "month": 9}, {"date": "1976-10-03T00:00:00", "wday": "Sun", "day_of_year": 277, "births": 8270, "month": 10}, {"date": "1988-11-02T00:00:00", "wday": "Wed", "day_of_year": 307, "births": 11050, "month": 11}, {"date": "1986-06-26T00:00:00", "wday": "Thurs", "day_of_year": 177, "births": 11100, "month": 6}, {"date": "1974-10-24T00:00:00", "wday": "Thurs", "day_of_year": 297, "births": 8792, "month": 10}, {"date": "1977-07-02T00:00:00", "wday": "Sat", "day_of_year": 183, "births": 8311, "month": 7}, {"date": "1979-05-11T00:00:00", "wday": "Fri", "day_of_year": 131, "births": 9854, "month": 5}, {"date": "1974-10-25T00:00:00", "wday": "Fri", "day_of_year": 298, "births": 9199, "month": 10}, {"date": "1983-03-17T00:00:00", "wday": "Thurs", "day_of_year": 76, "births": 10524, "month": 3}, {"date": "1983-06-15T00:00:00", "wday": "Wed", "day_of_year": 166, "births": 10422, "month": 6}, {"date": "1981-11-08T00:00:00", "wday": "Sun", "day_of_year": 312, "births": 8471, "month": 11}, {"date": "1978-03-26T00:00:00", "wday": "Sun", "day_of_year": 85, "births": 7595, "month": 3}, {"date": "1979-01-07T00:00:00", "wday": "Sun", "day_of_year": 7, "births": 8013, "month": 1}, {"date": "1981-02-03T00:00:00", "wday": "Tues", "day_of_year": 34, "births": 10231, "month": 2}, {"date": "1971-04-15T00:00:00", "wday": "Thurs", "day_of_year": 105, "births": 9610, "month": 4}, {"date": "1970-08-27T00:00:00", "wday": "Thurs", "day_of_year": 239, "births": 10664, "month": 8}, {"date": "1986-11-02T00:00:00", "wday": "Sun", "day_of_year": 306, "births": 8209, "month": 11}, {"date": "1973-12-22T00:00:00", "wday": "Sat", "day_of_year": 356, "births": 7585, "month": 12}, {"date": "1988-01-08T00:00:00", "wday": "Fri", "day_of_year": 8, "births": 10748, "month": 1}, {"date": "1983-05-17T00:00:00", "wday": "Tues", "day_of_year": 137, "births": 10401, "month": 5}, {"date": "1984-05-18T00:00:00", "wday": "Fri", "day_of_year": 139, "births": 10080, "month": 5}, {"date": "1980-06-14T00:00:00", "wday": "Sat", "day_of_year": 166, "births": 8715, "month": 6}, {"date": "1970-12-10T00:00:00", "wday": "Thurs", "day_of_year": 344, "births": 10756, "month": 12}, {"date": "1971-11-27T00:00:00", "wday": "Sat", "day_of_year": 331, "births": 8562, "month": 11}, {"date": "1985-06-07T00:00:00", "wday": "Fri", "day_of_year": 158, "births": 10993, "month": 6}, {"date": "1969-01-30T00:00:00", "wday": "Thurs", "day_of_year": 30, "births": 9674, "month": 1}, {"date": "1980-04-26T00:00:00", "wday": "Sat", "day_of_year": 117, "births": 8410, "month": 4}, {"date": "1975-04-01T00:00:00", "wday": "Tues", "day_of_year": 91, "births": 8871, "month": 4}, {"date": "1971-06-18T00:00:00", "wday": "Fri", "day_of_year": 169, "births": 9944, "month": 6}, {"date": "1977-05-14T00:00:00", "wday": "Sat", "day_of_year": 134, "births": 8108, "month": 5}, {"date": "1982-04-26T00:00:00", "wday": "Mon", "day_of_year": 116, "births": 10369, "month": 4}, {"date": "1985-04-11T00:00:00", "wday": "Thurs", "day_of_year": 101, "births": 10506, "month": 4}, {"date": "1976-05-27T00:00:00", "wday": "Thurs", "day_of_year": 148, "births": 8530, "month": 5}, {"date": "1985-11-20T00:00:00", "wday": "Wed", "day_of_year": 324, "births": 10829, "month": 11}, {"date": "1988-12-27T00:00:00", "wday": "Tues", "day_of_year": 362, "births": 11528, "month": 12}, {"date": "1981-12-14T00:00:00", "wday": "Mon", "day_of_year": 348, "births": 10365, "month": 12}, {"date": "1979-06-07T00:00:00", "wday": "Thurs", "day_of_year": 158, "births": 9722, "month": 6}, {"date": "1969-07-14T00:00:00", "wday": "Mon", "day_of_year": 195, "births": 10242, "month": 7}, {"date": "1975-11-10T00:00:00", "wday": "Mon", "day_of_year": 314, "births": 8932, "month": 11}, {"date": "1969-12-01T00:00:00", "wday": "Mon", "day_of_year": 335, "births": 10764, "month": 12}, {"date": "1975-08-01T00:00:00", "wday": "Fri", "day_of_year": 213, "births": 9708, "month": 8}, {"date": "1976-07-28T00:00:00", "wday": "Wed", "day_of_year": 210, "births": 9164, "month": 7}, {"date": "1969-08-30T00:00:00", "wday": "Sat", "day_of_year": 242, "births": 9708, "month": 8}, {"date": "1971-10-27T00:00:00", "wday": "Wed", "day_of_year": 300, "births": 9896, "month": 10}, {"date": "1984-06-04T00:00:00", "wday": "Mon", "day_of_year": 156, "births": 10018, "month": 6}, {"date": "1987-05-19T00:00:00", "wday": "Tues", "day_of_year": 139, "births": 11443, "month": 5}, {"date": "1988-04-21T00:00:00", "wday": "Thurs", "day_of_year": 112, "births": 10942, "month": 4}, {"date": "1987-04-11T00:00:00", "wday": "Sat", "day_of_year": 101, "births": 9033, "month": 4}, {"date": "1971-09-28T00:00:00", "wday": "Tues", "day_of_year": 271, "births": 11472, "month": 9}, {"date": "1976-04-08T00:00:00", "wday": "Thurs", "day_of_year": 99, "births": 8507, "month": 4}, {"date": "1980-09-25T00:00:00", "wday": "Thurs", "day_of_year": 269, "births": 10977, "month": 9}, {"date": "1981-10-03T00:00:00", "wday": "Sat", "day_of_year": 276, "births": 9318, "month": 10}, {"date": "1969-04-14T00:00:00", "wday": "Mon", "day_of_year": 104, "births": 9566, "month": 4}, {"date": "1976-08-21T00:00:00", "wday": "Sat", "day_of_year": 234, "births": 8748, "month": 8}, {"date": "1986-02-12T00:00:00", "wday": "Wed", "day_of_year": 43, "births": 10571, "month": 2}, {"date": "1972-05-17T00:00:00", "wday": "Wed", "day_of_year": 138, "births": 9107, "month": 5}, {"date": "1980-05-01T00:00:00", "wday": "Thurs", "day_of_year": 122, "births": 10131, "month": 5}, {"date": "1987-12-21T00:00:00", "wday": "Mon", "day_of_year": 355, "births": 11531, "month": 12}, {"date": "1975-07-18T00:00:00", "wday": "Fri", "day_of_year": 199, "births": 9468, "month": 7}, {"date": "1970-11-11T00:00:00", "wday": "Wed", "day_of_year": 315, "births": 10612, "month": 11}, {"date": "1980-11-25T00:00:00", "wday": "Tues", "day_of_year": 330, "births": 10496, "month": 11}, {"date": "1986-09-23T00:00:00", "wday": "Tues", "day_of_year": 266, "births": 12235, "month": 9}, {"date": "1981-06-22T00:00:00", "wday": "Mon", "day_of_year": 173, "births": 10597, "month": 6}, {"date": "1976-05-28T00:00:00", "wday": "Fri", "day_of_year": 149, "births": 8898, "month": 5}, {"date": "1975-11-12T00:00:00", "wday": "Wed", "day_of_year": 316, "births": 8518, "month": 11}, {"date": "1978-10-09T00:00:00", "wday": "Mon", "day_of_year": 282, "births": 9784, "month": 10}, {"date": "1975-02-06T00:00:00", "wday": "Thurs", "day_of_year": 37, "births": 8425, "month": 2}, {"date": "1977-06-17T00:00:00", "wday": "Fri", "day_of_year": 168, "births": 9746, "month": 6}, {"date": "1982-08-24T00:00:00", "wday": "Tues", "day_of_year": 236, "births": 11577, "month": 8}, {"date": "1969-11-12T00:00:00", "wday": "Wed", "day_of_year": 316, "births": 10324, "month": 11}, {"date": "1976-04-15T00:00:00", "wday": "Thurs", "day_of_year": 106, "births": 8583, "month": 4}, {"date": "1975-04-04T00:00:00", "wday": "Fri", "day_of_year": 94, "births": 8616, "month": 4}, {"date": "1977-11-02T00:00:00", "wday": "Wed", "day_of_year": 306, "births": 9131, "month": 11}, {"date": "1977-05-09T00:00:00", "wday": "Mon", "day_of_year": 129, "births": 8849, "month": 5}, {"date": "1982-12-05T00:00:00", "wday": "Sun", "day_of_year": 339, "births": 8444, "month": 12}, {"date": "1976-05-10T00:00:00", "wday": "Mon", "day_of_year": 131, "births": 8572, "month": 5}, {"date": "1977-07-21T00:00:00", "wday": "Thurs", "day_of_year": 202, "births": 9878, "month": 7}, {"date": "1978-08-07T00:00:00", "wday": "Mon", "day_of_year": 219, "births": 10219, "month": 8}, {"date": "1986-07-20T00:00:00", "wday": "Sun", "day_of_year": 201, "births": 9050, "month": 7}, {"date": "1988-12-21T00:00:00", "wday": "Wed", "day_of_year": 356, "births": 11323, "month": 12}, {"date": "1978-07-25T00:00:00", "wday": "Tues", "day_of_year": 206, "births": 10361, "month": 7}, {"date": "1975-08-28T00:00:00", "wday": "Thurs", "day_of_year": 240, "births": 9371, "month": 8}, {"date": "1977-01-24T00:00:00", "wday": "Mon", "day_of_year": 24, "births": 9246, "month": 1}, {"date": "1971-06-09T00:00:00", "wday": "Wed", "day_of_year": 160, "births": 9832, "month": 6}, {"date": "1986-11-13T00:00:00", "wday": "Thurs", "day_of_year": 317, "births": 10245, "month": 11}, {"date": "1977-09-20T00:00:00", "wday": "Tues", "day_of_year": 263, "births": 10647, "month": 9}, {"date": "1975-02-18T00:00:00", "wday": "Tues", "day_of_year": 49, "births": 9232, "month": 2}, {"date": "1976-12-10T00:00:00", "wday": "Fri", "day_of_year": 345, "births": 9159, "month": 12}, {"date": "1979-04-09T00:00:00", "wday": "Mon", "day_of_year": 99, "births": 9647, "month": 4}, {"date": "1978-10-12T00:00:00", "wday": "Thurs", "day_of_year": 285, "births": 9834, "month": 10}, {"date": "1973-09-20T00:00:00", "wday": "Thurs", "day_of_year": 263, "births": 9768, "month": 9}, {"date": "1984-02-24T00:00:00", "wday": "Fri", "day_of_year": 55, "births": 10310, "month": 2}, {"date": "1987-08-14T00:00:00", "wday": "Fri", "day_of_year": 226, "births": 11472, "month": 8}, {"date": "1987-08-09T00:00:00", "wday": "Sun", "day_of_year": 221, "births": 8637, "month": 8}, {"date": "1988-04-30T00:00:00", "wday": "Sat", "day_of_year": 121, "births": 8904, "month": 4}, {"date": "1979-08-18T00:00:00", "wday": "Sat", "day_of_year": 230, "births": 9241, "month": 8}, {"date": "1987-03-05T00:00:00", "wday": "Thurs", "day_of_year": 64, "births": 10971, "month": 3}, {"date": "1979-02-14T00:00:00", "wday": "Wed", "day_of_year": 45, "births": 10038, "month": 2}, {"date": "1976-02-01T00:00:00", "wday": "Sun", "day_of_year": 32, "births": 7472, "month": 2}, {"date": "1978-12-20T00:00:00", "wday": "Wed", "day_of_year": 354, "births": 10005, "month": 12}, {"date": "1969-11-04T00:00:00", "wday": "Tues", "day_of_year": 308, "births": 10772, "month": 11}, {"date": "1972-12-19T00:00:00", "wday": "Tues", "day_of_year": 354, "births": 10264, "month": 12}, {"date": "1970-03-08T00:00:00", "wday": "Sun", "day_of_year": 67, "births": 8926, "month": 3}, {"date": "1972-02-25T00:00:00", "wday": "Fri", "day_of_year": 56, "births": 9495, "month": 2}, {"date": "1982-10-17T00:00:00", "wday": "Sun", "day_of_year": 290, "births": 8582, "month": 10}, {"date": "1977-09-21T00:00:00", "wday": "Wed", "day_of_year": 264, "births": 10392, "month": 9}, {"date": "1984-05-03T00:00:00", "wday": "Thurs", "day_of_year": 124, "births": 10238, "month": 5}, {"date": "1984-03-16T00:00:00", "wday": "Fri", "day_of_year": 76, "births": 10706, "month": 3}, {"date": "1978-02-17T00:00:00", "wday": "Fri", "day_of_year": 48, "births": 9251, "month": 2}, {"date": "1977-04-12T00:00:00", "wday": "Tues", "day_of_year": 102, "births": 9676, "month": 4}, {"date": "1977-05-19T00:00:00", "wday": "Thurs", "day_of_year": 139, "births": 9243, "month": 5}, {"date": "1971-02-15T00:00:00", "wday": "Mon", "day_of_year": 46, "births": 10056, "month": 2}, {"date": "1978-09-02T00:00:00", "wday": "Sat", "day_of_year": 245, "births": 8591, "month": 9}, {"date": "1971-07-28T00:00:00", "wday": "Wed", "day_of_year": 209, "births": 10330, "month": 7}, {"date": "1969-05-06T00:00:00", "wday": "Tues", "day_of_year": 126, "births": 9964, "month": 5}, {"date": "1985-03-07T00:00:00", "wday": "Thurs", "day_of_year": 66, "births": 10509, "month": 3}, {"date": "1981-08-01T00:00:00", "wday": "Sat", "day_of_year": 213, "births": 9733, "month": 8}, {"date": "1987-10-16T00:00:00", "wday": "Fri", "day_of_year": 289, "births": 11240, "month": 10}, {"date": "1987-09-28T00:00:00", "wday": "Mon", "day_of_year": 271, "births": 11513, "month": 9}, {"date": "1977-11-28T00:00:00", "wday": "Mon", "day_of_year": 332, "births": 9490, "month": 11}, {"date": "1988-08-15T00:00:00", "wday": "Mon", "day_of_year": 228, "births": 11769, "month": 8}, {"date": "1984-05-25T00:00:00", "wday": "Fri", "day_of_year": 146, "births": 10575, "month": 5}, {"date": "1974-02-27T00:00:00", "wday": "Wed", "day_of_year": 58, "births": 8710, "month": 2}, {"date": "1978-12-19T00:00:00", "wday": "Tues", "day_of_year": 353, "births": 10617, "month": 12}, {"date": "1974-06-13T00:00:00", "wday": "Thurs", "day_of_year": 164, "births": 8456, "month": 6}, {"date": "1980-04-18T00:00:00", "wday": "Fri", "day_of_year": 109, "births": 9961, "month": 4}, {"date": "1982-02-11T00:00:00", "wday": "Thurs", "day_of_year": 42, "births": 10402, "month": 2}, {"date": "1976-05-20T00:00:00", "wday": "Thurs", "day_of_year": 141, "births": 8414, "month": 5}, {"date": "1987-01-05T00:00:00", "wday": "Mon", "day_of_year": 5, "births": 10102, "month": 1}, {"date": "1974-04-24T00:00:00", "wday": "Wed", "day_of_year": 114, "births": 8665, "month": 4}, {"date": "1986-12-10T00:00:00", "wday": "Wed", "day_of_year": 344, "births": 10619, "month": 12}, {"date": "1975-07-01T00:00:00", "wday": "Tues", "day_of_year": 182, "births": 9516, "month": 7}, {"date": "1986-11-25T00:00:00", "wday": "Tues", "day_of_year": 329, "births": 11101, "month": 11}, {"date": "1974-03-21T00:00:00", "wday": "Thurs", "day_of_year": 80, "births": 8400, "month": 3}, {"date": "1979-12-30T00:00:00", "wday": "Sun", "day_of_year": 364, "births": 8250, "month": 12}, {"date": "1975-06-01T00:00:00", "wday": "Sun", "day_of_year": 152, "births": 7244, "month": 6}, {"date": "1969-07-10T00:00:00", "wday": "Thurs", "day_of_year": 191, "births": 10562, "month": 7}, {"date": "1981-06-02T00:00:00", "wday": "Tues", "day_of_year": 153, "births": 10355, "month": 6}, {"date": "1977-12-19T00:00:00", "wday": "Mon", "day_of_year": 353, "births": 9908, "month": 12}, {"date": "1979-11-11T00:00:00", "wday": "Sun", "day_of_year": 315, "births": 8760, "month": 11}, {"date": "1969-01-23T00:00:00", "wday": "Thurs", "day_of_year": 23, "births": 9454, "month": 1}, {"date": "1984-11-27T00:00:00", "wday": "Tues", "day_of_year": 332, "births": 10819, "month": 11}, {"date": "1987-07-10T00:00:00", "wday": "Fri", "day_of_year": 191, "births": 11646, "month": 7}, {"date": "1970-04-16T00:00:00", "wday": "Thurs", "day_of_year": 106, "births": 9668, "month": 4}, {"date": "1970-07-31T00:00:00", "wday": "Fri", "day_of_year": 212, "births": 11300, "month": 7}, {"date": "1970-12-31T00:00:00", "wday": "Thurs", "day_of_year": 365, "births": 11210, "month": 12}, {"date": "1973-08-07T00:00:00", "wday": "Tues", "day_of_year": 219, "births": 9770, "month": 8}, {"date": "1986-03-13T00:00:00", "wday": "Thurs", "day_of_year": 72, "births": 10522, "month": 3}, {"date": "1974-03-19T00:00:00", "wday": "Tues", "day_of_year": 78, "births": 8978, "month": 3}, {"date": "1974-09-03T00:00:00", "wday": "Tues", "day_of_year": 246, "births": 9471, "month": 9}, {"date": "1969-12-08T00:00:00", "wday": "Mon", "day_of_year": 342, "births": 10646, "month": 12}, {"date": "1981-03-19T00:00:00", "wday": "Thurs", "day_of_year": 78, "births": 10030, "month": 3}, {"date": "1986-09-25T00:00:00", "wday": "Thurs", "day_of_year": 268, "births": 12281, "month": 9}, {"date": "1978-01-30T00:00:00", "wday": "Mon", "day_of_year": 30, "births": 9194, "month": 1}, {"date": "1979-04-21T00:00:00", "wday": "Sat", "day_of_year": 111, "births": 8197, "month": 4}, {"date": "1973-09-28T00:00:00", "wday": "Fri", "day_of_year": 271, "births": 9547, "month": 9}, {"date": "1971-10-29T00:00:00", "wday": "Fri", "day_of_year": 302, "births": 9922, "month": 10}, {"date": "1981-05-20T00:00:00", "wday": "Wed", "day_of_year": 140, "births": 10086, "month": 5}, {"date": "1969-10-16T00:00:00", "wday": "Thurs", "day_of_year": 289, "births": 9918, "month": 10}, {"date": "1969-12-15T00:00:00", "wday": "Mon", "day_of_year": 349, "births": 10898, "month": 12}, {"date": "1971-07-16T00:00:00", "wday": "Fri", "day_of_year": 197, "births": 10550, "month": 7}, {"date": "1984-03-28T00:00:00", "wday": "Wed", "day_of_year": 88, "births": 10300, "month": 3}, {"date": "1971-05-27T00:00:00", "wday": "Thurs", "day_of_year": 147, "births": 9552, "month": 5}, {"date": "1981-06-15T00:00:00", "wday": "Mon", "day_of_year": 166, "births": 10182, "month": 6}, {"date": "1975-10-26T00:00:00", "wday": "Sun", "day_of_year": 299, "births": 7442, "month": 10}, {"date": "1970-09-11T00:00:00", "wday": "Fri", "day_of_year": 254, "births": 11592, "month": 9}, {"date": "1976-01-02T00:00:00", "wday": "Fri", "day_of_year": 2, "births": 7994, "month": 1}, {"date": "1978-04-23T00:00:00", "wday": "Sun", "day_of_year": 113, "births": 7315, "month": 4}, {"date": "1972-07-25T00:00:00", "wday": "Tues", "day_of_year": 207, "births": 9662, "month": 7}, {"date": "1988-09-29T00:00:00", "wday": "Thurs", "day_of_year": 273, "births": 12247, "month": 9}, {"date": "1973-04-17T00:00:00", "wday": "Tues", "day_of_year": 107, "births": 8917, "month": 4}, {"date": "1985-08-24T00:00:00", "wday": "Sat", "day_of_year": 236, "births": 9473, "month": 8}, {"date": "1971-07-26T00:00:00", "wday": "Mon", "day_of_year": 207, "births": 10256, "month": 7}, {"date": "1969-02-02T00:00:00", "wday": "Sun", "day_of_year": 33, "births": 8814, "month": 2}, {"date": "1986-02-27T00:00:00", "wday": "Thurs", "day_of_year": 58, "births": 10672, "month": 2}, {"date": "1986-05-24T00:00:00", "wday": "Sat", "day_of_year": 144, "births": 8937, "month": 5}, {"date": "1988-12-20T00:00:00", "wday": "Tues", "day_of_year": 355, "births": 12435, "month": 12}, {"date": "1987-04-04T00:00:00", "wday": "Sat", "day_of_year": 94, "births": 8819, "month": 4}, {"date": "1981-07-13T00:00:00", "wday": "Mon", "day_of_year": 194, "births": 10618, "month": 7}, {"date": "1979-05-04T00:00:00", "wday": "Fri", "day_of_year": 124, "births": 9583, "month": 5}, {"date": "1982-03-22T00:00:00", "wday": "Mon", "day_of_year": 81, "births": 10056, "month": 3}, {"date": "1986-11-15T00:00:00", "wday": "Sat", "day_of_year": 319, "births": 8465, "month": 11}, {"date": "1976-11-27T00:00:00", "wday": "Sat", "day_of_year": 332, "births": 7966, "month": 11}, {"date": "1988-12-13T00:00:00", "wday": "Tues", "day_of_year": 348, "births": 11283, "month": 12}, {"date": "1982-12-25T00:00:00", "wday": "Sat", "day_of_year": 359, "births": 7825, "month": 12}, {"date": "1974-09-23T00:00:00", "wday": "Mon", "day_of_year": 266, "births": 10137, "month": 9}, {"date": "1984-02-28T00:00:00", "wday": "Tues", "day_of_year": 59, "births": 10431, "month": 2}, {"date": "1970-07-15T00:00:00", "wday": "Wed", "day_of_year": 196, "births": 11078, "month": 7}, {"date": "1988-04-06T00:00:00", "wday": "Wed", "day_of_year": 97, "births": 11084, "month": 4}, {"date": "1979-07-22T00:00:00", "wday": "Sun", "day_of_year": 203, "births": 8873, "month": 7}, {"date": "1975-05-22T00:00:00", "wday": "Thurs", "day_of_year": 142, "births": 9120, "month": 5}, {"date": "1973-11-18T00:00:00", "wday": "Sun", "day_of_year": 322, "births": 7420, "month": 11}, {"date": "1984-04-15T00:00:00", "wday": "Sun", "day_of_year": 106, "births": 8088, "month": 4}, {"date": "1987-10-29T00:00:00", "wday": "Thurs", "day_of_year": 302, "births": 11100, "month": 10}, {"date": "1984-05-08T00:00:00", "wday": "Tues", "day_of_year": 129, "births": 10203, "month": 5}, {"date": "1974-12-15T00:00:00", "wday": "Sun", "day_of_year": 349, "births": 7505, "month": 12}, {"date": "1984-01-14T00:00:00", "wday": "Sat", "day_of_year": 14, "births": 8504, "month": 1}, {"date": "1981-10-16T00:00:00", "wday": "Fri", "day_of_year": 289, "births": 10716, "month": 10}, {"date": "1970-02-04T00:00:00", "wday": "Wed", "day_of_year": 35, "births": 10086, "month": 2}, {"date": "1978-01-07T00:00:00", "wday": "Sat", "day_of_year": 7, "births": 8091, "month": 1}, {"date": "1983-04-13T00:00:00", "wday": "Wed", "day_of_year": 103, "births": 10112, "month": 4}, {"date": "1972-06-27T00:00:00", "wday": "Tues", "day_of_year": 179, "births": 9415, "month": 6}, {"date": "1980-09-09T00:00:00", "wday": "Tues", "day_of_year": 253, "births": 11019, "month": 9}, {"date": "1980-06-15T00:00:00", "wday": "Sun", "day_of_year": 167, "births": 8674, "month": 6}, {"date": "1975-11-20T00:00:00", "wday": "Thurs", "day_of_year": 324, "births": 8535, "month": 11}, {"date": "1976-10-10T00:00:00", "wday": "Sun", "day_of_year": 284, "births": 8313, "month": 10}, {"date": "1986-08-17T00:00:00", "wday": "Sun", "day_of_year": 229, "births": 9135, "month": 8}, {"date": "1975-01-30T00:00:00", "wday": "Thurs", "day_of_year": 30, "births": 8617, "month": 1}, {"date": "1985-01-25T00:00:00", "wday": "Fri", "day_of_year": 25, "births": 10755, "month": 1}, {"date": "1977-06-11T00:00:00", "wday": "Sat", "day_of_year": 162, "births": 8020, "month": 6}, {"date": "1974-02-21T00:00:00", "wday": "Thurs", "day_of_year": 52, "births": 8748, "month": 2}, {"date": "1974-06-01T00:00:00", "wday": "Sat", "day_of_year": 152, "births": 7448, "month": 6}, {"date": "1984-01-11T00:00:00", "wday": "Wed", "day_of_year": 11, "births": 9814, "month": 1}, {"date": "1981-05-24T00:00:00", "wday": "Sun", "day_of_year": 144, "births": 8344, "month": 5}, {"date": "1973-11-29T00:00:00", "wday": "Thurs", "day_of_year": 333, "births": 8552, "month": 11}, {"date": "1980-07-24T00:00:00", "wday": "Thurs", "day_of_year": 206, "births": 10615, "month": 7}, {"date": "1970-08-08T00:00:00", "wday": "Sat", "day_of_year": 220, "births": 10232, "month": 8}, {"date": "1981-07-26T00:00:00", "wday": "Sun", "day_of_year": 207, "births": 9254, "month": 7}, {"date": "1981-05-19T00:00:00", "wday": "Tues", "day_of_year": 139, "births": 10309, "month": 5}, {"date": "1988-07-23T00:00:00", "wday": "Sat", "day_of_year": 205, "births": 9796, "month": 7}, {"date": "1980-02-15T00:00:00", "wday": "Fri", "day_of_year": 46, "births": 10201, "month": 2}, {"date": "1986-02-10T00:00:00", "wday": "Mon", "day_of_year": 41, "births": 10558, "month": 2}, {"date": "1978-09-24T00:00:00", "wday": "Sun", "day_of_year": 267, "births": 8661, "month": 9}, {"date": "1971-01-04T00:00:00", "wday": "Mon", "day_of_year": 4, "births": 10044, "month": 1}, {"date": "1983-12-01T00:00:00", "wday": "Thurs", "day_of_year": 335, "births": 10297, "month": 12}, {"date": "1985-02-09T00:00:00", "wday": "Sat", "day_of_year": 40, "births": 8921, "month": 2}, {"date": "1973-01-07T00:00:00", "wday": "Sun", "day_of_year": 7, "births": 7309, "month": 1}, {"date": "1973-12-07T00:00:00", "wday": "Fri", "day_of_year": 341, "births": 8481, "month": 12}, {"date": "1978-05-13T00:00:00", "wday": "Sat", "day_of_year": 133, "births": 7767, "month": 5}, {"date": "1984-01-23T00:00:00", "wday": "Mon", "day_of_year": 23, "births": 9925, "month": 1}, {"date": "1977-12-15T00:00:00", "wday": "Thurs", "day_of_year": 349, "births": 9430, "month": 12}, {"date": "1985-09-22T00:00:00", "wday": "Sun", "day_of_year": 265, "births": 9798, "month": 9}, {"date": "1987-03-13T00:00:00", "wday": "Fri", "day_of_year": 72, "births": 10399, "month": 3}, {"date": "1970-09-12T00:00:00", "wday": "Sat", "day_of_year": 255, "births": 10218, "month": 9}, {"date": "1975-05-07T00:00:00", "wday": "Wed", "day_of_year": 127, "births": 8467, "month": 5}, {"date": "1969-10-20T00:00:00", "wday": "Mon", "day_of_year": 293, "births": 10148, "month": 10}, {"date": "1985-04-14T00:00:00", "wday": "Sun", "day_of_year": 104, "births": 8390, "month": 4}, {"date": "1984-06-18T00:00:00", "wday": "Mon", "day_of_year": 170, "births": 10483, "month": 6}, {"date": "1984-08-17T00:00:00", "wday": "Fri", "day_of_year": 230, "births": 11427, "month": 8}, {"date": "1988-10-11T00:00:00", "wday": "Tues", "day_of_year": 285, "births": 11836, "month": 10}, {"date": "1974-07-28T00:00:00", "wday": "Sun", "day_of_year": 209, "births": 7872, "month": 7}, {"date": "1972-06-14T00:00:00", "wday": "Wed", "day_of_year": 166, "births": 8860, "month": 6}, {"date": "1974-05-13T00:00:00", "wday": "Mon", "day_of_year": 133, "births": 8639, "month": 5}, {"date": "1970-01-26T00:00:00", "wday": "Mon", "day_of_year": 26, "births": 10160, "month": 1}, {"date": "1983-11-12T00:00:00", "wday": "Sat", "day_of_year": 316, "births": 8430, "month": 11}, {"date": "1985-01-21T00:00:00", "wday": "Mon", "day_of_year": 21, "births": 10314, "month": 1}, {"date": "1976-01-01T00:00:00", "wday": "Thurs", "day_of_year": 1, "births": 7302, "month": 1}, {"date": "1979-06-29T00:00:00", "wday": "Fri", "day_of_year": 180, "births": 10253, "month": 6}, {"date": "1981-05-29T00:00:00", "wday": "Fri", "day_of_year": 149, "births": 10411, "month": 5}, {"date": "1973-04-24T00:00:00", "wday": "Tues", "day_of_year": 114, "births": 8757, "month": 4}, {"date": "1975-12-31T00:00:00", "wday": "Wed", "day_of_year": 365, "births": 9578, "month": 12}, {"date": "1987-05-23T00:00:00", "wday": "Sat", "day_of_year": 143, "births": 8954, "month": 5}, {"date": "1980-11-30T00:00:00", "wday": "Sun", "day_of_year": 335, "births": 8830, "month": 11}, {"date": "1977-05-02T00:00:00", "wday": "Mon", "day_of_year": 122, "births": 9385, "month": 5}, {"date": "1984-10-18T00:00:00", "wday": "Thurs", "day_of_year": 292, "births": 10597, "month": 10}, {"date": "1987-01-08T00:00:00", "wday": "Thurs", "day_of_year": 8, "births": 10462, "month": 1}, {"date": "1980-08-07T00:00:00", "wday": "Thurs", "day_of_year": 220, "births": 11044, "month": 8}, {"date": "1971-11-07T00:00:00", "wday": "Sun", "day_of_year": 311, "births": 8232, "month": 11}, {"date": "1977-12-03T00:00:00", "wday": "Sat", "day_of_year": 337, "births": 7942, "month": 12}, {"date": "1976-10-06T00:00:00", "wday": "Wed", "day_of_year": 280, "births": 9483, "month": 10}, {"date": "1975-03-12T00:00:00", "wday": "Wed", "day_of_year": 71, "births": 8933, "month": 3}, {"date": "1987-09-13T00:00:00", "wday": "Sun", "day_of_year": 256, "births": 9024, "month": 9}, {"date": "1972-09-11T00:00:00", "wday": "Mon", "day_of_year": 255, "births": 9771, "month": 9}, {"date": "1986-09-05T00:00:00", "wday": "Fri", "day_of_year": 248, "births": 11884, "month": 9}, {"date": "1972-12-02T00:00:00", "wday": "Sat", "day_of_year": 337, "births": 8109, "month": 12}, {"date": "1981-07-11T00:00:00", "wday": "Sat", "day_of_year": 192, "births": 9452, "month": 7}, {"date": "1977-10-30T00:00:00", "wday": "Sun", "day_of_year": 303, "births": 8079, "month": 10}, {"date": "1972-11-28T00:00:00", "wday": "Tues", "day_of_year": 333, "births": 9663, "month": 11}, {"date": "1971-04-06T00:00:00", "wday": "Tues", "day_of_year": 96, "births": 10442, "month": 4}, {"date": "1975-04-26T00:00:00", "wday": "Sat", "day_of_year": 116, "births": 7637, "month": 4}, {"date": "1988-11-23T00:00:00", "wday": "Wed", "day_of_year": 328, "births": 10961, "month": 11}, {"date": "1982-01-05T00:00:00", "wday": "Tues", "day_of_year": 5, "births": 10253, "month": 1}, {"date": "1974-10-27T00:00:00", "wday": "Sun", "day_of_year": 300, "births": 7880, "month": 10}, {"date": "1980-06-11T00:00:00", "wday": "Wed", "day_of_year": 163, "births": 10042, "month": 6}, {"date": "1987-04-20T00:00:00", "wday": "Mon", "day_of_year": 110, "births": 10594, "month": 4}, {"date": "1972-04-08T00:00:00", "wday": "Sat", "day_of_year": 99, "births": 7891, "month": 4}, {"date": "1988-04-09T00:00:00", "wday": "Sat", "day_of_year": 100, "births": 8701, "month": 4}, {"date": "1987-05-28T00:00:00", "wday": "Thurs", "day_of_year": 148, "births": 11437, "month": 5}, {"date": "1979-03-16T00:00:00", "wday": "Fri", "day_of_year": 75, "births": 9676, "month": 3}, {"date": "1969-03-02T00:00:00", "wday": "Sun", "day_of_year": 61, "births": 8632, "month": 3}, {"date": "1973-05-11T00:00:00", "wday": "Fri", "day_of_year": 131, "births": 8619, "month": 5}, {"date": "1982-05-14T00:00:00", "wday": "Fri", "day_of_year": 134, "births": 10497, "month": 5}, {"date": "1984-10-08T00:00:00", "wday": "Mon", "day_of_year": 282, "births": 11054, "month": 10}, {"date": "1982-02-01T00:00:00", "wday": "Mon", "day_of_year": 32, "births": 10222, "month": 2}, {"date": "1975-12-21T00:00:00", "wday": "Sun", "day_of_year": 355, "births": 7348, "month": 12}, {"date": "1973-01-04T00:00:00", "wday": "Thurs", "day_of_year": 4, "births": 8879, "month": 1}, {"date": "1970-11-21T00:00:00", "wday": "Sat", "day_of_year": 325, "births": 9926, "month": 11}, {"date": "1970-05-06T00:00:00", "wday": "Wed", "day_of_year": 126, "births": 9712, "month": 5}, {"date": "1971-10-10T00:00:00", "wday": "Sun", "day_of_year": 283, "births": 9060, "month": 10}, {"date": "1970-03-17T00:00:00", "wday": "Tues", "day_of_year": 76, "births": 10694, "month": 3}, {"date": "1971-01-06T00:00:00", "wday": "Wed", "day_of_year": 6, "births": 10146, "month": 1}, {"date": "1973-08-21T00:00:00", "wday": "Tues", "day_of_year": 233, "births": 9641, "month": 8}, {"date": "1980-01-20T00:00:00", "wday": "Sun", "day_of_year": 20, "births": 8457, "month": 1}, {"date": "1973-11-24T00:00:00", "wday": "Sat", "day_of_year": 328, "births": 7760, "month": 11}, {"date": "1980-09-05T00:00:00", "wday": "Fri", "day_of_year": 249, "births": 11013, "month": 9}, {"date": "1970-04-07T00:00:00", "wday": "Tues", "day_of_year": 97, "births": 10474, "month": 4}, {"date": "1978-02-05T00:00:00", "wday": "Sun", "day_of_year": 36, "births": 7820, "month": 2}, {"date": "1982-01-08T00:00:00", "wday": "Fri", "day_of_year": 8, "births": 10087, "month": 1}, {"date": "1983-08-30T00:00:00", "wday": "Tues", "day_of_year": 242, "births": 11131, "month": 8}, {"date": "1987-12-08T00:00:00", "wday": "Tues", "day_of_year": 342, "births": 11179, "month": 12}, {"date": "1985-07-26T00:00:00", "wday": "Fri", "day_of_year": 207, "births": 11399, "month": 7}, {"date": "1983-06-18T00:00:00", "wday": "Sat", "day_of_year": 169, "births": 8709, "month": 6}, {"date": "1985-11-16T00:00:00", "wday": "Sat", "day_of_year": 320, "births": 8718, "month": 11}, {"date": "1977-09-27T00:00:00", "wday": "Tues", "day_of_year": 270, "births": 10528, "month": 9}, {"date": "1988-12-02T00:00:00", "wday": "Fri", "day_of_year": 337, "births": 10899, "month": 12}, {"date": "1971-03-10T00:00:00", "wday": "Wed", "day_of_year": 69, "births": 10470, "month": 3}, {"date": "1984-06-02T00:00:00", "wday": "Sat", "day_of_year": 154, "births": 8880, "month": 6}, {"date": "1970-07-29T00:00:00", "wday": "Wed", "day_of_year": 210, "births": 11354, "month": 7}, {"date": "1974-06-04T00:00:00", "wday": "Tues", "day_of_year": 155, "births": 8910, "month": 6}, {"date": "1980-06-25T00:00:00", "wday": "Wed", "day_of_year": 177, "births": 10550, "month": 6}, {"date": "1979-10-07T00:00:00", "wday": "Sun", "day_of_year": 280, "births": 8618, "month": 10}, {"date": "1976-05-06T00:00:00", "wday": "Thurs", "day_of_year": 127, "births": 8520, "month": 5}, {"date": "1976-03-21T00:00:00", "wday": "Sun", "day_of_year": 81, "births": 7384, "month": 3}, {"date": "1985-08-18T00:00:00", "wday": "Sun", "day_of_year": 230, "births": 9291, "month": 8}, {"date": "1972-07-11T00:00:00", "wday": "Tues", "day_of_year": 193, "births": 9635, "month": 7}, {"date": "1976-07-16T00:00:00", "wday": "Fri", "day_of_year": 198, "births": 9568, "month": 7}, {"date": "1975-09-27T00:00:00", "wday": "Sat", "day_of_year": 270, "births": 8632, "month": 9}, {"date": "1972-09-12T00:00:00", "wday": "Tues", "day_of_year": 256, "births": 10019, "month": 9}, {"date": "1983-04-25T00:00:00", "wday": "Mon", "day_of_year": 115, "births": 10371, "month": 4}, {"date": "1975-10-01T00:00:00", "wday": "Wed", "day_of_year": 274, "births": 9740, "month": 10}, {"date": "1981-02-25T00:00:00", "wday": "Wed", "day_of_year": 56, "births": 10270, "month": 2}, {"date": "1988-06-27T00:00:00", "wday": "Mon", "day_of_year": 179, "births": 11166, "month": 6}, {"date": "1984-08-09T00:00:00", "wday": "Thurs", "day_of_year": 222, "births": 11377, "month": 8}, {"date": "1984-05-10T00:00:00", "wday": "Thurs", "day_of_year": 131, "births": 9946, "month": 5}, {"date": "1987-05-01T00:00:00", "wday": "Fri", "day_of_year": 121, "births": 10939, "month": 5}, {"date": "1975-11-23T00:00:00", "wday": "Sun", "day_of_year": 327, "births": 7392, "month": 11}, {"date": "1979-05-12T00:00:00", "wday": "Sat", "day_of_year": 132, "births": 8274, "month": 5}, {"date": "1987-09-10T00:00:00", "wday": "Thurs", "day_of_year": 253, "births": 12252, "month": 9}, {"date": "1987-08-18T00:00:00", "wday": "Tues", "day_of_year": 230, "births": 11896, "month": 8}, {"date": "1986-07-03T00:00:00", "wday": "Thurs", "day_of_year": 184, "births": 11306, "month": 7}, {"date": "1971-07-21T00:00:00", "wday": "Wed", "day_of_year": 202, "births": 10414, "month": 7}, {"date": "1969-11-09T00:00:00", "wday": "Sun", "day_of_year": 313, "births": 9022, "month": 11}, {"date": "1969-12-05T00:00:00", "wday": "Fri", "day_of_year": 339, "births": 10428, "month": 12}, {"date": "1981-03-21T00:00:00", "wday": "Sat", "day_of_year": 80, "births": 8773, "month": 3}, {"date": "1976-12-14T00:00:00", "wday": "Tues", "day_of_year": 349, "births": 9559, "month": 12}, {"date": "1980-12-16T00:00:00", "wday": "Tues", "day_of_year": 351, "births": 10772, "month": 12}, {"date": "1972-08-12T00:00:00", "wday": "Sat", "day_of_year": 225, "births": 8708, "month": 8}, {"date": "1975-05-05T00:00:00", "wday": "Mon", "day_of_year": 125, "births": 8517, "month": 5}, {"date": "1986-04-15T00:00:00", "wday": "Tues", "day_of_year": 105, "births": 10876, "month": 4}, {"date": "1972-01-10T00:00:00", "wday": "Mon", "day_of_year": 10, "births": 9347, "month": 1}, {"date": "1971-04-09T00:00:00", "wday": "Fri", "day_of_year": 99, "births": 9756, "month": 4}, {"date": "1984-07-20T00:00:00", "wday": "Fri", "day_of_year": 202, "births": 11185, "month": 7}, {"date": "1971-04-21T00:00:00", "wday": "Wed", "day_of_year": 111, "births": 9948, "month": 4}, {"date": "1986-09-18T00:00:00", "wday": "Thurs", "day_of_year": 261, "births": 12011, "month": 9}, {"date": "1979-05-23T00:00:00", "wday": "Wed", "day_of_year": 143, "births": 9781, "month": 5}, {"date": "1979-05-19T00:00:00", "wday": "Sat", "day_of_year": 139, "births": 8350, "month": 5}, {"date": "1981-11-04T00:00:00", "wday": "Wed", "day_of_year": 308, "births": 10350, "month": 11}, {"date": "1979-10-10T00:00:00", "wday": "Wed", "day_of_year": 283, "births": 10199, "month": 10}, {"date": "1988-11-01T00:00:00", "wday": "Tues", "day_of_year": 306, "births": 11862, "month": 11}, {"date": "1973-08-19T00:00:00", "wday": "Sun", "day_of_year": 231, "births": 7781, "month": 8}, {"date": "1973-06-22T00:00:00", "wday": "Fri", "day_of_year": 173, "births": 8928, "month": 6}, {"date": "1975-10-08T00:00:00", "wday": "Wed", "day_of_year": 281, "births": 9252, "month": 10}, {"date": "1986-07-04T00:00:00", "wday": "Fri", "day_of_year": 185, "births": 9019, "month": 7}, {"date": "1972-09-24T00:00:00", "wday": "Sun", "day_of_year": 268, "births": 8455, "month": 9}, {"date": "1980-01-27T00:00:00", "wday": "Sun", "day_of_year": 27, "births": 8258, "month": 1}, {"date": "1975-01-08T00:00:00", "wday": "Wed", "day_of_year": 8, "births": 8416, "month": 1}, {"date": "1982-02-08T00:00:00", "wday": "Mon", "day_of_year": 39, "births": 10362, "month": 2}, {"date": "1982-11-12T00:00:00", "wday": "Fri", "day_of_year": 316, "births": 10490, "month": 11}, {"date": "1976-08-22T00:00:00", "wday": "Sun", "day_of_year": 235, "births": 8287, "month": 8}, {"date": "1974-05-24T00:00:00", "wday": "Fri", "day_of_year": 144, "births": 8924, "month": 5}, {"date": "1977-01-25T00:00:00", "wday": "Tues", "day_of_year": 25, "births": 9575, "month": 1}, {"date": "1971-12-22T00:00:00", "wday": "Wed", "day_of_year": 356, "births": 9018, "month": 12}, {"date": "1980-03-22T00:00:00", "wday": "Sat", "day_of_year": 82, "births": 8902, "month": 3}, {"date": "1972-12-30T00:00:00", "wday": "Sat", "day_of_year": 365, "births": 8557, "month": 12}, {"date": "1973-05-21T00:00:00", "wday": "Mon", "day_of_year": 141, "births": 8661, "month": 5}, {"date": "1984-06-03T00:00:00", "wday": "Sun", "day_of_year": 155, "births": 8277, "month": 6}, {"date": "1984-02-21T00:00:00", "wday": "Tues", "day_of_year": 52, "births": 10189, "month": 2}, {"date": "1980-11-17T00:00:00", "wday": "Mon", "day_of_year": 322, "births": 10175, "month": 11}, {"date": "1973-04-11T00:00:00", "wday": "Wed", "day_of_year": 101, "births": 8781, "month": 4}, {"date": "1972-08-31T00:00:00", "wday": "Thurs", "day_of_year": 244, "births": 9529, "month": 8}, {"date": "1970-08-21T00:00:00", "wday": "Fri", "day_of_year": 233, "births": 11050, "month": 8}, {"date": "1970-02-25T00:00:00", "wday": "Wed", "day_of_year": 56, "births": 10574, "month": 2}, {"date": "1974-06-19T00:00:00", "wday": "Wed", "day_of_year": 170, "births": 8864, "month": 6}, {"date": "1986-03-31T00:00:00", "wday": "Mon", "day_of_year": 90, "births": 10569, "month": 3}, {"date": "1981-08-24T00:00:00", "wday": "Mon", "day_of_year": 236, "births": 11147, "month": 8}, {"date": "1985-02-10T00:00:00", "wday": "Sun", "day_of_year": 41, "births": 8607, "month": 2}, {"date": "1970-12-11T00:00:00", "wday": "Fri", "day_of_year": 345, "births": 10704, "month": 12}, {"date": "1987-06-01T00:00:00", "wday": "Mon", "day_of_year": 152, "births": 11099, "month": 6}, {"date": "1981-09-02T00:00:00", "wday": "Wed", "day_of_year": 245, "births": 10922, "month": 9}, {"date": "1985-04-15T00:00:00", "wday": "Mon", "day_of_year": 105, "births": 10607, "month": 4}, {"date": "1981-03-15T00:00:00", "wday": "Sun", "day_of_year": 74, "births": 8338, "month": 3}, {"date": "1976-01-29T00:00:00", "wday": "Thurs", "day_of_year": 29, "births": 8699, "month": 1}, {"date": "1970-01-02T00:00:00", "wday": "Fri", "day_of_year": 2, "births": 9234, "month": 1}, {"date": "1987-07-25T00:00:00", "wday": "Sat", "day_of_year": 206, "births": 9530, "month": 7}, {"date": "1977-06-23T00:00:00", "wday": "Thurs", "day_of_year": 174, "births": 9489, "month": 6}, {"date": "1970-07-02T00:00:00", "wday": "Thurs", "day_of_year": 183, "births": 11234, "month": 7}, {"date": "1972-06-20T00:00:00", "wday": "Tues", "day_of_year": 172, "births": 9169, "month": 6}, {"date": "1979-10-26T00:00:00", "wday": "Fri", "day_of_year": 299, "births": 9987, "month": 10}, {"date": "1973-06-12T00:00:00", "wday": "Tues", "day_of_year": 163, "births": 9026, "month": 6}, {"date": "1983-03-06T00:00:00", "wday": "Sun", "day_of_year": 65, "births": 8570, "month": 3}, {"date": "1975-12-06T00:00:00", "wday": "Sat", "day_of_year": 340, "births": 7733, "month": 12}, {"date": "1985-07-04T00:00:00", "wday": "Thurs", "day_of_year": 185, "births": 9176, "month": 7}, {"date": "1972-04-23T00:00:00", "wday": "Sun", "day_of_year": 114, "births": 7335, "month": 4}, {"date": "1981-11-24T00:00:00", "wday": "Tues", "day_of_year": 328, "births": 10528, "month": 11}, {"date": "1983-05-30T00:00:00", "wday": "Mon", "day_of_year": 150, "births": 8687, "month": 5}, {"date": "1971-08-02T00:00:00", "wday": "Mon", "day_of_year": 214, "births": 10324, "month": 8}, {"date": "1986-07-06T00:00:00", "wday": "Sun", "day_of_year": 187, "births": 8665, "month": 7}, {"date": "1980-08-25T00:00:00", "wday": "Mon", "day_of_year": 238, "births": 10910, "month": 8}, {"date": "1973-12-25T00:00:00", "wday": "Tues", "day_of_year": 359, "births": 6964, "month": 12}, {"date": "1975-05-16T00:00:00", "wday": "Fri", "day_of_year": 136, "births": 8918, "month": 5}, {"date": "1987-10-07T00:00:00", "wday": "Wed", "day_of_year": 280, "births": 11256, "month": 10}, {"date": "1976-05-23T00:00:00", "wday": "Sun", "day_of_year": 144, "births": 7014, "month": 5}, {"date": "1973-08-05T00:00:00", "wday": "Sun", "day_of_year": 217, "births": 7616, "month": 8}, {"date": "1978-03-30T00:00:00", "wday": "Thurs", "day_of_year": 89, "births": 8917, "month": 3}, {"date": "1980-01-10T00:00:00", "wday": "Thurs", "day_of_year": 10, "births": 9759, "month": 1}, {"date": "1974-09-15T00:00:00", "wday": "Sun", "day_of_year": 258, "births": 8266, "month": 9}, {"date": "1973-08-26T00:00:00", "wday": "Sun", "day_of_year": 238, "births": 7978, "month": 8}, {"date": "1977-08-19T00:00:00", "wday": "Fri", "day_of_year": 231, "births": 10003, "month": 8}, {"date": "1977-07-09T00:00:00", "wday": "Sat", "day_of_year": 190, "births": 8793, "month": 7}, {"date": "1987-03-29T00:00:00", "wday": "Sun", "day_of_year": 88, "births": 8355, "month": 3}, {"date": "1972-04-17T00:00:00", "wday": "Mon", "day_of_year": 108, "births": 8859, "month": 4}, {"date": "1976-08-23T00:00:00", "wday": "Mon", "day_of_year": 236, "births": 9456, "month": 8}, {"date": "1979-09-28T00:00:00", "wday": "Fri", "day_of_year": 271, "births": 10915, "month": 9}, {"date": "1980-12-13T00:00:00", "wday": "Sat", "day_of_year": 348, "births": 8758, "month": 12}, {"date": "1982-05-28T00:00:00", "wday": "Fri", "day_of_year": 148, "births": 10683, "month": 5}, {"date": "1971-08-17T00:00:00", "wday": "Tues", "day_of_year": 229, "births": 10626, "month": 8}, {"date": "1987-02-25T00:00:00", "wday": "Wed", "day_of_year": 56, "births": 10863, "month": 2}, {"date": "1988-10-26T00:00:00", "wday": "Wed", "day_of_year": 300, "births": 11416, "month": 10}, {"date": "1974-01-30T00:00:00", "wday": "Wed", "day_of_year": 30, "births": 8439, "month": 1}, {"date": "1982-01-06T00:00:00", "wday": "Wed", "day_of_year": 6, "births": 10182, "month": 1}, {"date": "1975-08-08T00:00:00", "wday": "Fri", "day_of_year": 220, "births": 9253, "month": 8}, {"date": "1986-01-22T00:00:00", "wday": "Wed", "day_of_year": 22, "births": 10398, "month": 1}, {"date": "1971-04-28T00:00:00", "wday": "Wed", "day_of_year": 118, "births": 9664, "month": 4}, {"date": "1978-01-29T00:00:00", "wday": "Sun", "day_of_year": 29, "births": 7537, "month": 1}, {"date": "1983-08-21T00:00:00", "wday": "Sun", "day_of_year": 233, "births": 9142, "month": 8}, {"date": "1969-09-07T00:00:00", "wday": "Sun", "day_of_year": 250, "births": 9196, "month": 9}, {"date": "1976-07-08T00:00:00", "wday": "Thurs", "day_of_year": 190, "births": 9549, "month": 7}, {"date": "1986-06-03T00:00:00", "wday": "Tues", "day_of_year": 154, "births": 10785, "month": 6}, {"date": "1981-05-14T00:00:00", "wday": "Thurs", "day_of_year": 134, "births": 10145, "month": 5}, {"date": "1975-09-03T00:00:00", "wday": "Wed", "day_of_year": 246, "births": 9529, "month": 9}, {"date": "1969-11-19T00:00:00", "wday": "Wed", "day_of_year": 323, "births": 10260, "month": 11}, {"date": "1975-01-11T00:00:00", "wday": "Sat", "day_of_year": 11, "births": 7928, "month": 1}, {"date": "1972-02-04T00:00:00", "wday": "Fri", "day_of_year": 35, "births": 9359, "month": 2}, {"date": "1973-12-04T00:00:00", "wday": "Tues", "day_of_year": 338, "births": 9104, "month": 12}, {"date": "1971-05-24T00:00:00", "wday": "Mon", "day_of_year": 144, "births": 9798, "month": 5}, {"date": "1984-08-18T00:00:00", "wday": "Sat", "day_of_year": 231, "births": 9407, "month": 8}, {"date": "1988-07-03T00:00:00", "wday": "Sun", "day_of_year": 185, "births": 8988, "month": 7}, {"date": "1980-04-17T00:00:00", "wday": "Thurs", "day_of_year": 108, "births": 9751, "month": 4}, {"date": "1971-08-07T00:00:00", "wday": "Sat", "day_of_year": 219, "births": 9448, "month": 8}, {"date": "1974-11-24T00:00:00", "wday": "Sun", "day_of_year": 328, "births": 7545, "month": 11}, {"date": "1979-03-22T00:00:00", "wday": "Thurs", "day_of_year": 81, "births": 9597, "month": 3}, {"date": "1975-12-14T00:00:00", "wday": "Sun", "day_of_year": 348, "births": 7528, "month": 12}, {"date": "1982-05-07T00:00:00", "wday": "Fri", "day_of_year": 127, "births": 10494, "month": 5}, {"date": "1987-01-14T00:00:00", "wday": "Wed", "day_of_year": 14, "births": 10456, "month": 1}, {"date": "1976-10-18T00:00:00", "wday": "Mon", "day_of_year": 292, "births": 9248, "month": 10}, {"date": "1970-05-30T00:00:00", "wday": "Sat", "day_of_year": 150, "births": 8868, "month": 5}, {"date": "1970-03-23T00:00:00", "wday": "Mon", "day_of_year": 82, "births": 10334, "month": 3}, {"date": "1981-09-14T00:00:00", "wday": "Mon", "day_of_year": 257, "births": 11377, "month": 9}, {"date": "1971-08-30T00:00:00", "wday": "Mon", "day_of_year": 242, "births": 10068, "month": 8}, {"date": "1974-08-08T00:00:00", "wday": "Thurs", "day_of_year": 220, "births": 9550, "month": 8}, {"date": "1988-12-07T00:00:00", "wday": "Wed", "day_of_year": 342, "births": 11095, "month": 12}, {"date": "1979-01-08T00:00:00", "wday": "Mon", "day_of_year": 8, "births": 9524, "month": 1}, {"date": "1986-01-05T00:00:00", "wday": "Sun", "day_of_year": 5, "births": 8397, "month": 1}, {"date": "1985-05-30T00:00:00", "wday": "Thurs", "day_of_year": 150, "births": 10943, "month": 5}, {"date": "1976-08-18T00:00:00", "wday": "Wed", "day_of_year": 231, "births": 9519, "month": 8}, {"date": "1983-06-24T00:00:00", "wday": "Fri", "day_of_year": 175, "births": 10688, "month": 6}, {"date": "1977-03-25T00:00:00", "wday": "Fri", "day_of_year": 84, "births": 9345, "month": 3}, {"date": "1970-01-30T00:00:00", "wday": "Fri", "day_of_year": 30, "births": 9912, "month": 1}, {"date": "1987-06-15T00:00:00", "wday": "Mon", "day_of_year": 166, "births": 11453, "month": 6}, {"date": "1982-12-01T00:00:00", "wday": "Wed", "day_of_year": 335, "births": 10432, "month": 12}, {"date": "1979-05-10T00:00:00", "wday": "Thurs", "day_of_year": 130, "births": 9778, "month": 5}, {"date": "1983-10-20T00:00:00", "wday": "Thurs", "day_of_year": 293, "births": 10392, "month": 10}, {"date": "1987-04-21T00:00:00", "wday": "Tues", "day_of_year": 111, "births": 11205, "month": 4}, {"date": "1977-07-15T00:00:00", "wday": "Fri", "day_of_year": 196, "births": 10176, "month": 7}, {"date": "1970-04-06T00:00:00", "wday": "Mon", "day_of_year": 96, "births": 10052, "month": 4}, {"date": "1987-09-15T00:00:00", "wday": "Tues", "day_of_year": 258, "births": 12140, "month": 9}, {"date": "1986-12-08T00:00:00", "wday": "Mon", "day_of_year": 342, "births": 10446, "month": 12}, {"date": "1976-05-14T00:00:00", "wday": "Fri", "day_of_year": 135, "births": 8627, "month": 5}, {"date": "1972-11-09T00:00:00", "wday": "Thurs", "day_of_year": 314, "births": 9064, "month": 11}, {"date": "1975-11-11T00:00:00", "wday": "Tues", "day_of_year": 315, "births": 8926, "month": 11}, {"date": "1983-03-26T00:00:00", "wday": "Sat", "day_of_year": 85, "births": 8736, "month": 3}, {"date": "1987-11-30T00:00:00", "wday": "Mon", "day_of_year": 334, "births": 11085, "month": 11}, {"date": "1973-01-26T00:00:00", "wday": "Fri", "day_of_year": 26, "births": 9037, "month": 1}, {"date": "1971-04-13T00:00:00", "wday": "Tues", "day_of_year": 103, "births": 10296, "month": 4}, {"date": "1983-04-21T00:00:00", "wday": "Thurs", "day_of_year": 111, "births": 10201, "month": 4}, {"date": "1972-02-18T00:00:00", "wday": "Fri", "day_of_year": 49, "births": 9652, "month": 2}, {"date": "1982-08-06T00:00:00", "wday": "Fri", "day_of_year": 218, "births": 11014, "month": 8}, {"date": "1975-01-27T00:00:00", "wday": "Mon", "day_of_year": 27, "births": 8783, "month": 1}, {"date": "1983-05-16T00:00:00", "wday": "Mon", "day_of_year": 136, "births": 10424, "month": 5}, {"date": "1974-05-19T00:00:00", "wday": "Sun", "day_of_year": 139, "births": 6896, "month": 5}, {"date": "1980-03-24T00:00:00", "wday": "Mon", "day_of_year": 84, "births": 10100, "month": 3}, {"date": "1972-03-15T00:00:00", "wday": "Wed", "day_of_year": 75, "births": 9246, "month": 3}, {"date": "1975-12-22T00:00:00", "wday": "Mon", "day_of_year": 356, "births": 8585, "month": 12}, {"date": "1987-11-13T00:00:00", "wday": "Fri", "day_of_year": 317, "births": 10642, "month": 11}, {"date": "1976-06-29T00:00:00", "wday": "Tues", "day_of_year": 181, "births": 9487, "month": 6}, {"date": "1978-03-03T00:00:00", "wday": "Fri", "day_of_year": 62, "births": 9450, "month": 3}, {"date": "1976-07-11T00:00:00", "wday": "Sun", "day_of_year": 193, "births": 7993, "month": 7}, {"date": "1984-12-26T00:00:00", "wday": "Wed", "day_of_year": 361, "births": 9777, "month": 12}, {"date": "1981-05-04T00:00:00", "wday": "Mon", "day_of_year": 124, "births": 9755, "month": 5}, {"date": "1970-01-04T00:00:00", "wday": "Sun", "day_of_year": 4, "births": 8620, "month": 1}, {"date": "1973-06-27T00:00:00", "wday": "Wed", "day_of_year": 178, "births": 9012, "month": 6}, {"date": "1973-06-16T00:00:00", "wday": "Sat", "day_of_year": 167, "births": 8025, "month": 6}, {"date": "1980-02-07T00:00:00", "wday": "Thurs", "day_of_year": 38, "births": 10108, "month": 2}, {"date": "1981-08-14T00:00:00", "wday": "Fri", "day_of_year": 226, "births": 11433, "month": 8}, {"date": "1986-06-07T00:00:00", "wday": "Sat", "day_of_year": 158, "births": 8664, "month": 6}, {"date": "1988-10-22T00:00:00", "wday": "Sat", "day_of_year": 296, "births": 9215, "month": 10}, {"date": "1981-10-08T00:00:00", "wday": "Thurs", "day_of_year": 281, "births": 10405, "month": 10}, {"date": "1974-07-15T00:00:00", "wday": "Mon", "day_of_year": 196, "births": 9267, "month": 7}, {"date": "1983-01-31T00:00:00", "wday": "Mon", "day_of_year": 31, "births": 10148, "month": 1}, {"date": "1984-08-06T00:00:00", "wday": "Mon", "day_of_year": 219, "births": 11213, "month": 8}, {"date": "1985-09-06T00:00:00", "wday": "Fri", "day_of_year": 249, "births": 11925, "month": 9}, {"date": "1978-03-01T00:00:00", "wday": "Wed", "day_of_year": 60, "births": 9154, "month": 3}, {"date": "1984-03-15T00:00:00", "wday": "Thurs", "day_of_year": 75, "births": 10329, "month": 3}, {"date": "1974-01-04T00:00:00", "wday": "Fri", "day_of_year": 4, "births": 8851, "month": 1}, {"date": "1969-11-29T00:00:00", "wday": "Sat", "day_of_year": 333, "births": 9332, "month": 11}, {"date": "1975-08-05T00:00:00", "wday": "Tues", "day_of_year": 217, "births": 9617, "month": 8}, {"date": "1976-04-06T00:00:00", "wday": "Tues", "day_of_year": 97, "births": 8586, "month": 4}, {"date": "1974-05-14T00:00:00", "wday": "Tues", "day_of_year": 134, "births": 8886, "month": 5}, {"date": "1980-02-21T00:00:00", "wday": "Thurs", "day_of_year": 52, "births": 10156, "month": 2}, {"date": "1978-05-25T00:00:00", "wday": "Thurs", "day_of_year": 145, "births": 9193, "month": 5}, {"date": "1975-07-23T00:00:00", "wday": "Wed", "day_of_year": 204, "births": 9751, "month": 7}, {"date": "1972-02-11T00:00:00", "wday": "Fri", "day_of_year": 42, "births": 9357, "month": 2}, {"date": "1987-06-22T00:00:00", "wday": "Mon", "day_of_year": 173, "births": 11073, "month": 6}, {"date": "1976-05-08T00:00:00", "wday": "Sat", "day_of_year": 129, "births": 7379, "month": 5}, {"date": "1986-03-06T00:00:00", "wday": "Thurs", "day_of_year": 65, "births": 10783, "month": 3}, {"date": "1978-09-11T00:00:00", "wday": "Mon", "day_of_year": 254, "births": 10165, "month": 9}, {"date": "1985-02-21T00:00:00", "wday": "Thurs", "day_of_year": 52, "births": 10583, "month": 2}, {"date": "1988-04-03T00:00:00", "wday": "Sun", "day_of_year": 94, "births": 8128, "month": 4}, {"date": "1981-04-27T00:00:00", "wday": "Mon", "day_of_year": 117, "births": 9657, "month": 4}, {"date": "1983-02-10T00:00:00", "wday": "Thurs", "day_of_year": 41, "births": 10261, "month": 2}, {"date": "1969-01-05T00:00:00", "wday": "Sun", "day_of_year": 5, "births": 8390, "month": 1}, {"date": "1987-07-05T00:00:00", "wday": "Sun", "day_of_year": 186, "births": 8645, "month": 7}, {"date": "1983-06-04T00:00:00", "wday": "Sat", "day_of_year": 155, "births": 9012, "month": 6}, {"date": "1987-02-22T00:00:00", "wday": "Sun", "day_of_year": 53, "births": 8642, "month": 2}, {"date": "1983-05-14T00:00:00", "wday": "Sat", "day_of_year": 134, "births": 8741, "month": 5}, {"date": "1986-06-10T00:00:00", "wday": "Tues", "day_of_year": 161, "births": 10879, "month": 6}, {"date": "1970-06-06T00:00:00", "wday": "Sat", "day_of_year": 157, "births": 9516, "month": 6}, {"date": "1973-04-19T00:00:00", "wday": "Thurs", "day_of_year": 109, "births": 8672, "month": 4}, {"date": "1982-04-30T00:00:00", "wday": "Fri", "day_of_year": 120, "births": 10396, "month": 4}, {"date": "1970-11-13T00:00:00", "wday": "Fri", "day_of_year": 317, "births": 10850, "month": 11}, {"date": "1973-10-29T00:00:00", "wday": "Mon", "day_of_year": 302, "births": 8564, "month": 10}, {"date": "1985-04-17T00:00:00", "wday": "Wed", "day_of_year": 107, "births": 10493, "month": 4}, {"date": "1985-06-16T00:00:00", "wday": "Sun", "day_of_year": 167, "births": 8831, "month": 6}, {"date": "1987-07-14T00:00:00", "wday": "Tues", "day_of_year": 195, "births": 11890, "month": 7}, {"date": "1970-07-24T00:00:00", "wday": "Fri", "day_of_year": 205, "births": 10956, "month": 7}, {"date": "1977-08-02T00:00:00", "wday": "Tues", "day_of_year": 214, "births": 10281, "month": 8}, {"date": "1976-11-23T00:00:00", "wday": "Tues", "day_of_year": 328, "births": 9316, "month": 11}, {"date": "1986-01-08T00:00:00", "wday": "Wed", "day_of_year": 8, "births": 10065, "month": 1}, {"date": "1982-02-14T00:00:00", "wday": "Sun", "day_of_year": 45, "births": 8680, "month": 2}, {"date": "1974-10-07T00:00:00", "wday": "Mon", "day_of_year": 280, "births": 9756, "month": 10}, {"date": "1982-03-27T00:00:00", "wday": "Sat", "day_of_year": 86, "births": 8568, "month": 3}, {"date": "1970-03-29T00:00:00", "wday": "Sun", "day_of_year": 88, "births": 8314, "month": 3}, {"date": "1975-03-14T00:00:00", "wday": "Fri", "day_of_year": 73, "births": 9098, "month": 3}, {"date": "1984-10-07T00:00:00", "wday": "Sun", "day_of_year": 281, "births": 8749, "month": 10}, {"date": "1976-10-01T00:00:00", "wday": "Fri", "day_of_year": 275, "births": 9860, "month": 10}, {"date": "1982-12-07T00:00:00", "wday": "Tues", "day_of_year": 341, "births": 10227, "month": 12}, {"date": "1972-11-23T00:00:00", "wday": "Thurs", "day_of_year": 328, "births": 7403, "month": 11}, {"date": "1976-07-14T00:00:00", "wday": "Wed", "day_of_year": 196, "births": 9352, "month": 7}, {"date": "1988-05-25T00:00:00", "wday": "Wed", "day_of_year": 146, "births": 11464, "month": 5}, {"date": "1977-03-23T00:00:00", "wday": "Wed", "day_of_year": 82, "births": 9172, "month": 3}, {"date": "1979-06-26T00:00:00", "wday": "Tues", "day_of_year": 177, "births": 10116, "month": 6}, {"date": "1988-01-11T00:00:00", "wday": "Mon", "day_of_year": 11, "births": 10652, "month": 1}, {"date": "1979-03-03T00:00:00", "wday": "Sat", "day_of_year": 62, "births": 8731, "month": 3}, {"date": "1977-04-17T00:00:00", "wday": "Sun", "day_of_year": 107, "births": 7593, "month": 4}, {"date": "1986-10-12T00:00:00", "wday": "Sun", "day_of_year": 285, "births": 8217, "month": 10}, {"date": "1983-08-15T00:00:00", "wday": "Mon", "day_of_year": 227, "births": 10663, "month": 8}, {"date": "1971-06-14T00:00:00", "wday": "Mon", "day_of_year": 165, "births": 9810, "month": 6}, {"date": "1969-08-19T00:00:00", "wday": "Tues", "day_of_year": 231, "births": 11410, "month": 8}, {"date": "1986-05-08T00:00:00", "wday": "Thurs", "day_of_year": 128, "births": 10517, "month": 5}, {"date": "1980-06-16T00:00:00", "wday": "Mon", "day_of_year": 168, "births": 10249, "month": 6}, {"date": "1977-07-04T00:00:00", "wday": "Mon", "day_of_year": 185, "births": 8171, "month": 7}, {"date": "1984-05-30T00:00:00", "wday": "Wed", "day_of_year": 151, "births": 10285, "month": 5}, {"date": "1978-01-02T00:00:00", "wday": "Mon", "day_of_year": 2, "births": 7543, "month": 1}, {"date": "1974-11-17T00:00:00", "wday": "Sun", "day_of_year": 321, "births": 7471, "month": 11}, {"date": "1978-03-25T00:00:00", "wday": "Sat", "day_of_year": 84, "births": 7887, "month": 3}, {"date": "1988-08-22T00:00:00", "wday": "Mon", "day_of_year": 235, "births": 11683, "month": 8}, {"date": "1975-05-25T00:00:00", "wday": "Sun", "day_of_year": 145, "births": 7512, "month": 5}, {"date": "1979-08-01T00:00:00", "wday": "Wed", "day_of_year": 213, "births": 10876, "month": 8}, {"date": "1972-07-08T00:00:00", "wday": "Sat", "day_of_year": 190, "births": 8622, "month": 7}, {"date": "1969-10-26T00:00:00", "wday": "Sun", "day_of_year": 299, "births": 8864, "month": 10}, {"date": "1971-12-20T00:00:00", "wday": "Mon", "day_of_year": 354, "births": 10102, "month": 12}, {"date": "1982-06-26T00:00:00", "wday": "Sat", "day_of_year": 177, "births": 9216, "month": 6}, {"date": "1984-11-08T00:00:00", "wday": "Thurs", "day_of_year": 313, "births": 10378, "month": 11}, {"date": "1987-12-05T00:00:00", "wday": "Sat", "day_of_year": 339, "births": 8655, "month": 12}, {"date": "1970-07-06T00:00:00", "wday": "Mon", "day_of_year": 187, "births": 10518, "month": 7}, {"date": "1984-02-06T00:00:00", "wday": "Mon", "day_of_year": 37, "births": 9954, "month": 2}, {"date": "1978-12-08T00:00:00", "wday": "Fri", "day_of_year": 342, "births": 9417, "month": 12}, {"date": "1970-12-25T00:00:00", "wday": "Fri", "day_of_year": 359, "births": 8490, "month": 12}, {"date": "1986-02-09T00:00:00", "wday": "Sun", "day_of_year": 40, "births": 8471, "month": 2}, {"date": "1986-02-22T00:00:00", "wday": "Sat", "day_of_year": 53, "births": 8969, "month": 2}, {"date": "1975-10-16T00:00:00", "wday": "Thurs", "day_of_year": 289, "births": 8725, "month": 10}, {"date": "1983-06-29T00:00:00", "wday": "Wed", "day_of_year": 180, "births": 10784, "month": 6}, {"date": "1984-09-12T00:00:00", "wday": "Wed", "day_of_year": 256, "births": 11388, "month": 9}, {"date": "1975-04-18T00:00:00", "wday": "Fri", "day_of_year": 108, "births": 9131, "month": 4}, {"date": "1985-11-29T00:00:00", "wday": "Fri", "day_of_year": 333, "births": 9922, "month": 11}, {"date": "1980-09-21T00:00:00", "wday": "Sun", "day_of_year": 265, "births": 9773, "month": 9}, {"date": "1987-10-13T00:00:00", "wday": "Tues", "day_of_year": 286, "births": 11433, "month": 10}, {"date": "1970-09-15T00:00:00", "wday": "Tues", "day_of_year": 258, "births": 11904, "month": 9}, {"date": "1982-12-18T00:00:00", "wday": "Sat", "day_of_year": 352, "births": 8502, "month": 12}, {"date": "1973-06-14T00:00:00", "wday": "Thurs", "day_of_year": 165, "births": 8625, "month": 6}, {"date": "1985-06-13T00:00:00", "wday": "Thurs", "day_of_year": 164, "births": 10402, "month": 6}, {"date": "1979-04-05T00:00:00", "wday": "Thurs", "day_of_year": 95, "births": 9517, "month": 4}, {"date": "1973-07-29T00:00:00", "wday": "Sun", "day_of_year": 210, "births": 7745, "month": 7}, {"date": "1981-11-23T00:00:00", "wday": "Mon", "day_of_year": 327, "births": 10335, "month": 11}, {"date": "1971-02-02T00:00:00", "wday": "Tues", "day_of_year": 33, "births": 10804, "month": 2}, {"date": "1979-02-22T00:00:00", "wday": "Thurs", "day_of_year": 53, "births": 9697, "month": 2}, {"date": "1971-12-31T00:00:00", "wday": "Fri", "day_of_year": 365, "births": 9174, "month": 12}, {"date": "1974-01-12T00:00:00", "wday": "Sat", "day_of_year": 12, "births": 7769, "month": 1}, {"date": "1980-02-27T00:00:00", "wday": "Wed", "day_of_year": 58, "births": 9783, "month": 2}, {"date": "1973-05-23T00:00:00", "wday": "Wed", "day_of_year": 143, "births": 8506, "month": 5}, {"date": "1984-07-17T00:00:00", "wday": "Tues", "day_of_year": 199, "births": 11493, "month": 7}, {"date": "1973-08-24T00:00:00", "wday": "Fri", "day_of_year": 236, "births": 9348, "month": 8}, {"date": "1979-04-17T00:00:00", "wday": "Tues", "day_of_year": 107, "births": 9777, "month": 4}, {"date": "1969-02-14T00:00:00", "wday": "Fri", "day_of_year": 45, "births": 10354, "month": 2}, {"date": "1973-06-18T00:00:00", "wday": "Mon", "day_of_year": 169, "births": 8959, "month": 6}, {"date": "1972-06-18T00:00:00", "wday": "Sun", "day_of_year": 170, "births": 7438, "month": 6}, {"date": "1982-06-22T00:00:00", "wday": "Tues", "day_of_year": 173, "births": 11050, "month": 6}, {"date": "1987-05-30T00:00:00", "wday": "Sat", "day_of_year": 150, "births": 9276, "month": 5}, {"date": "1975-09-23T00:00:00", "wday": "Tues", "day_of_year": 266, "births": 9933, "month": 9}, {"date": "1970-06-14T00:00:00", "wday": "Sun", "day_of_year": 165, "births": 8614, "month": 6}, {"date": "1976-10-13T00:00:00", "wday": "Wed", "day_of_year": 287, "births": 9183, "month": 10}, {"date": "1988-03-24T00:00:00", "wday": "Thurs", "day_of_year": 84, "births": 11045, "month": 3}, {"date": "1983-11-16T00:00:00", "wday": "Wed", "day_of_year": 320, "births": 10255, "month": 11}, {"date": "1979-08-29T00:00:00", "wday": "Wed", "day_of_year": 241, "births": 10534, "month": 8}, {"date": "1986-12-23T00:00:00", "wday": "Tues", "day_of_year": 357, "births": 10533, "month": 12}, {"date": "1986-08-14T00:00:00", "wday": "Thurs", "day_of_year": 226, "births": 11340, "month": 8}, {"date": "1984-12-21T00:00:00", "wday": "Fri", "day_of_year": 356, "births": 10474, "month": 12}, {"date": "1985-01-01T00:00:00", "wday": "Tues", "day_of_year": 1, "births": 8335, "month": 1}, {"date": "1988-09-18T00:00:00", "wday": "Sun", "day_of_year": 262, "births": 9848, "month": 9}, {"date": "1982-12-16T00:00:00", "wday": "Thurs", "day_of_year": 350, "births": 10632, "month": 12}, {"date": "1976-03-03T00:00:00", "wday": "Wed", "day_of_year": 63, "births": 8849, "month": 3}, {"date": "1987-05-13T00:00:00", "wday": "Wed", "day_of_year": 133, "births": 10560, "month": 5}, {"date": "1986-03-27T00:00:00", "wday": "Thurs", "day_of_year": 86, "births": 11081, "month": 3}, {"date": "1982-03-19T00:00:00", "wday": "Fri", "day_of_year": 78, "births": 10259, "month": 3}, {"date": "1985-08-13T00:00:00", "wday": "Tues", "day_of_year": 225, "births": 11636, "month": 8}, {"date": "1969-09-06T00:00:00", "wday": "Sat", "day_of_year": 249, "births": 9710, "month": 9}, {"date": "1986-07-26T00:00:00", "wday": "Sat", "day_of_year": 207, "births": 9386, "month": 7}, {"date": "1986-07-21T00:00:00", "wday": "Mon", "day_of_year": 202, "births": 11200, "month": 7}, {"date": "1974-10-20T00:00:00", "wday": "Sun", "day_of_year": 293, "births": 7472, "month": 10}, {"date": "1970-03-21T00:00:00", "wday": "Sat", "day_of_year": 80, "births": 9390, "month": 3}, {"date": "1976-11-12T00:00:00", "wday": "Fri", "day_of_year": 317, "births": 9204, "month": 11}, {"date": "1972-03-17T00:00:00", "wday": "Fri", "day_of_year": 77, "births": 9489, "month": 3}, {"date": "1986-08-23T00:00:00", "wday": "Sat", "day_of_year": 235, "births": 9491, "month": 8}, {"date": "1972-08-22T00:00:00", "wday": "Tues", "day_of_year": 235, "births": 10160, "month": 8}, {"date": "1986-09-27T00:00:00", "wday": "Sat", "day_of_year": 270, "births": 9783, "month": 9}, {"date": "1981-03-30T00:00:00", "wday": "Mon", "day_of_year": 89, "births": 10063, "month": 3}, {"date": "1980-03-04T00:00:00", "wday": "Tues", "day_of_year": 64, "births": 10113, "month": 3}, {"date": "1984-06-26T00:00:00", "wday": "Tues", "day_of_year": 178, "births": 10980, "month": 6}, {"date": "1971-07-14T00:00:00", "wday": "Wed", "day_of_year": 195, "births": 10494, "month": 7}, {"date": "1980-05-21T00:00:00", "wday": "Wed", "day_of_year": 142, "births": 9682, "month": 5}, {"date": "1971-01-23T00:00:00", "wday": "Sat", "day_of_year": 23, "births": 9802, "month": 1}, {"date": "1980-05-20T00:00:00", "wday": "Tues", "day_of_year": 141, "births": 10571, "month": 5}, {"date": "1988-06-19T00:00:00", "wday": "Sun", "day_of_year": 171, "births": 9038, "month": 6}, {"date": "1979-01-26T00:00:00", "wday": "Fri", "day_of_year": 26, "births": 9809, "month": 1}, {"date": "1980-03-25T00:00:00", "wday": "Tues", "day_of_year": 85, "births": 10553, "month": 3}, {"date": "1980-10-05T00:00:00", "wday": "Sun", "day_of_year": 279, "births": 9013, "month": 10}, {"date": "1970-03-05T00:00:00", "wday": "Thurs", "day_of_year": 64, "births": 10258, "month": 3}, {"date": "1977-08-05T00:00:00", "wday": "Fri", "day_of_year": 217, "births": 10300, "month": 8}, {"date": "1973-11-05T00:00:00", "wday": "Mon", "day_of_year": 309, "births": 8712, "month": 11}, {"date": "1983-09-08T00:00:00", "wday": "Thurs", "day_of_year": 251, "births": 11052, "month": 9}, {"date": "1973-04-10T00:00:00", "wday": "Tues", "day_of_year": 100, "births": 8843, "month": 4}, {"date": "1985-10-09T00:00:00", "wday": "Wed", "day_of_year": 282, "births": 10959, "month": 10}, {"date": "1977-01-04T00:00:00", "wday": "Tues", "day_of_year": 4, "births": 9104, "month": 1}, {"date": "1969-07-18T00:00:00", "wday": "Fri", "day_of_year": 199, "births": 10632, "month": 7}, {"date": "1975-06-06T00:00:00", "wday": "Fri", "day_of_year": 157, "births": 9112, "month": 6}, {"date": "1978-07-21T00:00:00", "wday": "Fri", "day_of_year": 202, "births": 10342, "month": 7}, {"date": "1973-02-04T00:00:00", "wday": "Sun", "day_of_year": 35, "births": 7487, "month": 2}, {"date": "1983-11-14T00:00:00", "wday": "Mon", "day_of_year": 318, "births": 10222, "month": 11}, {"date": "1978-08-12T00:00:00", "wday": "Sat", "day_of_year": 224, "births": 8966, "month": 8}, {"date": "1977-11-13T00:00:00", "wday": "Sun", "day_of_year": 317, "births": 7895, "month": 11}, {"date": "1982-01-18T00:00:00", "wday": "Mon", "day_of_year": 18, "births": 10253, "month": 1}, {"date": "1984-02-25T00:00:00", "wday": "Sat", "day_of_year": 56, "births": 8637, "month": 2}, {"date": "1973-07-01T00:00:00", "wday": "Sun", "day_of_year": 182, "births": 7569, "month": 7}, {"date": "1983-11-07T00:00:00", "wday": "Mon", "day_of_year": 311, "births": 10240, "month": 11}, {"date": "1985-10-10T00:00:00", "wday": "Thurs", "day_of_year": 283, "births": 11057, "month": 10}, {"date": "1984-12-14T00:00:00", "wday": "Fri", "day_of_year": 349, "births": 10630, "month": 12}, {"date": "1976-03-06T00:00:00", "wday": "Sat", "day_of_year": 66, "births": 7560, "month": 3}, {"date": "1973-03-15T00:00:00", "wday": "Thurs", "day_of_year": 74, "births": 9092, "month": 3}, {"date": "1982-10-19T00:00:00", "wday": "Tues", "day_of_year": 292, "births": 10945, "month": 10}, {"date": "1969-06-08T00:00:00", "wday": "Sun", "day_of_year": 159, "births": 8226, "month": 6}, {"date": "1971-04-17T00:00:00", "wday": "Sat", "day_of_year": 107, "births": 8914, "month": 4}, {"date": "1978-11-22T00:00:00", "wday": "Wed", "day_of_year": 326, "births": 9566, "month": 11}, {"date": "1980-05-14T00:00:00", "wday": "Wed", "day_of_year": 135, "births": 9717, "month": 5}, {"date": "1974-08-26T00:00:00", "wday": "Mon", "day_of_year": 238, "births": 9556, "month": 8}, {"date": "1971-01-12T00:00:00", "wday": "Tues", "day_of_year": 12, "births": 11064, "month": 1}, {"date": "1978-03-31T00:00:00", "wday": "Fri", "day_of_year": 90, "births": 9330, "month": 3}, {"date": "1972-05-14T00:00:00", "wday": "Sun", "day_of_year": 135, "births": 7529, "month": 5}, {"date": "1970-05-19T00:00:00", "wday": "Tues", "day_of_year": 139, "births": 10436, "month": 5}, {"date": "1979-07-14T00:00:00", "wday": "Sat", "day_of_year": 195, "births": 9344, "month": 7}, {"date": "1978-12-28T00:00:00", "wday": "Thurs", "day_of_year": 362, "births": 10190, "month": 12}, {"date": "1969-09-27T00:00:00", "wday": "Sat", "day_of_year": 270, "births": 10170, "month": 9}, {"date": "1971-07-25T00:00:00", "wday": "Sun", "day_of_year": 206, "births": 8650, "month": 7}, {"date": "1972-04-11T00:00:00", "wday": "Tues", "day_of_year": 102, "births": 9180, "month": 4}, {"date": "1979-10-02T00:00:00", "wday": "Tues", "day_of_year": 275, "births": 10911, "month": 10}, {"date": "1983-05-11T00:00:00", "wday": "Wed", "day_of_year": 131, "births": 10174, "month": 5}, {"date": "1969-04-20T00:00:00", "wday": "Sun", "day_of_year": 110, "births": 7928, "month": 4}, {"date": "1972-08-06T00:00:00", "wday": "Sun", "day_of_year": 219, "births": 7962, "month": 8}, {"date": "1979-10-04T00:00:00", "wday": "Thurs", "day_of_year": 277, "births": 10314, "month": 10}, {"date": "1971-04-27T00:00:00", "wday": "Tues", "day_of_year": 117, "births": 10472, "month": 4}, {"date": "1984-08-21T00:00:00", "wday": "Tues", "day_of_year": 234, "births": 11585, "month": 8}, {"date": "1983-08-17T00:00:00", "wday": "Wed", "day_of_year": 229, "births": 11012, "month": 8}, {"date": "1983-10-27T00:00:00", "wday": "Thurs", "day_of_year": 300, "births": 10260, "month": 10}, {"date": "1987-02-19T00:00:00", "wday": "Thurs", "day_of_year": 50, "births": 10488, "month": 2}, {"date": "1987-02-13T00:00:00", "wday": "Fri", "day_of_year": 44, "births": 10256, "month": 2}, {"date": "1986-06-04T00:00:00", "wday": "Wed", "day_of_year": 155, "births": 10762, "month": 6}, {"date": "1977-05-25T00:00:00", "wday": "Wed", "day_of_year": 145, "births": 9528, "month": 5}, {"date": "1987-02-03T00:00:00", "wday": "Tues", "day_of_year": 34, "births": 11039, "month": 2}, {"date": "1986-03-04T00:00:00", "wday": "Tues", "day_of_year": 63, "births": 10926, "month": 3}, {"date": "1969-12-25T00:00:00", "wday": "Thurs", "day_of_year": 359, "births": 8284, "month": 12}, {"date": "1977-05-27T00:00:00", "wday": "Fri", "day_of_year": 147, "births": 9609, "month": 5}, {"date": "1988-07-25T00:00:00", "wday": "Mon", "day_of_year": 207, "births": 11641, "month": 7}, {"date": "1977-03-02T00:00:00", "wday": "Wed", "day_of_year": 61, "births": 9451, "month": 3}, {"date": "1977-03-06T00:00:00", "wday": "Sun", "day_of_year": 65, "births": 7784, "month": 3}, {"date": "1981-07-03T00:00:00", "wday": "Fri", "day_of_year": 184, "births": 9717, "month": 7}, {"date": "1970-12-22T00:00:00", "wday": "Tues", "day_of_year": 356, "births": 11008, "month": 12}, {"date": "1971-09-29T00:00:00", "wday": "Wed", "day_of_year": 272, "births": 10990, "month": 9}, {"date": "1982-08-27T00:00:00", "wday": "Fri", "day_of_year": 239, "births": 11266, "month": 8}, {"date": "1986-02-17T00:00:00", "wday": "Mon", "day_of_year": 48, "births": 10237, "month": 2}, {"date": "1981-10-07T00:00:00", "wday": "Wed", "day_of_year": 280, "births": 10483, "month": 10}, {"date": "1973-03-04T00:00:00", "wday": "Sun", "day_of_year": 63, "births": 7834, "month": 3}, {"date": "1972-10-19T00:00:00", "wday": "Thurs", "day_of_year": 293, "births": 9007, "month": 10}, {"date": "1979-07-30T00:00:00", "wday": "Mon", "day_of_year": 211, "births": 10534, "month": 7}, {"date": "1986-12-04T00:00:00", "wday": "Thurs", "day_of_year": 338, "births": 10280, "month": 12}, {"date": "1981-10-25T00:00:00", "wday": "Sun", "day_of_year": 298, "births": 8733, "month": 10}, {"date": "1983-05-01T00:00:00", "wday": "Sun", "day_of_year": 121, "births": 8170, "month": 5}, {"date": "1986-03-03T00:00:00", "wday": "Mon", "day_of_year": 62, "births": 10671, "month": 3}, {"date": "1980-07-18T00:00:00", "wday": "Fri", "day_of_year": 200, "births": 10696, "month": 7}, {"date": "1972-03-04T00:00:00", "wday": "Sat", "day_of_year": 64, "births": 8424, "month": 3}, {"date": "1986-02-07T00:00:00", "wday": "Fri", "day_of_year": 38, "births": 10638, "month": 2}, {"date": "1987-07-22T00:00:00", "wday": "Wed", "day_of_year": 203, "births": 11631, "month": 7}, {"date": "1987-05-12T00:00:00", "wday": "Tues", "day_of_year": 132, "births": 11413, "month": 5}, {"date": "1986-01-02T00:00:00", "wday": "Thurs", "day_of_year": 2, "births": 9446, "month": 1}, {"date": "1979-12-21T00:00:00", "wday": "Fri", "day_of_year": 355, "births": 9963, "month": 12}, {"date": "1983-07-12T00:00:00", "wday": "Tues", "day_of_year": 193, "births": 11254, "month": 7}, {"date": "1976-09-21T00:00:00", "wday": "Tues", "day_of_year": 265, "births": 10296, "month": 9}, {"date": "1980-07-21T00:00:00", "wday": "Mon", "day_of_year": 203, "births": 10853, "month": 7}, {"date": "1969-02-18T00:00:00", "wday": "Tues", "day_of_year": 49, "births": 10176, "month": 2}, {"date": "1970-12-01T00:00:00", "wday": "Tues", "day_of_year": 335, "births": 11362, "month": 12}, {"date": "1971-08-16T00:00:00", "wday": "Mon", "day_of_year": 228, "births": 10178, "month": 8}, {"date": "1983-07-30T00:00:00", "wday": "Sat", "day_of_year": 211, "births": 9164, "month": 7}, {"date": "1972-05-23T00:00:00", "wday": "Tues", "day_of_year": 144, "births": 9655, "month": 5}, {"date": "1984-09-13T00:00:00", "wday": "Thurs", "day_of_year": 257, "births": 11515, "month": 9}, {"date": "1970-03-19T00:00:00", "wday": "Thurs", "day_of_year": 78, "births": 10100, "month": 3}, {"date": "1975-05-08T00:00:00", "wday": "Thurs", "day_of_year": 128, "births": 8551, "month": 5}, {"date": "1981-02-22T00:00:00", "wday": "Sun", "day_of_year": 53, "births": 8657, "month": 2}, {"date": "1982-01-03T00:00:00", "wday": "Sun", "day_of_year": 3, "births": 8606, "month": 1}, {"date": "1979-06-28T00:00:00", "wday": "Thurs", "day_of_year": 179, "births": 10086, "month": 6}, {"date": "1982-04-02T00:00:00", "wday": "Fri", "day_of_year": 92, "births": 10528, "month": 4}, {"date": "1981-03-02T00:00:00", "wday": "Mon", "day_of_year": 61, "births": 10130, "month": 3}, {"date": "1975-03-29T00:00:00", "wday": "Sat", "day_of_year": 88, "births": 7630, "month": 3}, {"date": "1977-06-21T00:00:00", "wday": "Tues", "day_of_year": 172, "births": 9668, "month": 6}, {"date": "1984-12-27T00:00:00", "wday": "Thurs", "day_of_year": 362, "births": 11224, "month": 12}, {"date": "1977-03-22T00:00:00", "wday": "Tues", "day_of_year": 81, "births": 9534, "month": 3}, {"date": "1985-08-09T00:00:00", "wday": "Fri", "day_of_year": 221, "births": 11542, "month": 8}, {"date": "1980-09-04T00:00:00", "wday": "Thurs", "day_of_year": 248, "births": 11039, "month": 9}, {"date": "1984-04-27T00:00:00", "wday": "Fri", "day_of_year": 118, "births": 10152, "month": 4}, {"date": "1976-08-14T00:00:00", "wday": "Sat", "day_of_year": 227, "births": 8328, "month": 8}, {"date": "1976-02-05T00:00:00", "wday": "Thurs", "day_of_year": 36, "births": 8674, "month": 2}, {"date": "1979-07-24T00:00:00", "wday": "Tues", "day_of_year": 205, "births": 10851, "month": 7}, {"date": "1984-10-03T00:00:00", "wday": "Wed", "day_of_year": 277, "births": 11487, "month": 10}, {"date": "1977-10-24T00:00:00", "wday": "Mon", "day_of_year": 297, "births": 9232, "month": 10}, {"date": "1979-09-22T00:00:00", "wday": "Sat", "day_of_year": 265, "births": 9383, "month": 9}, {"date": "1974-12-22T00:00:00", "wday": "Sun", "day_of_year": 356, "births": 7077, "month": 12}, {"date": "1970-09-09T00:00:00", "wday": "Wed", "day_of_year": 252, "births": 11860, "month": 9}, {"date": "1969-03-05T00:00:00", "wday": "Wed", "day_of_year": 64, "births": 10046, "month": 3}, {"date": "1971-09-15T00:00:00", "wday": "Wed", "day_of_year": 258, "births": 10716, "month": 9}, {"date": "1975-12-30T00:00:00", "wday": "Tues", "day_of_year": 364, "births": 10144, "month": 12}, {"date": "1976-11-15T00:00:00", "wday": "Mon", "day_of_year": 320, "births": 9031, "month": 11}, {"date": "1987-01-21T00:00:00", "wday": "Wed", "day_of_year": 21, "births": 10612, "month": 1}, {"date": "1982-03-14T00:00:00", "wday": "Sun", "day_of_year": 73, "births": 8402, "month": 3}, {"date": "1978-07-23T00:00:00", "wday": "Sun", "day_of_year": 204, "births": 8577, "month": 7}, {"date": "1969-11-25T00:00:00", "wday": "Tues", "day_of_year": 329, "births": 10864, "month": 11}, {"date": "1969-10-22T00:00:00", "wday": "Wed", "day_of_year": 295, "births": 10300, "month": 10}, {"date": "1974-08-15T00:00:00", "wday": "Thurs", "day_of_year": 227, "births": 9825, "month": 8}, {"date": "1984-02-02T00:00:00", "wday": "Thurs", "day_of_year": 33, "births": 10127, "month": 2}, {"date": "1975-04-22T00:00:00", "wday": "Tues", "day_of_year": 112, "births": 8944, "month": 4}, {"date": "1983-10-21T00:00:00", "wday": "Fri", "day_of_year": 294, "births": 10192, "month": 10}, {"date": "1985-03-22T00:00:00", "wday": "Fri", "day_of_year": 81, "births": 10792, "month": 3}, {"date": "1971-12-21T00:00:00", "wday": "Tues", "day_of_year": 355, "births": 10306, "month": 12}, {"date": "1981-09-08T00:00:00", "wday": "Tues", "day_of_year": 251, "births": 11071, "month": 9}, {"date": "1984-10-02T00:00:00", "wday": "Tues", "day_of_year": 276, "births": 11572, "month": 10}, {"date": "1973-12-03T00:00:00", "wday": "Mon", "day_of_year": 337, "births": 8739, "month": 12}, {"date": "1976-07-06T00:00:00", "wday": "Tues", "day_of_year": 188, "births": 9227, "month": 7}, {"date": "1986-07-27T00:00:00", "wday": "Sun", "day_of_year": 208, "births": 8959, "month": 7}, {"date": "1983-09-22T00:00:00", "wday": "Thurs", "day_of_year": 265, "births": 11065, "month": 9}, {"date": "1978-07-02T00:00:00", "wday": "Sun", "day_of_year": 183, "births": 7991, "month": 7}, {"date": "1969-05-29T00:00:00", "wday": "Thurs", "day_of_year": 149, "births": 10190, "month": 5}, {"date": "1980-04-04T00:00:00", "wday": "Fri", "day_of_year": 95, "births": 10033, "month": 4}, {"date": "1976-03-01T00:00:00", "wday": "Mon", "day_of_year": 61, "births": 8861, "month": 3}, {"date": "1974-11-29T00:00:00", "wday": "Fri", "day_of_year": 333, "births": 8424, "month": 11}, {"date": "1988-09-27T00:00:00", "wday": "Tues", "day_of_year": 271, "births": 12454, "month": 9}, {"date": "1975-09-15T00:00:00", "wday": "Mon", "day_of_year": 258, "births": 9382, "month": 9}, {"date": "1986-06-12T00:00:00", "wday": "Thurs", "day_of_year": 163, "births": 11111, "month": 6}, {"date": "1971-03-03T00:00:00", "wday": "Wed", "day_of_year": 62, "births": 10640, "month": 3}, {"date": "1984-10-15T00:00:00", "wday": "Mon", "day_of_year": 289, "births": 10961, "month": 10}, {"date": "1970-06-26T00:00:00", "wday": "Fri", "day_of_year": 177, "births": 10622, "month": 6}, {"date": "1979-06-18T00:00:00", "wday": "Mon", "day_of_year": 169, "births": 9732, "month": 6}, {"date": "1982-09-10T00:00:00", "wday": "Fri", "day_of_year": 253, "births": 11917, "month": 9}, {"date": "1975-11-29T00:00:00", "wday": "Sat", "day_of_year": 333, "births": 7566, "month": 11}, {"date": "1985-08-03T00:00:00", "wday": "Sat", "day_of_year": 215, "births": 9413, "month": 8}, {"date": "1972-07-16T00:00:00", "wday": "Sun", "day_of_year": 198, "births": 7968, "month": 7}, {"date": "1985-11-04T00:00:00", "wday": "Mon", "day_of_year": 308, "births": 10896, "month": 11}, {"date": "1972-03-10T00:00:00", "wday": "Fri", "day_of_year": 70, "births": 9110, "month": 3}, {"date": "1970-02-07T00:00:00", "wday": "Sat", "day_of_year": 38, "births": 9562, "month": 2}, {"date": "1979-09-26T00:00:00", "wday": "Wed", "day_of_year": 269, "births": 10807, "month": 9}, {"date": "1971-07-29T00:00:00", "wday": "Thurs", "day_of_year": 210, "births": 10274, "month": 7}, {"date": "1972-04-14T00:00:00", "wday": "Fri", "day_of_year": 105, "births": 9192, "month": 4}, {"date": "1970-01-05T00:00:00", "wday": "Mon", "day_of_year": 5, "births": 9852, "month": 1}, {"date": "1975-02-20T00:00:00", "wday": "Thurs", "day_of_year": 51, "births": 8984, "month": 2}, {"date": "1979-09-30T00:00:00", "wday": "Sun", "day_of_year": 273, "births": 9112, "month": 9}, {"date": "1970-05-31T00:00:00", "wday": "Sun", "day_of_year": 151, "births": 8388, "month": 5}, {"date": "1978-11-19T00:00:00", "wday": "Sun", "day_of_year": 323, "births": 7877, "month": 11}, {"date": "1985-09-03T00:00:00", "wday": "Tues", "day_of_year": 246, "births": 11417, "month": 9}, {"date": "1973-12-05T00:00:00", "wday": "Wed", "day_of_year": 339, "births": 8799, "month": 12}, {"date": "1985-10-08T00:00:00", "wday": "Tues", "day_of_year": 281, "births": 11358, "month": 10}, {"date": "1986-12-17T00:00:00", "wday": "Wed", "day_of_year": 351, "births": 11217, "month": 12}, {"date": "1972-06-15T00:00:00", "wday": "Thurs", "day_of_year": 167, "births": 8931, "month": 6}, {"date": "1985-11-15T00:00:00", "wday": "Fri", "day_of_year": 319, "births": 10971, "month": 11}, {"date": "1979-11-05T00:00:00", "wday": "Mon", "day_of_year": 309, "births": 10056, "month": 11}, {"date": "1970-08-18T00:00:00", "wday": "Tues", "day_of_year": 230, "births": 11648, "month": 8}, {"date": "1978-01-22T00:00:00", "wday": "Sun", "day_of_year": 22, "births": 7573, "month": 1}, {"date": "1971-12-04T00:00:00", "wday": "Sat", "day_of_year": 338, "births": 8792, "month": 12}, {"date": "1975-04-23T00:00:00", "wday": "Wed", "day_of_year": 113, "births": 8511, "month": 4}, {"date": "1986-09-11T00:00:00", "wday": "Thurs", "day_of_year": 254, "births": 11704, "month": 9}, {"date": "1969-06-28T00:00:00", "wday": "Sat", "day_of_year": 179, "births": 9566, "month": 6}, {"date": "1976-03-12T00:00:00", "wday": "Fri", "day_of_year": 72, "births": 8654, "month": 3}, {"date": "1987-07-30T00:00:00", "wday": "Thurs", "day_of_year": 211, "births": 11614, "month": 7}, {"date": "1977-01-09T00:00:00", "wday": "Sun", "day_of_year": 9, "births": 7561, "month": 1}, {"date": "1970-01-16T00:00:00", "wday": "Fri", "day_of_year": 16, "births": 10276, "month": 1}, {"date": "1981-12-15T00:00:00", "wday": "Tues", "day_of_year": 349, "births": 10799, "month": 12}, {"date": "1987-01-13T00:00:00", "wday": "Tues", "day_of_year": 13, "births": 10581, "month": 1}, {"date": "1975-10-07T00:00:00", "wday": "Tues", "day_of_year": 280, "births": 9464, "month": 10}, {"date": "1985-04-30T00:00:00", "wday": "Tues", "day_of_year": 120, "births": 10894, "month": 4}, {"date": "1988-08-08T00:00:00", "wday": "Mon", "day_of_year": 221, "births": 12413, "month": 8}, {"date": "1972-03-18T00:00:00", "wday": "Sat", "day_of_year": 78, "births": 8076, "month": 3}, {"date": "1980-09-23T00:00:00", "wday": "Tues", "day_of_year": 267, "births": 11722, "month": 9}, {"date": "1971-06-15T00:00:00", "wday": "Tues", "day_of_year": 166, "births": 9938, "month": 6}, {"date": "1976-06-16T00:00:00", "wday": "Wed", "day_of_year": 168, "births": 8968, "month": 6}, {"date": "1986-11-03T00:00:00", "wday": "Mon", "day_of_year": 307, "births": 10593, "month": 11}, {"date": "1984-11-09T00:00:00", "wday": "Fri", "day_of_year": 314, "births": 10772, "month": 11}, {"date": "1986-07-01T00:00:00", "wday": "Tues", "day_of_year": 182, "births": 11545, "month": 7}, {"date": "1974-04-29T00:00:00", "wday": "Mon", "day_of_year": 119, "births": 8332, "month": 4}, {"date": "1987-06-19T00:00:00", "wday": "Fri", "day_of_year": 170, "births": 11461, "month": 6}, {"date": "1973-11-19T00:00:00", "wday": "Mon", "day_of_year": 323, "births": 8875, "month": 11}, {"date": "1977-04-14T00:00:00", "wday": "Thurs", "day_of_year": 104, "births": 9101, "month": 4}, {"date": "1981-04-24T00:00:00", "wday": "Fri", "day_of_year": 114, "births": 9921, "month": 4}, {"date": "1984-12-11T00:00:00", "wday": "Tues", "day_of_year": 346, "births": 10747, "month": 12}, {"date": "1970-01-27T00:00:00", "wday": "Tues", "day_of_year": 27, "births": 10602, "month": 1}, {"date": "1987-06-09T00:00:00", "wday": "Tues", "day_of_year": 160, "births": 11498, "month": 6}, {"date": "1972-04-12T00:00:00", "wday": "Wed", "day_of_year": 103, "births": 8967, "month": 4}, {"date": "1972-02-06T00:00:00", "wday": "Sun", "day_of_year": 37, "births": 7965, "month": 2}, {"date": "1970-11-23T00:00:00", "wday": "Mon", "day_of_year": 327, "births": 10940, "month": 11}, {"date": "1969-11-01T00:00:00", "wday": "Sat", "day_of_year": 305, "births": 9342, "month": 11}, {"date": "1986-11-14T00:00:00", "wday": "Fri", "day_of_year": 318, "births": 10668, "month": 11}, {"date": "1970-02-23T00:00:00", "wday": "Mon", "day_of_year": 54, "births": 10168, "month": 2}, {"date": "1971-06-30T00:00:00", "wday": "Wed", "day_of_year": 181, "births": 10126, "month": 6}, {"date": "1978-04-18T00:00:00", "wday": "Tues", "day_of_year": 108, "births": 9215, "month": 4}, {"date": "1982-10-24T00:00:00", "wday": "Sun", "day_of_year": 297, "births": 8655, "month": 10}, {"date": "1977-10-05T00:00:00", "wday": "Wed", "day_of_year": 278, "births": 9804, "month": 10}, {"date": "1983-12-11T00:00:00", "wday": "Sun", "day_of_year": 345, "births": 8316, "month": 12}, {"date": "1982-04-10T00:00:00", "wday": "Sat", "day_of_year": 100, "births": 8385, "month": 4}, {"date": "1987-11-11T00:00:00", "wday": "Wed", "day_of_year": 315, "births": 11006, "month": 11}, {"date": "1978-03-24T00:00:00", "wday": "Fri", "day_of_year": 83, "births": 9164, "month": 3}, {"date": "1982-09-26T00:00:00", "wday": "Sun", "day_of_year": 269, "births": 9425, "month": 9}, {"date": "1973-11-09T00:00:00", "wday": "Fri", "day_of_year": 313, "births": 8997, "month": 11}, {"date": "1976-01-25T00:00:00", "wday": "Sun", "day_of_year": 25, "births": 7519, "month": 1}, {"date": "1969-10-09T00:00:00", "wday": "Thurs", "day_of_year": 282, "births": 10710, "month": 10}, {"date": "1985-07-28T00:00:00", "wday": "Sun", "day_of_year": 209, "births": 8941, "month": 7}, {"date": "1972-02-22T00:00:00", "wday": "Tues", "day_of_year": 53, "births": 9715, "month": 2}, {"date": "1982-03-24T00:00:00", "wday": "Wed", "day_of_year": 83, "births": 10210, "month": 3}, {"date": "1986-06-27T00:00:00", "wday": "Fri", "day_of_year": 178, "births": 11286, "month": 6}, {"date": "1969-03-10T00:00:00", "wday": "Mon", "day_of_year": 69, "births": 9892, "month": 3}, {"date": "1981-08-30T00:00:00", "wday": "Sun", "day_of_year": 242, "births": 9261, "month": 8}, {"date": "1976-02-22T00:00:00", "wday": "Sun", "day_of_year": 53, "births": 7337, "month": 2}, {"date": "1978-01-17T00:00:00", "wday": "Tues", "day_of_year": 17, "births": 9347, "month": 1}, {"date": "1976-05-02T00:00:00", "wday": "Sun", "day_of_year": 123, "births": 7090, "month": 5}, {"date": "1976-11-02T00:00:00", "wday": "Tues", "day_of_year": 307, "births": 9155, "month": 11}, {"date": "1982-12-06T00:00:00", "wday": "Mon", "day_of_year": 340, "births": 10066, "month": 12}, {"date": "1972-10-11T00:00:00", "wday": "Wed", "day_of_year": 285, "births": 9160, "month": 10}, {"date": "1983-12-27T00:00:00", "wday": "Tues", "day_of_year": 361, "births": 10617, "month": 12}, {"date": "1988-06-21T00:00:00", "wday": "Tues", "day_of_year": 173, "births": 12040, "month": 6}, {"date": "1973-01-21T00:00:00", "wday": "Sun", "day_of_year": 21, "births": 7619, "month": 1}, {"date": "1984-10-20T00:00:00", "wday": "Sat", "day_of_year": 294, "births": 8791, "month": 10}, {"date": "1975-04-29T00:00:00", "wday": "Tues", "day_of_year": 119, "births": 9251, "month": 4}, {"date": "1988-10-09T00:00:00", "wday": "Sun", "day_of_year": 283, "births": 9084, "month": 10}, {"date": "1978-04-11T00:00:00", "wday": "Tues", "day_of_year": 101, "births": 9034, "month": 4}, {"date": "1976-09-06T00:00:00", "wday": "Mon", "day_of_year": 250, "births": 8083, "month": 9}, {"date": "1986-02-14T00:00:00", "wday": "Fri", "day_of_year": 45, "births": 11412, "month": 2}, {"date": "1988-03-22T00:00:00", "wday": "Tues", "day_of_year": 82, "births": 11288, "month": 3}, {"date": "1987-03-04T00:00:00", "wday": "Wed", "day_of_year": 63, "births": 10667, "month": 3}, {"date": "1984-11-17T00:00:00", "wday": "Sat", "day_of_year": 322, "births": 8688, "month": 11}, {"date": "1972-04-13T00:00:00", "wday": "Thurs", "day_of_year": 104, "births": 8987, "month": 4}, {"date": "1974-10-06T00:00:00", "wday": "Sun", "day_of_year": 279, "births": 8092, "month": 10}, {"date": "1973-05-13T00:00:00", "wday": "Sun", "day_of_year": 133, "births": 6989, "month": 5}, {"date": "1977-06-07T00:00:00", "wday": "Tues", "day_of_year": 158, "births": 9547, "month": 6}, {"date": "1986-08-21T00:00:00", "wday": "Thurs", "day_of_year": 233, "births": 11509, "month": 8}, {"date": "1979-03-17T00:00:00", "wday": "Sat", "day_of_year": 76, "births": 8533, "month": 3}, {"date": "1971-04-24T00:00:00", "wday": "Sat", "day_of_year": 114, "births": 8838, "month": 4}, {"date": "1984-01-02T00:00:00", "wday": "Mon", "day_of_year": 2, "births": 8005, "month": 1}, {"date": "1969-09-30T00:00:00", "wday": "Tues", "day_of_year": 273, "births": 11138, "month": 9}, {"date": "1984-09-08T00:00:00", "wday": "Sat", "day_of_year": 252, "births": 9588, "month": 9}, {"date": "1970-04-19T00:00:00", "wday": "Sun", "day_of_year": 109, "births": 8174, "month": 4}, {"date": "1979-03-06T00:00:00", "wday": "Tues", "day_of_year": 65, "births": 9667, "month": 3}, {"date": "1969-01-18T00:00:00", "wday": "Sat", "day_of_year": 18, "births": 9312, "month": 1}, {"date": "1972-07-19T00:00:00", "wday": "Wed", "day_of_year": 201, "births": 9235, "month": 7}, {"date": "1970-01-28T00:00:00", "wday": "Wed", "day_of_year": 28, "births": 10188, "month": 1}, {"date": "1984-03-23T00:00:00", "wday": "Fri", "day_of_year": 83, "births": 10284, "month": 3}, {"date": "1985-09-12T00:00:00", "wday": "Thurs", "day_of_year": 255, "births": 11958, "month": 9}, {"date": "1971-05-05T00:00:00", "wday": "Wed", "day_of_year": 125, "births": 9310, "month": 5}, {"date": "1977-06-29T00:00:00", "wday": "Wed", "day_of_year": 180, "births": 9735, "month": 6}]}}, {"mode": "vega-lite"});
+</script>
+</div>
+</div>
+<p>And of course, we should put this into a function:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_day_of_year():</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Plot number of births by day of year.</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> alt.Chart(brithdays.sample(<span class="dv">1000</span>)).mark_circle().encode(</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>        x<span class="op">=</span><span class="st">"day_of_year"</span>,</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>        y<span class="op">=</span><span class="st">"births"</span>,</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>        tooltip<span class="op">=</span>[<span class="st">"date"</span>, <span class="st">"births"</span>, <span class="st">"wday"</span>]</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    ).interactive()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="further-reading-4" class="level2">
+<h2 class="anchored" data-anchor-id="further-reading-4">Further Reading</h2>
+<p><a href="https://calmcode.io/altair/introduction.html">Altair Tutorial - Calmcode</a><br>
+<a href="https://uwdata.github.io/visualization-curriculum/intro.html">Data Visualization Curriculum using Vega-Lite and Altair</a><br>
+<a href="https://courses.cs.washington.edu/courses/cse512/22sp/">CSE512 Data Visualization</a></p>
+</section>
+</section>
+<section id="documentation" class="level1">
+<h1>Documentation</h1>
+<section id="markdown" class="level2">
+<h2 class="anchored" data-anchor-id="markdown">Markdown</h2>
+<p>In your repository, you may notice there is a <code>README.md</code> file. This is a markdown text file. In notebooks, you can write markdown alongside with code to better communicate with stakeholders. This practice is known as literature programming and is commonly adopted by data scientists. Surely, you can write everything in a Word document. But markdown gives you the flexibility to think, code and write at the same time. Markdown also let you focus on writing rather than formatting, include citations and math equations painlessly, and execute code in the documentation.</p>
+<p>A document typically is divided into multiple sections. To make a new section, you give it a header. The headers start with a hashtag (<code>#</code>). Using one hashtag means a level-one header. Two hashtags means a level-two header.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Introduction</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">## Motivation</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">## History</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">### 1910s </span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="fu">### 1920S</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="fu"># Main Texts</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="fu"># Conclusion</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We emphasize part of a text by putting it in italic or boldface. In Markdown, we wrap asterisks (<code>*</code>) around the word to achieve this. One asterisk puts the work in italic, and two asterisks put it in boldface.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>Some of the **greatest** discoveries in *science* were made by ***accident***.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To create a numbered list, you put a number, followed by a period, at the start of a line and write the list item after it.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>This is a numbered list.</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Where this is list item two.</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>And this is list item three.</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="ss">    1. </span>A numbered list inside a list.</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="ss">    2. </span>This is item 3.2.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To create an unnumbered list, you simply put a dash (<code>-</code>) or an asterisk (<code>*</code>) at the beginning of the line.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>This is a unnumbered list.</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Where this is list item two.</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>And this is list item three.</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span>You can also indent a list here.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="latex" class="level2">
+<h2 class="anchored" data-anchor-id="latex"><span class="math inline">\(\LaTeX\)</span></h2>
+<p>Before Markdown was invented, document typesetting is often done by <span class="math inline">\(\LaTeX\)</span>. The syntax is very bloated, but it allows you to produce any kind of documents. Often, you just use a <span class="math inline">\(\LaTeX\)</span> template made by others. For example, my <a href="https://www.overleaf.com/read/htmbyyjzfqpz">CV</a> is made by <span class="math inline">\(\LaTeX\)</span> with some modifications on someone else’s code.</p>
+<p>You can use <span class="math inline">\(\LaTeX\)</span> in Markdown. Since <span class="math inline">\(\LaTeX\)</span> is almost the only way to display math blocks properly. Inline math equation is wrapped by the dollar sign ($).</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>Here we define $m = ab$.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>A math block is surrounded by two dollar signs.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>Bla bla bla</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>m = ab</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Most of the time, when you work with math equations, you just want to copy them from the slides or the books. You may find <a href="https://mathpix.com/">mathpix</a>, an OCR tool for math equations, very helpful. You can also create your formulas using <code>sympy</code> and export them into <span class="math inline">\(\LaTeX\)</span>.</p>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sympy <span class="im">import</span> symbols, latex, Integral, cos, pi</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> symbols(<span class="st">"x"</span>)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(latex(Integral(cos(x)<span class="op">**</span><span class="dv">2</span>, (x, <span class="dv">0</span>, pi))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>\int\limits_{0}^{\pi} \cos^{2}{\left(x \right)}\, dx</code></pre>
+</div>
+</div>
+<p><span class="math display">\[
+\int\limits_{0}^{\pi} \cos^{2}{\left(x \right)}\, dx
+\]</span></p>
+</section>
+<section id="quarto" class="level2">
+<h2 class="anchored" data-anchor-id="quarto">Quarto</h2>
+<p><a href="https://quarto.org/">Quarto</a> is a publishing software built on RMarkdown and <a href="https://pandoc.org/">Pandoc</a>. Every tutorial in this course are made by Quarto. It allows writing documents and executing code at the same time, compute variables in texts, exporting them into nearly any formats, publishing them on the internet. You can also convert jupyter notebooks into a quarto documents. It is mighty and flexible. There are still some rough edges in terms of installation and virtual environments, I <a href="https://github.com/quarto-dev/quarto-cli/issues/1661#issuecomment-1204181009">complained a lot</a> in their GitHub issues. Please contact me if you run into any problems.</p>
+</section>
+<section id="further-reading-5" class="level2">
+<h2 class="anchored" data-anchor-id="further-reading-5">Further Reading</h2>
+<p><a href="https://quarto.org/">Quarto</a><br>
+<a href="https://www.overleaf.com/learn/latex/Learn_LaTeX_in_30_minutes">Learn LaTeX in 30 minutes</a><br>
+<a href="https://github.com/iewaij/talkMarkdown/blob/main/notes.pdf">Introduction to Markdown and Modern Document Workflow</a></p>
+</section>
+</section>
+<section id="package" class="level1">
+<h1>Package</h1>
+<p>Now, we have a documented <code>.py</code> file, a notebook that documents our analysis and a bunch of unit tests. We can reorganize the folder a bit and add <code>setup.py</code> and <code>__init__.py</code>.</p>
+<pre><code>craftsmanship/
+    birthday/
+        __init__.py
+        clean.py
+        plot.py
+        ...
+    test/
+        test_clean.py
+        test_plot.py
+    setup.py
+    ...</code></pre>
+<p>The content of <code>setup.py</code> should be:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> setuptools <span class="im">import</span> setup, find_packages</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>setup(</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">"birthday"</span>,</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    version<span class="op">=</span><span class="st">"0.1.0"</span>,</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    packages<span class="op">=</span>find_packages(),</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In the <code>__init__.py</code>, we can add:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> birthday.clean <span class="im">import</span> clean_dataset</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> birthday.plot <span class="im">import</span> plot_day_of_year</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We can now install the package in the virtual environment. You can use pip command to achieve that:</p>
+<pre><code>pip install -e .</code></pre>
+<p>After making sure the tests are passed, we can push our changes and make pull requests. Code reviews should be carried here. Don’t worry too much about code reviews or pull requests if you are aiming to iterate your codebase quickly, it all depends on your team’s work style and schedule.</p>
+<section id="further-reading-6" class="level2">
+<h2 class="anchored" data-anchor-id="further-reading-6">Further Reading</h2>
+<p><a href="https://calmcode.io/setup/import.html">Setup Tutorial - Calmcode</a><br>
+<a href="https://abseil.io/resources/swe-book">Software Engineering at Google</a></p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
