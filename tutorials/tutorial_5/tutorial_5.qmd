@@ -84,7 +84,7 @@ And inspect the data.
 s1.head(5)
 ```
 
-Now, we can create a graph using `from_pandas_edgelist()` and calculate the centrality using `degree_centrality()`.
+Now, we can create a graph using `from_pandas_edgelist()` and calculate the centrality, which indicates the importance of any given node in a network, using `degree_centrality()`.
 
 ```{python}
 G = nx.from_pandas_edgelist(s1, source="Source", target="Target", edge_attr="Weight")
@@ -127,11 +127,11 @@ We can also calculate the shortest path.
 nx.shortest_path(G, source="THEON", target="DAENERYS", weight=None)
 ```
 
-For Dijkstra's shortest path algorithm on the exercise, you can refer to the tutorial on (Brillant)[https://brilliant.org/wiki/dijkstras-short-path-finder/]. We have 3 variables:
+For Dijkstra's shortest path algorithm on the exercise, you can refer to the tutorial on [Brillant](https://brilliant.org/wiki/dijkstras-short-path-finder/). We have 3 variables:
 
-- `dist`, an array of distances from the source node ss to each node in the graph.
-- `Q`, a queue of all nodes in the graph. At the end of the algorithm's progress, Q will be empty.
-- `S`, an empty set, to indicate which nodes the algorithm has visited. At the end of the algorithm's run, S will contain all the nodes of the graph.
+- `dist`: an array of distances from the source node ss to each node in the graph.
+- `Q`: a queue of all nodes in the graph. At the end of the algorithm's progress, Q will be empty.
+- `S`: an empty set, to indicate which nodes the algorithm has visited. At the end of the algorithm's run, S will contain all the nodes of the graph.
 
 The algorithm can be written as:
 
