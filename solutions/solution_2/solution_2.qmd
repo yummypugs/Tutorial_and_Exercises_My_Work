@@ -9,13 +9,13 @@ jupyter: python3
 
 **Answer:**
 
-One motivation is to reduce redundant data. Sometimes, a few columns might have a perfect linear relationship, resulting in collinearity. For example, for a car speed dataset, one column is kilometre/hour and another column is mile/hour. These two columns has a perfect linear relationship that 1 kilometre/hour is roughly 0.62 mile/hour. PCA can eliminate such redundancy.
+One motivation is to reduce redundant data. Some columns might have a perfect linear relationship, resulting in collinearity. For example, in a car speed dataset, one column is kilometre/hour and another column is mile/hour. These two columns has a perfect linear relationship because 1 kilometre/hour is roughly 0.62 mile/hour, which indicates collinearity and most packages will raise error during optimization process. We can use PCA to eliminate such redundancy.
 
-Another motivation is to reduce computational and storage cost. Reduced dimensionality means reduced workload and size for computing and storing.
+Another motivation is to reduce computational and storage cost. Reduced dimensionality means reduced data. This also means reduced workload for computing, and reduced storage requirement (and financial costs).
 
-The last motivation is related to the curse of dimensionality.
+The third motivation is related to the curse of dimensionality, which refers to issues that data in higher dimensions have unintuitive properties compared to data in lower dimensions.
 
-The main drawback is that we may lose important information of the data and thus lose predictive performance if we use such data to train models.
+Of course, there is no free lunch. The main drawback to apply dimensionality reduction is that we may lose important information of the data. If we use reduced data to train models, we could lose some predictive performance. The only way to find out is experimenting different techniques and testing the performance rigorously.
 
 (b) Describe the Johnson-Lindenstrauss lemma.
 
@@ -27,7 +27,9 @@ The Johnson-Lindenstrauss lemma claims that, if you have $N$ points with $k$ dim
 
 **Answer:**
 
-The curse of dimensionality refers to various phenomena that one’s intuitions about how data structures, similarity measures, and algorithms behave in low dimensions do not generalize to higher dimensions. One example is nearest neighbours. In high dimensional space, neighbouring and non-neighbouring points appear to be equally far away, thus making nearest neighbours meaningless. It also occurs in many other geometric problems, such as [Stein's paradox](https://joe-antognini.github.io/machine-learning/steins-paradox) and [kissing numbers](http://www.ams.org/notices/200408/fea-pfender.pdf).
+The curse of dimensionality refers to various phenomena that our intuitions about how data structures, similarity measures, and algorithms behave in low dimensions do not generalize to higher dimensions. One example is finding nearest neighbours in high dimensional space. In high dimensional space, neighbouring and non-neighbouring points appear to be equally far away, thus making nearest neighbours meaningless. Curious readers should refer to [Nearest Neighbors and the Curse of Dimensionality](https://youtu.be/dZrGXYty3qc?t=534) for explainations. It also occurs in many other problems, such as [Stein's paradox](https://joe-antognini.github.io/machine-learning/steins-paradox) and [kissing numbers](http://www.ams.org/notices/200408/fea-pfender.pdf).
+
+Nonetheless, with more powerful computers and more sophisticated techniques, the curse of dimensionality can be overcome and even paves the way for more intelligent systems. The blessing of dimensionality has led to the buzzword, "big data". Curious readers shall refer to [The Unreasonable Effectiveness of Data](https://storage.googleapis.com/pub-tools-public-publication-data/pdf/35179.pdf), [The Curses and Blessings of Dimensionality](https://www.researchgate.net/publication/220049061_High-Dimensional_Data_Analysis_The_Curses_and_Blessings_of_Dimensionality) and [High-Dimensional Data Analysis with Low-Dimensional Models: Principles, Computation, and Applications](https://book-wright-ma.github.io/).
 
 # Principal Component Analysis
 Suppose we have a dataset with 4 points:
@@ -283,7 +285,7 @@ We first convert `y` to a `numpy` array.
 y = y.toarray()
 ```
 
-Then we take first 500 samples from `X` that belong to the first three classes, then apply random projection. We can see that the Euclidean distance is preserved well: the original distances and their corresponding after-projection distances are mostly the same.
+Then, we take first 500 samples from `X` that belong to the first three classes, and apply random projection. We can see that the Euclidean distance is preserved well: the original distances and their corresponding after-projection distances are mostly the same.
 
 ```{python}
 X = X[(y[:, 0] == 1) | (y[:, 1] == 1) | (y[:, 2] == 1)][:500, :]

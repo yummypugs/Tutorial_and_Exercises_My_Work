@@ -17,7 +17,7 @@ of Finance and Management.
 [Solution 1: Pandas](https://quartopub.com/sites/iewaij/solution-1-pandas)  
 [Solution 2: Dimensionality Reduction](https://quartopub.com/sites/iewaij/solution-2-dimensionality-reduction)  
 [Solution 3: Linear Regression](https://quartopub.com/sites/iewaij/solution-3-linear-regression)  
-Solution 4: Network Analysis
+[Solution 4: Network Analysis](https://iewaij.quarto.pub/solution-4-network-analysis/)
 
 ## Setup
 
