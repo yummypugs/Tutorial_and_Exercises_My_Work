@@ -6,12 +6,14 @@ jupyter: python3
 
 # Working with pandas
 
+(a) Create a pandas series from each of the items below (a list, numpy array, and dictionary).
+
+**Answer:**
+
 ```{python}
 import numpy as np
 import pandas as pd
 ```
-
-(a) Create a pandas series from each of the items below (a list, numpy array, and dictionary).
 
 ```{python}
 a_list = list("abcdefg")
@@ -30,6 +32,8 @@ pd.Series(a_dictionary)
 
 (b) Combine the following to series into one dataframe.
 
+**Answer:**
+
 ```{python}
 ser_1 = pd.Series(list("abcedfghijklmnopqrstuvwxyz"))
 ser_2 = pd.Series(np.arange(26))
@@ -43,6 +47,8 @@ pd.concat([ser_1, ser_2], axis=1)
 ```
 
 (c) Compute the minimum, 25th percentile, median, 75th percentile, and maximum of the following series.
+
+**Answer:**
 
 ```{python}
 state = np.random.RandomState(100)
@@ -67,12 +73,16 @@ ser.max()
 
 (d) Calculate the frequency counts of each unique value in the following series.
 
+**Answer:**
+
 ```{python}
 ser = pd.Series(np.take(list("abcdefgh"), np.random.randint(8, size=30)))
 ser.value_counts()
 ```
 
 (e) Reshape the series ser into a dataframe with 7 rows and 5 columns.
+
+**Answer:**
 
 ```{python}
 ser = pd.Series(np.random.randint(1, 10, 35))
@@ -82,6 +92,8 @@ pd.DataFrame(array)
 ```
 
 (f) Import the Boston housing dataset, but while importing change the “medv” (median house value) column so that values < 25 becomes “Low” and > 25 becomes “High”. What is the proportion of “High” and “Low” values in the dataset?
+
+**Answer:**
 
 ```{python}
 data_url = "http://lib.stat.cmu.edu/datasets/boston"
