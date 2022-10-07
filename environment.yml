@@ -5,6 +5,8 @@ dependencies:
   - python=3.10
   - altair
   - black
+  - graph-tool
+  - python-graphviz
   - isort
   - numpy
   - networkx
@@ -17,5 +19,5 @@ dependencies:
   - seaborn
   - sympy
   - pip:
-      - watermark
-      - nb_black
+    - watermark
+    - nb_black

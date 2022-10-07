@@ -1,0 +1,307 @@
+---
+title: 'Solution 2: Dimensionality Reduction'
+author: Jiawei Li
+jupyter: python3
+---
+
+# Dimensionality Reduction
+(a) What are the main motivations for reducing a dataset's dimensionality? What are the main drawbacks?
+
+**Answer:**
+
+One motivation is to reduce redundant data. Some columns might have a perfect linear relationship, resulting in collinearity. For example, in a car speed dataset, one column is kilometre/hour and another column is mile/hour. These two columns has a perfect linear relationship because 1 kilometre/hour is roughly 0.62 mile/hour, which indicates collinearity and most packages will raise error during optimization process. We can use PCA to eliminate such redundancy.
+
+Another motivation is to reduce computational and storage cost. Reduced dimensionality means reduced data. This also means reduced workload for computing, and reduced storage requirement (and financial costs).
+
+The third motivation is related to the curse of dimensionality, which refers to issues that data in higher dimensions have unintuitive properties compared to data in lower dimensions.
+
+Of course, there is no free lunch. The main drawback to apply dimensionality reduction is that we may lose important information of the data. If we use reduced data to train models, we could lose some predictive performance. The only way to find out is experimenting different techniques and testing the performance rigorously.
+
+(b) Describe the Johnson-Lindenstrauss lemma.
+
+**Answer:**
+
+The Johnson-Lindenstrauss lemma claims that, if you have $N$ points with $k$ dimensions, you can always map them into $d$ dimensions such that pairwise distances are preserved up to a small constant factor.
+
+(c) What is the curse of dimensionality?
+
+**Answer:**
+
+The curse of dimensionality refers to various phenomena that our intuitions about how data structures, similarity measures, and algorithms behave in low dimensions do not generalize to higher dimensions. One example is finding nearest neighbours in high dimensional space. In high dimensional space, neighbouring and non-neighbouring points appear to be equally far away, thus making nearest neighbours meaningless. Curious readers should refer to [Nearest Neighbors and the Curse of Dimensionality](https://youtu.be/dZrGXYty3qc?t=534) for explainations. It also occurs in many other problems, such as [Stein's paradox](https://joe-antognini.github.io/machine-learning/steins-paradox) and [kissing numbers](http://www.ams.org/notices/200408/fea-pfender.pdf).
+
+Nonetheless, with more powerful computers and more sophisticated techniques, the curse of dimensionality can be overcome and even paves the way for more intelligent systems. The blessing of dimensionality has led to the buzzword, "big data". Curious readers shall refer to [The Unreasonable Effectiveness of Data](https://storage.googleapis.com/pub-tools-public-publication-data/pdf/35179.pdf), [The Curses and Blessings of Dimensionality](https://www.researchgate.net/publication/220049061_High-Dimensional_Data_Analysis_The_Curses_and_Blessings_of_Dimensionality) and [High-Dimensional Data Analysis with Low-Dimensional Models: Principles, Computation, and Applications](https://book-wright-ma.github.io/).
+
+# Principal Component Analysis
+Suppose we have a dataset with 4 points:
+
+$$
+\mathcal{D}=\{(1,5),(0,6),(-7,0),(-6,-1)\}
+$$
+
+(a) Plot the dataset and try to guess two principal components $(k=2)$.
+
+**Answer:**
+
+```{python}
+import warnings
+
+import altair as alt
+import numpy as np
+import pandas as pd
+
+warnings.simplefilter(action="ignore", category=FutureWarning)
+```
+
+```{python}
+# Initialize the data frame
+data = pd.DataFrame([(1, 5), (0, 6), (-7, 0), (-6, -1)], columns=["x", "y"])
+# Center the data so each feature has zero mean
+data = data - data.mean()
+data.head(5)
+```
+
+We can guess that the projected line (1st component) should be in the direction of $y = x$ to minimize the distance between the points and the projection. The 2nd component should be perpendicular to the 1st component, thus should be in the direction $y = -x$.
+
+```{python}
+base = (
+    alt.Chart(data)
+    .mark_circle()
+    .encode(
+        x=alt.X("x", scale=alt.Scale(domain=(-5, 5))),
+        y=alt.Y("y", scale=alt.Scale(domain=(-5, 5))),
+    )
+    .properties(width=300, height=300)
+)
+base
+```
+
+```{python}
+data_1 = pd.DataFrame([(5, 5), (-5, -5)], columns=["x", "y"])
+data_2 = pd.DataFrame([(3, -3), (-3, 3)], columns=["x", "y"])
+component_1 = alt.Chart(data_1).mark_line(color="grey", size=1).encode(x="x", y="y")
+component_2 = alt.Chart(data_2).mark_line(color="lightgrey", size=1).encode(x="x", y="y")
+chart = base + component_1 + component_2
+chart
+```
+
+(b) Compute the empirical covariance matrix, its eigenvalues and eigenvectors. Do the eigenvectors correspond to your guess of principal components? Please do not forget the assumptions of PCA. (The dataset should be centred, and we want unit eigenvectors.)
+
+**Answer:**
+
+```{python}
+# Consturct data in row format
+D = data.to_numpy().transpose()
+# Calculate the covariance matrix
+S = D @ D.T
+# Calculate the eigenvalues and eigenvectors
+l, v = np.linalg.eigh(S)
+# Sort eigenvectors according to eigenvalues
+idx = np.argsort(l)[::-1]
+l = l[idx]
+v = v[:,idx]
+# Project
+data_eigenvector_1 = pd.DataFrame(np.vstack([v[:, 0]*6, v[:, 0]*-6]), columns=["x", "y"])
+data_eigenvector_2 = pd.DataFrame(np.vstack([v[:, 1]*3, v[:, 1]*-3]), columns=["x", "y"])
+component_eigenvector_1 = alt.Chart(data_eigenvector_1).mark_line(color="grey", size=1).encode(x="x", y="y")
+component_eigenvector_2 = alt.Chart(data_eigenvector_2).mark_line(color="lightgrey", size=1).encode(x="x", y="y")
+chart = base + component_eigenvector_1 + component_eigenvector_2
+chart
+```
+
+We can see that the projection from eigenvectors is close to our guess. You can also use the SVD decomposition method, as we discussed in tutorial 2. And again, using the row format for `D` is an arbitrary choice, feel free to do your own version of PCA using the column format.
+
+# Random Projection
+
+(a) Implement a random-projection method in python. The random projection $X^{\mathrm{RP}} \in \mathbb{R}^{k \times N}$ of $N$ samples $X \in \mathbb{R}^{d \times N}$ is given by
+
+**Answer:**
+
+$$
+X^{\mathrm{RP}}=R X .
+$$
+
+A computationally efficient way to generate $R \in \mathbb{R}^{k \times d}$ has been proposed by Achlioptas (2001). Generate the components of $R$ according to
+
+$$
+R_{i j}=\sqrt{3} \times \begin{cases}+1 & \text { with probability } \frac{1}{6} \\ 0 & \text { with probability } \frac{2}{3} \\ -1 & \text { with probability } \frac{1}{6}\end{cases}
+$$
+
+Note that $X \in \mathbb{R}^{k \times N}$ means that $X$ is in row format. To use $X$ in column format, let us rewrite the transformation. Given $X \in \mathbb{R}^{N \times k}$, the random projection $X^{\mathrm{RP}} \in \mathbb{R}^{N \times d}$ is
+
+$$
+X^{\mathrm{RP}}= X R .
+$$
+
+$R_{ij}$ specified in the exercise is a probability density function. To preserve distances, we need further scale it by $\sqrt{d}$.
+
+$$
+R_{ij}=\frac{\sqrt{3}}{\sqrt{d}} \times \begin{cases}+1 & \text { with probability } \frac{1}{6} \\ 0 & \text { with probability } \frac{2}{3} \\ -1 & \text { with probability } \frac{1}{6}\end{cases}
+$$
+
+```{python}
+from itertools import product
+
+import altair as alt
+import numpy as np
+import pandas as pd
+from sklearn.datasets import fetch_rcv1
+from sklearn.metrics.pairwise import euclidean_distances
+```
+
+```{python}
+def generate_random_projection(k, d):
+    """
+    Generate an efficient random matrix with the shape of k × d according to Achlioptas (2001).
+
+    References:
+        Achlioptas, Dimitris. 2003. Database-Friendly Random Projections: Johnson-Lindenstrauss with Binary Coins. Journal of Computer and System Sciences 66 (4): 671-87. https://doi.org/10.1016/S0022-0000(03)00025-4.
+    """
+    return np.random.choice(
+        [-1, 0, 1],
+        size=(k, d),
+        p=[1 / 6, 2 / 3, 1 / 6]
+        ) * np.sqrt(3) / np.sqrt(d)
+```
+
+```{python}
+
+generate_random_projection(5, 4)
+```
+
+(b) Estimate the reduced dimension $k$ according to Theorem 2 in Achlioptas (2001). Try out different values of $\beta$. Discuss and visualize the connection of the estimation of $k$ to the Johnson-Lindenstrauss lemma.
+
+**Answer:**
+
+Given an arbitrary set of $n$ points in $\mathbb{R}^k$, represented as an $n \times k$ matrix, and $\epsilon, \beta > 0$, the reduced dimension according to Achlioptas (2001) is
+
+$$
+d=\frac{4+2 \beta}{\epsilon^2 / 2-\epsilon^3 / 3} \log n
+$$
+
+The parameter $\epsilon$ controls the desired accuracy in distance preservation, while $\beta$ controls the projection’s probability of success. If we set $\beta=0$, it is exactly the same as the Johnson-Lindenstrauss lemma, which takes the following form:
+
+$$
+d=\frac{4}{\epsilon^2 / 2-\epsilon^3 / 3} \log n
+$$
+
+```{python}
+def achlioptas_min_dim(eps, beta, n):
+    """
+    Return the reduced dimension d according to Achlioptas (2001).
+
+    References:
+        Achlioptas, Dimitris. 2003. Database-Friendly Random Projections: Johnson-Lindenstrauss with Binary Coins. Journal of Computer and System Sciences 66 (4): 671-87. https://doi.org/10.1016/S0022-0000(03)00025-4.
+    """
+    d = (4 + 2 * beta) / (eps**2 / 2 - eps**3 / 3) * np.log(n)
+    return d
+
+
+def johnson_lindenstrauss_min_dim(eps, n):
+    """
+    Return the reduced dimension k according to Johnson-Lindenstrauss lemma, which is a special case of `achlioptas_min_dim()`.
+
+    References:
+        Dasgupta, Sanjoy, and Anupam Gupta. An Elementary Proof of the Johnson-Lindenstrauss Lemma.
+    """
+    beta = 0
+    return achlioptas_min_dim(eps, beta, n)
+```
+
+```{python}
+achlioptas_min_dim(eps=0.1, beta=0.2, n=100000)
+```
+
+```{python}
+johnson_lindenstrauss_min_dim(eps=0.1, n=100000)
+```
+
+```{python}
+# range of admissible distortions
+eps_range = np.linspace(0.1, 0.99, 5)
+
+# range of number of samples to embed
+n_range = np.logspace(1, 9, 9)
+
+# range of betas for projection control
+beta_range = np.array([0, 0.5])
+
+# Create a grid using product function
+data = pd.DataFrame(product(eps_range, n_range, beta_range), columns=["eps", "n", "beta"])
+data["min_dim"] = data.apply(lambda x: achlioptas_min_dim(eps=x["eps"], beta=x["beta"], n=x["n"]), axis=1)
+data.head(5)
+```
+
+We can see that increasing $ε$ leads to decreasing $d$ when $β$ is set at 0.
+
+```{python}
+alt.Chart(data[data.beta == 0]).mark_line().encode(
+    x=alt.X("n:Q", axis=alt.Axis(tickCount=10, format="s"), scale=alt.Scale(type="log")),
+    y=alt.Y("min_dim:Q", axis=alt.Axis(tickCount=10, format="s"), scale=alt.Scale(type="log")),
+    color="eps",
+)
+```
+
+It is also clear that increasing $β$ leads to increasing $d$ to preserve $ε$ at 0.1.
+
+```{python}
+alt.Chart(data[data.eps == 0.1]).mark_line().encode(
+    x=alt.X("n:Q", axis=alt.Axis(tickCount=10, format="s"), scale=alt.Scale(type="log")),
+    y=alt.Y("min_dim:Q", axis=alt.Axis(tickCount=10, format="s"), scale=alt.Scale(type="log")),
+    color="beta",
+)
+```
+
+(c) Download the Reuters Corpus Volume I (RCV1) dataset. It is a multilabel dataset in which each data point can belong to multiple classes. The total number of classes is 103 . Each data point has a dimensionality of 47,236.
+
+**Answer:**
+
+```{python}
+X, y = fetch_rcv1(return_X_y=True)
+```
+
+```{python}
+X.shape
+```
+
+```{python}
+y.shape
+```
+
+(d) Select 500 data points from RCV1 that belong to at least one of the first three classes. Use Achlioptas' method to project the selected data points to a lower-dimensional space. Then implement and visualize a matrix that stores the differences between distances of data points in the original space and in the lower-dimensional projection.
+
+Note that the type of `X` and `y` is not a `numpy` array, but a `scipy` sparse matrix. A sparse matrix is a matrix that contains mostly 0 and uses special algorithms to compute more efficiently.
+
+```{python}
+type(X)
+```
+
+```{python}
+type(y)
+```
+
+We first convert `y` to a `numpy` array.
+
+```{python}
+y = y.toarray()
+```
+
+Then, we take first 500 samples from `X` that belong to the first three classes, and apply random projection. We can see that the Euclidean distance is preserved well: the original distances and their corresponding after-projection distances are mostly the same.
+
+```{python}
+X = X[(y[:, 0] == 1) | (y[:, 1] == 1) | (y[:, 2] == 1)][:500, :]
+R = generate_random_projection(X.shape[1], 5000)
+X_projected = X @ R
+
+dists = euclidean_distances(X, squared=True).ravel()
+nonzero = dists != 0
+dists = dists[nonzero]
+dists_rp = euclidean_distances(X_projected, squared=True).ravel()[nonzero]
+
+source = pd.DataFrame({"orginal": dists, "projected": dists_rp})
+alt.Chart(source.sample(5000)).mark_circle(opacity=0.5, size=1).encode(
+    x="orginal:Q",
+    y="projected:Q"
+)
+```
+
+

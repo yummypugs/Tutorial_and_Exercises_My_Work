@@ -129,13 +129,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <section id="working-with-pandas" class="level1">
 <h1>Working with pandas</h1>
+<ol type="a">
+<li>Create a pandas series from each of the items below (a list, numpy array, and dictionary).</li>
+</ol>
+<p><strong>Answer:</strong></p>
 <div class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<ol type="a">
-<li>Create a pandas series from each of the items below (a list, numpy array, and dictionary).</li>
-</ol>
 <div class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>a_list <span class="op">=</span> <span class="bu">list</span>(<span class="st">"abcdefg"</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>pd.Series(a_list)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -181,6 +182,7 @@ dtype: int64</code></pre>
 <ol start="2" type="a">
 <li>Combine the following to series into one dataframe.</li>
 </ol>
+<p><strong>Answer:</strong></p>
 <div class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>ser_1 <span class="op">=</span> pd.Series(<span class="bu">list</span>(<span class="st">"abcedfghijklmnopqrstuvwxyz"</span>))</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>ser_2 <span class="op">=</span> pd.Series(np.arange(<span class="dv">26</span>))</span>
@@ -488,6 +490,7 @@ dtype: int64</code></pre>
 <ol start="3" type="a">
 <li>Compute the minimum, 25th percentile, median, 75th percentile, and maximum of the following series.</li>
 </ol>
+<p><strong>Answer:</strong></p>
 <div class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>state <span class="op">=</span> np.random.RandomState(<span class="dv">100</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>ser <span class="op">=</span> pd.Series(state.normal(<span class="dv">10</span>, <span class="dv">5</span>, <span class="dv">25</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -519,24 +522,26 @@ dtype: int64</code></pre>
 <ol start="4" type="a">
 <li>Calculate the frequency counts of each unique value in the following series.</li>
 </ol>
+<p><strong>Answer:</strong></p>
 <div class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>ser <span class="op">=</span> pd.Series(np.take(<span class="bu">list</span>(<span class="st">"abcdefgh"</span>), np.random.randint(<span class="dv">8</span>, size<span class="op">=</span><span class="dv">30</span>)))</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>ser.value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="12">
-<pre><code>f    5
-a    5
-e    4
-g    4
-c    4
-h    3
-b    3
-d    2
+<pre><code>g    8
+e    7
+c    5
+d    4
+f    2
+a    2
+h    1
+b    1
 dtype: int64</code></pre>
 </div>
 </div>
 <ol start="5" type="a">
 <li>Reshape the series ser into a dataframe with 7 rows and 5 columns.</li>
 </ol>
+<p><strong>Answer:</strong></p>
 <div class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>ser <span class="op">=</span> pd.Series(np.random.randint(<span class="dv">1</span>, <span class="dv">10</span>, <span class="dv">35</span>))</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Use numpy to reshape values and initialize a new DataFrame</span></span>
@@ -560,59 +565,59 @@ dtype: int64</code></pre>
   <tbody>
     <tr>
       <th>0</th>
-      <td>8</td>
-      <td>8</td>
-      <td>9</td>
-      <td>3</td>
-      <td>9</td>
+      <td>5</td>
+      <td>6</td>
+      <td>5</td>
+      <td>2</td>
+      <td>5</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>8</td>
-      <td>2</td>
-      <td>8</td>
-      <td>5</td>
-      <td>7</td>
+      <td>6</td>
+      <td>6</td>
+      <td>4</td>
+      <td>1</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>7</td>
-      <td>3</td>
+      <td>6</td>
+      <td>4</td>
       <td>8</td>
-      <td>1</td>
+      <td>5</td>
       <td>6</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>4</td>
       <td>6</td>
-      <td>3</td>
-      <td>5</td>
+      <td>7</td>
+      <td>7</td>
       <td>4</td>
+      <td>9</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>5</td>
-      <td>6</td>
-      <td>5</td>
-      <td>1</td>
       <td>8</td>
+      <td>4</td>
+      <td>7</td>
+      <td>6</td>
+      <td>4</td>
     </tr>
     <tr>
       <th>5</th>
+      <td>3</td>
       <td>6</td>
-      <td>9</td>
+      <td>3</td>
       <td>8</td>
-      <td>7</td>
-      <td>8</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>6</th>
       <td>9</td>
-      <td>9</td>
-      <td>4</td>
-      <td>6</td>
-      <td>9</td>
+      <td>1</td>
+      <td>5</td>
+      <td>1</td>
+      <td>1</td>
     </tr>
   </tbody>
 </table>
@@ -622,6 +627,7 @@ dtype: int64</code></pre>
 <ol start="6" type="a">
 <li>Import the Boston housing dataset, but while importing change the “medv” (median house value) column so that values &lt; 25 becomes “Low” and &gt; 25 becomes “High”. What is the proportion of “High” and “Low” values in the dataset?</li>
 </ol>
+<p><strong>Answer:</strong></p>
 <div class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>data_url <span class="op">=</span> <span class="st">"http://lib.stat.cmu.edu/datasets/boston"</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> pd.read_csv(data_url, sep<span class="op">=</span><span class="st">"\s+"</span>, skiprows<span class="op">=</span><span class="dv">22</span>, header<span class="op">=</span><span class="va">None</span>)</span>

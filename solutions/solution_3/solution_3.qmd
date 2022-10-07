@@ -5,6 +5,7 @@ jupyter: python3
 ---
 
 # Normal Equation
+
 To determine the set of parameters $\alpha$ in linear regression (see lecture notes), we minimize the square Euclidean distance between model predictions $\hat{y}^{(j)}=\mathbf{x}^{(j)^{\top}} \alpha$ and the actual values of the dependent variables $y^{(j)}$ :
 
 $$
@@ -16,6 +17,8 @@ Show that the least-squares estimate $\alpha^*$ of $\alpha$ is given by the norm
 $$
 \alpha^*=\left(X^{\top} X\right)^{-1} X^{\top} y
 $$
+
+**Answer:**
 
 The loss function of linear regression can be written as follows, where $\frac{1}{2}$ is added for convenience:
 
@@ -66,6 +69,8 @@ The file climate_change (CSV) contains climate data from May 1983 to December 20
 
 (a) Load the dataset into Python. Split the data into a training set, consisting of all the observations up to and including 2006, and a testing set consisting of the remaining years. A training set refers to the data that will be used to build the model, and a testing set refers to the data we will use to test our predictive ability.
 
+**Answer:**
+
 ```{python}
 import pandas as pd
 from sklearn.linear_model import LinearRegression
@@ -80,6 +85,8 @@ test_data = data[data["Year"] > 2006]
 
 (b) Build a linear regression model to predict the dependent variable Temp, using MEI, CO2, CH4, N2O, CFC.11, CFC.12, TSI, and Aerosols as independent variables (Year and Month should NOT be used in the model). Use the training set to build the model.
 
+**Answer:**
+
 ```{python}
 # Split train and test data into inputs (X) and output (y)
 X_train = train_data.drop(columns=["Year", "Month", "Temp"])
@@ -92,6 +99,8 @@ reg.fit(X_train, y_train);
 ```
 
 (c) Determine the coefficient of determination $R^2$ (see lecture notes) for the training data. How good are the temperature forecasts for the test dataset?
+
+**Answer:**
 
 ```{python}
 train_score = reg.score(X_train, y_train)

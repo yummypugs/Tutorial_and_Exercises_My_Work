@@ -135,6 +135,7 @@ J(\alpha)=\sum_{j=1}^m\left[\hat{y}^{(j)}-y^{(j)}\right]^2=\sum_{j=1}^m\left[x^{
 <p><span class="math display">\[
 \alpha^*=\left(X^{\top} X\right)^{-1} X^{\top} y
 \]</span></p>
+<p><strong>Answer:</strong></p>
 <p>The loss function of linear regression can be written as follows, where <span class="math inline">\(\frac{1}{2}\)</span> is added for convenience:</p>
 <p><span class="math display">\[
 \begin{aligned}
@@ -180,6 +181,7 @@ J(\alpha) &amp;= \frac{1}{2} \left[ (y - X \alpha)^\top (y - X \alpha) \right] \
 <ol type="a">
 <li>Load the dataset into Python. Split the data into a training set, consisting of all the observations up to and including 2006, and a testing set consisting of the remaining years. A training set refers to the data that will be used to build the model, and a testing set refers to the data we will use to test our predictive ability.</li>
 </ol>
+<p><strong>Answer:</strong></p>
 <div class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
@@ -193,6 +195,7 @@ J(\alpha) &amp;= \frac{1}{2} \left[ (y - X \alpha)^\top (y - X \alpha) \right] \
 <ol start="2" type="a">
 <li>Build a linear regression model to predict the dependent variable Temp, using MEI, CO2, CH4, N2O, CFC.11, CFC.12, TSI, and Aerosols as independent variables (Year and Month should NOT be used in the model). Use the training set to build the model.</li>
 </ol>
+<p><strong>Answer:</strong></p>
 <div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Split train and test data into inputs (X) and output (y)</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> train_data.drop(columns<span class="op">=</span>[<span class="st">"Year"</span>, <span class="st">"Month"</span>, <span class="st">"Temp"</span>])</span>
@@ -206,6 +209,7 @@ J(\alpha) &amp;= \frac{1}{2} \left[ (y - X \alpha)^\top (y - X \alpha) \right] \
 <ol start="3" type="a">
 <li>Determine the coefficient of determination <span class="math inline">\(R^2\)</span> (see lecture notes) for the training data. How good are the temperature forecasts for the test dataset?</li>
 </ol>
+<p><strong>Answer:</strong></p>
 <div class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>train_score <span class="op">=</span> reg.score(X_train, y_train)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>test_score <span class="op">=</span> reg.score(X_test, y_test)</span>
